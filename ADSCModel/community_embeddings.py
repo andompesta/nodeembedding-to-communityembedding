@@ -2,7 +2,6 @@ __author__ = 'ando'
 import sklearn.mixture as mixture
 import numpy as np
 import logging
-from utils.plot_utils import node_space_plot_2D
 
 logger = logging.getLogger("adsc")
 
@@ -41,9 +40,6 @@ def training(model, is_debug=False, plot=False):
     model.pi = np.float32(g.predict_proba(model.node_embedding))
 
     if is_debug:
-        node_space_plot_2D(model.node_embedding, save=False, color_values=model.ground_true, centroid=model.centroid, title='GMM plot')
-        node_space_plot_2D(model.node_embedding, save=False, color_values=g.predict(model.node_embedding), centroid=model.centroid, title='GMM plot')
-
         print('mean')
         print(model.centroid)
 

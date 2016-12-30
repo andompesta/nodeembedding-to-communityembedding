@@ -17,7 +17,6 @@ import ADSCModel.community_embeddings as Com2Vec
 
 import utils.IO_utils as io_utils
 import utils.graph_utils as graph_utils
-import utils.plot_utils as plot_utils
 
 
 p = psutil.Process(os.getpid())
@@ -142,12 +141,6 @@ if __name__ == "__main__":
         process_node(node_learner, model, edges, iter=int(context_total_path/G.number_of_edges()), lambda2=lambda_2_val)
         process_context(cont_learner, model, graph_utils.combine_files_iter(walk_files), _lambda1=lambda_1_val,
                         _lambda2=lambda_2_val, total_nodes=context_total_path)
-
-        plot_utils.node_space_plot_2D(model.node_embedding, color_values=model.ground_true, centroid=model.centroid,
-                                      save=False, path='graph_plot/', graph_name=input_file+'_comEmb'+
-                                                                                     '_l1-'+str(lambda_1_val) +
-                                                                                     "_l2-"+str(lambda_2_val) +
-                                                                                     '_ds-' + str(down_sample))
 
     io_utils.save_embedding(model.node_embedding, file_name=output_file + "_comEmb" +
                                                             "_l1-"+str(lambda_1_val) +

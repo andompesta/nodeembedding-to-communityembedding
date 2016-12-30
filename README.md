@@ -32,6 +32,6 @@ The supported input format is an edgelist:
 The output file has n line, one for each node.
 Each line follow the given template:
 
-        node_id\tdim_1 dim_2 ... dim_d
+        node_id \t dim_1 \s dim_2 ... dim_d
  
 where dim_1, ... , dim_d is the *d*-dimensional representation learned

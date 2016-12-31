@@ -1,8 +1,8 @@
 # ComEmbed
 This repository contain the code of the following paper:
 
-From Node Embedding To Community Embedding 
-Vincent W. Zheng, Sandro Cavallari, Hongyun Cai, Kevin Chen-Chuan Chang, Erik Cambria
+"From Node Embedding To Community Embedding".  
+Vincent W. Zheng, Sandro Cavallari, Hongyun Cai, Kevin Chen-Chuan Chang, Erik Cambria. 
 In CoRR, 2016
 https://arxiv.org/abs/1610.09950.
 

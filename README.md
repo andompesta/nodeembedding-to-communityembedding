@@ -3,24 +3,20 @@ This repository contain the code of the following paper:
 
 "From Node Embedding To Community Embedding".  
 Vincent W. Zheng, Sandro Cavallari, Hongyun Cai, Kevin Chen-Chuan Chang, Erik Cambria. 
-In CoRR, 2016
+In CoRR, 2016. 
 https://arxiv.org/abs/1610.09950.
 
 To use this code, please kindly cite our paper:
-@article{DBLP:journals/corr/ZhengCCCC16,
-author    = {Vincent W. Zheng and 
-               Sandro Cavallari and
-               HongYun Cai and
-               Kevin Chen{-}Chuan Chang and
-               Erik Cambria},
-  title     = {From Node Embedding To Community Embedding},
-  journal   = {CoRR},
-  volume    = {abs/1610.09950},
-  year      = {2016},
-  url       = {http://arxiv.org/abs/1610.09950},
-  timestamp = {Wed, 02 Nov 2016 09:51:26 +0100},
-  biburl    = {http://dblp.uni-trier.de/rec/bib/journals/corr/ZhengCCCC16},
-  bibsource = {dblp computer science bibliography, http://dblp.org}
+@article{DBLP:journals/corr/ZhengCCCC16, 
+author    = {Vincent W. Zheng and  
+               Sandro Cavallari and 
+               HongYun Cai and 
+               Kevin Chen{-}Chuan Chang and 
+               Erik Cambria}, 
+  title     = {From Node Embedding To Community Embedding}, 
+  journal   = {CoRR}, 
+  volume    = {abs/1610.09950}, 
+  year      = {2016}
 }
 
 ComEmbed learn a continuous graph representation taking in consideration first and second order proximity as well as the communities in the graph. 

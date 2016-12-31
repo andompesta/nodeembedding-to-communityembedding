@@ -8,7 +8,7 @@ https://arxiv.org/abs/1610.09950.
 
 To use this code, please kindly cite our paper:
 @article{DBLP:journals/corr/ZhengCCCC16,
-  author    = {Vincent W. Zheng and
+author    = {Vincent W. Zheng and 
                Sandro Cavallari and
                HongYun Cai and
                Kevin Chen{-}Chuan Chang and

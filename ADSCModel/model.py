@@ -8,7 +8,7 @@ from utils.embedding import Vocab
 from utils.IO_utils import load_ground_true
 
 
-logger = logging.getLogger("adsc")
+logger = logging.getLogger()
 
 class Model(object):
     '''
@@ -23,7 +23,8 @@ class Model(object):
                  community_embedding=None,
                  inv_covariance_mat=None,
                  pi=None,
-                 path_labels=None,
+                 path_labels='data/',
+                 input_file=None,
                  vocabulary_counts=None):
         '''
         :param G: graph used for the computation
@@ -42,6 +43,7 @@ class Model(object):
         :param pi: probability distribution of each node respect the communities
 
         :param path_labels: location of the file containing the ground true (label for each node)
+        :param input_file: name of the file containing the ground true (label for each node)
         :param vocabulary_counts: number of time a node is sampled
         :return:
         '''
@@ -59,6 +61,8 @@ class Model(object):
         self.min_count = min_count
         self.downsampling = downsampling
         self.seed = seed
+        np.random.seed(self.seed)
+
         if size % 4 != 0:
             logger.warning("consider setting layer size to a multiple of 4 for greater performance")
         self.layer1_size = int(size)
@@ -77,7 +81,7 @@ class Model(object):
 
         if G is not None:
             self.build_vocab_(vocabulary_counts)
-            self.ground_true, self.k = load_ground_true(file_name=path_labels)
+            self.ground_true, self.k = load_ground_true(path=path_labels, file_name=input_file)
             # inizialize node and context embeddings
             self.reset_weights()
             self.make_table()
@@ -118,8 +122,6 @@ class Model(object):
     def reset_weights(self):
         """Reset all projection weights to an initial (untrained) state, but keep the existing vocabulary."""
         logger.debug("resetting layer weights")
-        np.random.seed(self.seed)
-
 
         self.node_embedding = np.empty((len(self.vocab), self.layer1_size), dtype=np.float32)
 

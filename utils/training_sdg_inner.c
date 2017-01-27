@@ -864,13 +864,13 @@ typedef void (*__pyx_t_5utils_18training_sdg_inner_dgemm_ptr)(char *, char *, in
 /* "utils/training_sdg_inner.pyx":30
  * 
  * 
- * ctypedef unsigned long long (*fast_sentence_sg_neg_ptr) (             # <<<<<<<<<<<<<<
+ * ctypedef unsigned long long (*fast_context_sg_neg_ptr) (             # <<<<<<<<<<<<<<
  *     const int negative,
  *     np.uint32_t *table,
  */
-typedef unsigned PY_LONG_LONG (*__pyx_t_5utils_18training_sdg_inner_fast_sentence_sg_neg_ptr)(int const , __pyx_t_5numpy_uint32_t *, unsigned PY_LONG_LONG, __pyx_t_5utils_18training_sdg_inner_REAL_t *, __pyx_t_5utils_18training_sdg_inner_REAL_t *, int const , __pyx_t_5numpy_uint32_t const , __pyx_t_5numpy_uint32_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t *, unsigned PY_LONG_LONG);
+typedef unsigned PY_LONG_LONG (*__pyx_t_5utils_18training_sdg_inner_fast_context_sg_neg_ptr)(int const , __pyx_t_5numpy_uint32_t *, unsigned PY_LONG_LONG, __pyx_t_5utils_18training_sdg_inner_REAL_t *, __pyx_t_5utils_18training_sdg_inner_REAL_t *, int const , __pyx_t_5numpy_uint32_t const , __pyx_t_5numpy_uint32_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t *, unsigned PY_LONG_LONG, int const );
 
-/* "utils/training_sdg_inner.pyx":46
+/* "utils/training_sdg_inner.pyx":47
  * 
  * 
  * ctypedef void (*fast_community_sdg_ptr) (             # <<<<<<<<<<<<<<
@@ -1365,7 +1365,7 @@ static __pyx_t_5utils_18training_sdg_inner_snrm2_ptr __pyx_v_5utils_18training_s
 static __pyx_t_5utils_18training_sdg_inner_sscal_ptr __pyx_v_5utils_18training_sdg_inner_sscal;
 static __pyx_t_5utils_18training_sdg_inner_sgemm_ptr __pyx_v_5utils_18training_sdg_inner_sgemm;
 static __pyx_t_5utils_18training_sdg_inner_dgemm_ptr __pyx_v_5utils_18training_sdg_inner_dgemm;
-static __pyx_t_5utils_18training_sdg_inner_fast_sentence_sg_neg_ptr __pyx_v_5utils_18training_sdg_inner_fast_sentence_sg_neg;
+static __pyx_t_5utils_18training_sdg_inner_fast_context_sg_neg_ptr __pyx_v_5utils_18training_sdg_inner_fast_context_sg_neg;
 static __pyx_t_5utils_18training_sdg_inner_fast_community_sdg_ptr __pyx_v_5utils_18training_sdg_inner_fast_community_sdg;
 static __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_v_5utils_18training_sdg_inner_EXP_TABLE[0x3E8];
 static int __pyx_v_5utils_18training_sdg_inner_ONE;
@@ -1373,8 +1373,8 @@ static __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_v_5utils_18training_sdg_
 static __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_v_5utils_18training_sdg_inner_NONEF;
 static __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_v_5utils_18training_sdg_inner_DECF;
 static __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_v_5utils_18training_sdg_inner_NDECF;
-static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_sg_neg(int const , __pyx_t_5numpy_uint32_t *, unsigned PY_LONG_LONG, __pyx_t_5utils_18training_sdg_inner_REAL_t *, __pyx_t_5utils_18training_sdg_inner_REAL_t *, int const , __pyx_t_5numpy_uint32_t const , __pyx_t_5numpy_uint32_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t *, unsigned PY_LONG_LONG); /*proto*/
-static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_sg_neg(int const , __pyx_t_5numpy_uint32_t *, unsigned PY_LONG_LONG, __pyx_t_5utils_18training_sdg_inner_REAL_t *, __pyx_t_5utils_18training_sdg_inner_REAL_t *, int const , __pyx_t_5numpy_uint32_t const , __pyx_t_5numpy_uint32_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t *, unsigned PY_LONG_LONG); /*proto*/
+static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_context0_sg_neg(int const , __pyx_t_5numpy_uint32_t *, unsigned PY_LONG_LONG, __pyx_t_5utils_18training_sdg_inner_REAL_t *, __pyx_t_5utils_18training_sdg_inner_REAL_t *, int const , __pyx_t_5numpy_uint32_t const , __pyx_t_5numpy_uint32_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t *, unsigned PY_LONG_LONG, int const ); /*proto*/
+static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_context1_sg_neg(int const , __pyx_t_5numpy_uint32_t *, unsigned PY_LONG_LONG, __pyx_t_5utils_18training_sdg_inner_REAL_t *, __pyx_t_5utils_18training_sdg_inner_REAL_t *, int const , __pyx_t_5numpy_uint32_t const , __pyx_t_5numpy_uint32_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t *, unsigned PY_LONG_LONG, int const ); /*proto*/
 static CYTHON_INLINE __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_f_5utils_18training_sdg_inner_f_max(__pyx_t_5utils_18training_sdg_inner_REAL_t, __pyx_t_5utils_18training_sdg_inner_REAL_t); /*proto*/
 static CYTHON_INLINE __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_f_5utils_18training_sdg_inner_f_min(__pyx_t_5utils_18training_sdg_inner_REAL_t, __pyx_t_5utils_18training_sdg_inner_REAL_t); /*proto*/
 static __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_f_5utils_18training_sdg_inner_clamp3(__pyx_t_5utils_18training_sdg_inner_REAL_t, __pyx_t_5utils_18training_sdg_inner_REAL_t, __pyx_t_5utils_18training_sdg_inner_REAL_t); /*proto*/
@@ -1440,6 +1440,7 @@ static const char __pyx_k_negative[] = "negative";
 static const char __pyx_k_path_len[] = "path_len";
 static const char __pyx_k_py_alpha[] = "py_alpha";
 static const char __pyx_k_py_table[] = "py_table";
+static const char __pyx_k_train_sg[] = "train_sg";
 static const char __pyx_k_work1_o3[] = "work1_o3";
 static const char __pyx_k_work2_o3[] = "work2_o3";
 static const char __pyx_k_py_window[] = "py_window";
@@ -1457,11 +1458,12 @@ static const char __pyx_k_FAST_VERSION[] = "FAST_VERSION";
 static const char __pyx_k_RuntimeError[] = "RuntimeError";
 static const char __pyx_k_node_embedding[] = "node_embedding";
 static const char __pyx_k_reduced_windows[] = "reduced_windows";
+static const char __pyx_k_is_node_embedding[] = "is_node_embedding";
 static const char __pyx_k_py_node_embedding[] = "py_node_embedding";
 static const char __pyx_k_scipy_linalg_blas[] = "scipy.linalg.blas";
-static const char __pyx_k_train_sentence_sg[] = "train_sentence_sg";
 static const char __pyx_k_inv_covariance_mat[] = "inv_covariance_mat";
 static const char __pyx_k_negative_embedding[] = "negative_embedding";
+static const char __pyx_k_py_is_node_embedding[] = "py_is_node_embedding";
 static const char __pyx_k_py_inv_covariance_mat[] = "py_inv_covariance_mat";
 static const char __pyx_k_py_negative_embedding[] = "py_negative_embedding";
 static const char __pyx_k_utils_training_sdg_inner[] = "utils.training_sdg_inner";
@@ -1495,6 +1497,7 @@ static PyObject *__pyx_n_s_index;
 static PyObject *__pyx_n_s_indexes;
 static PyObject *__pyx_n_s_init;
 static PyObject *__pyx_n_s_inv_covariance_mat;
+static PyObject *__pyx_n_s_is_node_embedding;
 static PyObject *__pyx_n_s_j;
 static PyObject *__pyx_n_s_k;
 static PyObject *__pyx_n_s_k_2;
@@ -1515,6 +1518,7 @@ static PyObject *__pyx_n_s_pi;
 static PyObject *__pyx_n_s_py_alpha;
 static PyObject *__pyx_n_s_py_centroid;
 static PyObject *__pyx_n_s_py_inv_covariance_mat;
+static PyObject *__pyx_n_s_py_is_node_embedding;
 static PyObject *__pyx_n_s_py_k;
 static PyObject *__pyx_n_s_py_lambda1;
 static PyObject *__pyx_n_s_py_lambda2;
@@ -1547,7 +1551,7 @@ static PyObject *__pyx_n_s_sys;
 static PyObject *__pyx_n_s_table;
 static PyObject *__pyx_n_s_table_len;
 static PyObject *__pyx_n_s_test;
-static PyObject *__pyx_n_s_train_sentence_sg;
+static PyObject *__pyx_n_s_train_sg;
 static PyObject *__pyx_kp_u_unknown_dtype_code_in_numpy_pxd;
 static PyObject *__pyx_n_s_utils_training_sdg_inner;
 static PyObject *__pyx_n_s_window;
@@ -1558,7 +1562,7 @@ static PyObject *__pyx_n_s_work2_o3;
 static PyObject *__pyx_n_s_work_o3;
 static PyObject *__pyx_n_s_x;
 static PyObject *__pyx_n_s_y;
-static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_py_node_embedding, PyObject *__pyx_v_py_negative_embedding, PyObject *__pyx_v_py_path, PyObject *__pyx_v_py_alpha, PyObject *__pyx_v_py_negative, PyObject *__pyx_v_py_window, PyObject *__pyx_v_py_table, PyObject *__pyx_v_py_centroid, PyObject *__pyx_v_py_inv_covariance_mat, PyObject *__pyx_v_py_pi, PyObject *__pyx_v_py_k, PyObject *__pyx_v_py_lambda1, PyObject *__pyx_v_py_lambda2, PyObject *__pyx_v_py_size, PyObject *__pyx_v_py_work, PyObject *__pyx_v_py_work_o3, PyObject *__pyx_v_py_work1_o3, PyObject *__pyx_v_py_work2_o3); /* proto */
+static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sg(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_py_node_embedding, PyObject *__pyx_v_py_negative_embedding, PyObject *__pyx_v_py_path, PyObject *__pyx_v_py_alpha, PyObject *__pyx_v_py_negative, PyObject *__pyx_v_py_window, PyObject *__pyx_v_py_table, PyObject *__pyx_v_py_centroid, PyObject *__pyx_v_py_inv_covariance_mat, PyObject *__pyx_v_py_pi, PyObject *__pyx_v_py_k, PyObject *__pyx_v_py_lambda1, PyObject *__pyx_v_py_lambda2, PyObject *__pyx_v_py_size, PyObject *__pyx_v_py_work, PyObject *__pyx_v_py_work_o3, PyObject *__pyx_v_py_work1_o3, PyObject *__pyx_v_py_work2_o3, PyObject *__pyx_v_py_is_node_embedding); /* proto */
 static PyObject *__pyx_pf_5utils_18training_sdg_inner_2init(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
@@ -1580,15 +1584,15 @@ static PyObject *__pyx_tuple__12;
 static PyObject *__pyx_codeobj__11;
 static PyObject *__pyx_codeobj__13;
 
-/* "utils/training_sdg_inner.pyx":88
+/* "utils/training_sdg_inner.pyx":89
  * 
  * 
- * cdef unsigned long long fast_sentence0_sg_neg (             # <<<<<<<<<<<<<<
+ * cdef unsigned long long fast_context0_sg_neg (             # <<<<<<<<<<<<<<
  *         const int negative,
  *         np.uint32_t *table,
  */
 
-static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_sg_neg(int const __pyx_v_negative, __pyx_t_5numpy_uint32_t *__pyx_v_table, unsigned PY_LONG_LONG __pyx_v_table_len, __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_node_embedding, __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_negative_embedding, int const __pyx_v_size, __pyx_t_5numpy_uint32_t const __pyx_v_word_index, __pyx_t_5numpy_uint32_t const __pyx_v_word2_index, __pyx_t_5utils_18training_sdg_inner_REAL_t const __pyx_v_alpha, __pyx_t_5utils_18training_sdg_inner_REAL_t const __pyx_v__lambda, __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_work, unsigned PY_LONG_LONG __pyx_v_next_random) {
+static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_context0_sg_neg(int const __pyx_v_negative, __pyx_t_5numpy_uint32_t *__pyx_v_table, unsigned PY_LONG_LONG __pyx_v_table_len, __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_node_embedding, __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_negative_embedding, int const __pyx_v_size, __pyx_t_5numpy_uint32_t const __pyx_v_word_index, __pyx_t_5numpy_uint32_t const __pyx_v_word2_index, __pyx_t_5utils_18training_sdg_inner_REAL_t const __pyx_v_alpha, __pyx_t_5utils_18training_sdg_inner_REAL_t const __pyx_v__lambda, __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_work, unsigned PY_LONG_LONG __pyx_v_next_random, int const __pyx_v_is_node_embedding) {
   PY_LONG_LONG __pyx_v_row1;
   PY_LONG_LONG __pyx_v_row2;
   unsigned PY_LONG_LONG __pyx_v_modulo;
@@ -1604,7 +1608,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_
   int __pyx_t_3;
   int __pyx_t_4;
 
-  /* "utils/training_sdg_inner.pyx":103
+  /* "utils/training_sdg_inner.pyx":105
  * 
  *     cdef long long a
  *     cdef long long row1 = word2_index * size, row2             # <<<<<<<<<<<<<<
@@ -1613,7 +1617,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_
  */
   __pyx_v_row1 = (__pyx_v_word2_index * __pyx_v_size);
 
-  /* "utils/training_sdg_inner.pyx":104
+  /* "utils/training_sdg_inner.pyx":106
  *     cdef long long a
  *     cdef long long row1 = word2_index * size, row2
  *     cdef unsigned long long modulo = 281474976710655ULL             # <<<<<<<<<<<<<<
@@ -1622,7 +1626,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_
  */
   __pyx_v_modulo = 281474976710655ULL;
 
-  /* "utils/training_sdg_inner.pyx":109
+  /* "utils/training_sdg_inner.pyx":111
  *     cdef int d, i
  * 
  *     memset(work, 0, size * cython.sizeof(REAL_t))             # <<<<<<<<<<<<<<
@@ -1631,7 +1635,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_
  */
   memset(__pyx_v_work, 0, (__pyx_v_size * (sizeof(__pyx_t_5utils_18training_sdg_inner_REAL_t))));
 
-  /* "utils/training_sdg_inner.pyx":111
+  /* "utils/training_sdg_inner.pyx":113
  *     memset(work, 0, size * cython.sizeof(REAL_t))
  * 
  *     for d in range(negative+1):             # <<<<<<<<<<<<<<
@@ -1642,7 +1646,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_d = __pyx_t_2;
 
-    /* "utils/training_sdg_inner.pyx":112
+    /* "utils/training_sdg_inner.pyx":114
  * 
  *     for d in range(negative+1):
  *         if d == 0:             # <<<<<<<<<<<<<<
@@ -1652,7 +1656,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_
     __pyx_t_3 = ((__pyx_v_d == 0) != 0);
     if (__pyx_t_3) {
 
-      /* "utils/training_sdg_inner.pyx":113
+      /* "utils/training_sdg_inner.pyx":115
  *     for d in range(negative+1):
  *         if d == 0:
  *             target_index = word_index             # <<<<<<<<<<<<<<
@@ -1661,7 +1665,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_
  */
       __pyx_v_target_index = __pyx_v_word_index;
 
-      /* "utils/training_sdg_inner.pyx":114
+      /* "utils/training_sdg_inner.pyx":116
  *         if d == 0:
  *             target_index = word_index
  *             label = ONEF             # <<<<<<<<<<<<<<
@@ -1670,7 +1674,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_
  */
       __pyx_v_label = __pyx_v_5utils_18training_sdg_inner_ONEF;
 
-      /* "utils/training_sdg_inner.pyx":112
+      /* "utils/training_sdg_inner.pyx":114
  * 
  *     for d in range(negative+1):
  *         if d == 0:             # <<<<<<<<<<<<<<
@@ -1680,7 +1684,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_
       goto __pyx_L5;
     }
 
-    /* "utils/training_sdg_inner.pyx":116
+    /* "utils/training_sdg_inner.pyx":118
  *             label = ONEF
  *         else:
  *             target_index = table[(next_random >> 16) % table_len]             # <<<<<<<<<<<<<<
@@ -1690,7 +1694,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_
     /*else*/ {
       __pyx_v_target_index = (__pyx_v_table[((__pyx_v_next_random >> 16) % __pyx_v_table_len)]);
 
-      /* "utils/training_sdg_inner.pyx":117
+      /* "utils/training_sdg_inner.pyx":119
  *         else:
  *             target_index = table[(next_random >> 16) % table_len]
  *             next_random = (next_random * <unsigned long long>25214903917ULL + 11) & modulo             # <<<<<<<<<<<<<<
@@ -1699,7 +1703,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_
  */
       __pyx_v_next_random = (((__pyx_v_next_random * ((unsigned PY_LONG_LONG)25214903917ULL)) + 11) & __pyx_v_modulo);
 
-      /* "utils/training_sdg_inner.pyx":118
+      /* "utils/training_sdg_inner.pyx":120
  *             target_index = table[(next_random >> 16) % table_len]
  *             next_random = (next_random * <unsigned long long>25214903917ULL + 11) & modulo
  *             if target_index == word_index:             # <<<<<<<<<<<<<<
@@ -1709,7 +1713,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_
       __pyx_t_3 = ((__pyx_v_target_index == __pyx_v_word_index) != 0);
       if (__pyx_t_3) {
 
-        /* "utils/training_sdg_inner.pyx":119
+        /* "utils/training_sdg_inner.pyx":121
  *             next_random = (next_random * <unsigned long long>25214903917ULL + 11) & modulo
  *             if target_index == word_index:
  *                 continue             # <<<<<<<<<<<<<<
@@ -1718,7 +1722,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_
  */
         goto __pyx_L3_continue;
 
-        /* "utils/training_sdg_inner.pyx":118
+        /* "utils/training_sdg_inner.pyx":120
  *             target_index = table[(next_random >> 16) % table_len]
  *             next_random = (next_random * <unsigned long long>25214903917ULL + 11) & modulo
  *             if target_index == word_index:             # <<<<<<<<<<<<<<
@@ -1727,7 +1731,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_
  */
       }
 
-      /* "utils/training_sdg_inner.pyx":120
+      /* "utils/training_sdg_inner.pyx":122
  *             if target_index == word_index:
  *                 continue
  *             label = <REAL_t>0.0             # <<<<<<<<<<<<<<
@@ -1738,7 +1742,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_
     }
     __pyx_L5:;
 
-    /* "utils/training_sdg_inner.pyx":122
+    /* "utils/training_sdg_inner.pyx":124
  *             label = <REAL_t>0.0
  * 
  *         row2 = target_index * size             # <<<<<<<<<<<<<<
@@ -1747,7 +1751,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_
  */
     __pyx_v_row2 = (__pyx_v_target_index * __pyx_v_size);
 
-    /* "utils/training_sdg_inner.pyx":123
+    /* "utils/training_sdg_inner.pyx":125
  * 
  *         row2 = target_index * size
  *         f = <REAL_t>dsdot(&size, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)             # <<<<<<<<<<<<<<
@@ -1756,7 +1760,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_
  */
     __pyx_v_f = ((__pyx_t_5utils_18training_sdg_inner_REAL_t)__pyx_v_5utils_18training_sdg_inner_dsdot((&__pyx_v_size), (&(__pyx_v_node_embedding[__pyx_v_row1])), (&__pyx_v_5utils_18training_sdg_inner_ONE), (&(__pyx_v_negative_embedding[__pyx_v_row2])), (&__pyx_v_5utils_18training_sdg_inner_ONE)));
 
-    /* "utils/training_sdg_inner.pyx":124
+    /* "utils/training_sdg_inner.pyx":126
  *         row2 = target_index * size
  *         f = <REAL_t>dsdot(&size, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)
  *         if f <= -MAX_EXP or f >= MAX_EXP:             # <<<<<<<<<<<<<<
@@ -1774,7 +1778,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_
     __pyx_L8_bool_binop_done:;
     if (__pyx_t_3) {
 
-      /* "utils/training_sdg_inner.pyx":125
+      /* "utils/training_sdg_inner.pyx":127
  *         f = <REAL_t>dsdot(&size, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)
  *         if f <= -MAX_EXP or f >= MAX_EXP:
  *             continue             # <<<<<<<<<<<<<<
@@ -1783,7 +1787,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_
  */
       goto __pyx_L3_continue;
 
-      /* "utils/training_sdg_inner.pyx":124
+      /* "utils/training_sdg_inner.pyx":126
  *         row2 = target_index * size
  *         f = <REAL_t>dsdot(&size, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)
  *         if f <= -MAX_EXP or f >= MAX_EXP:             # <<<<<<<<<<<<<<
@@ -1792,7 +1796,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_
  */
     }
 
-    /* "utils/training_sdg_inner.pyx":126
+    /* "utils/training_sdg_inner.pyx":128
  *         if f <= -MAX_EXP or f >= MAX_EXP:
  *             continue
  *         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]             # <<<<<<<<<<<<<<
@@ -1801,7 +1805,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_
  */
     __pyx_v_f = (__pyx_v_5utils_18training_sdg_inner_EXP_TABLE[((int)((__pyx_v_f + 6.0) * 83.0))]);
 
-    /* "utils/training_sdg_inner.pyx":127
+    /* "utils/training_sdg_inner.pyx":129
  *             continue
  *         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]
  *         g = (label - f) * alpha             # <<<<<<<<<<<<<<
@@ -1810,7 +1814,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_
  */
     __pyx_v_g = ((__pyx_v_label - __pyx_v_f) * __pyx_v_alpha);
 
-    /* "utils/training_sdg_inner.pyx":128
+    /* "utils/training_sdg_inner.pyx":130
  *         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]
  *         g = (label - f) * alpha
  *         gl = g * _lambda             # <<<<<<<<<<<<<<
@@ -1819,28 +1823,47 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_
  */
     __pyx_v_gl = (__pyx_v_g * __pyx_v__lambda);
 
-    /* "utils/training_sdg_inner.pyx":130
+    /* "utils/training_sdg_inner.pyx":132
  *         gl = g * _lambda
  * 
  *         saxpy(&size, &g, &negative_embedding[row2], &ONE, work, &ONE) # work += g * negative_embeddings             # <<<<<<<<<<<<<<
- *         saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE) # negative_embeddings += g * node_embedding
- * 
+ *         if is_node_embedding == 0:
+ *             saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE) # negative_embeddings += g * node_embedding
  */
     __pyx_v_5utils_18training_sdg_inner_saxpy((&__pyx_v_size), (&__pyx_v_g), (&(__pyx_v_negative_embedding[__pyx_v_row2])), (&__pyx_v_5utils_18training_sdg_inner_ONE), __pyx_v_work, (&__pyx_v_5utils_18training_sdg_inner_ONE));
 
-    /* "utils/training_sdg_inner.pyx":131
+    /* "utils/training_sdg_inner.pyx":133
  * 
  *         saxpy(&size, &g, &negative_embedding[row2], &ONE, work, &ONE) # work += g * negative_embeddings
- *         saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE) # negative_embeddings += g * node_embedding             # <<<<<<<<<<<<<<
+ *         if is_node_embedding == 0:             # <<<<<<<<<<<<<<
+ *             saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE) # negative_embeddings += g * node_embedding
+ * 
+ */
+    __pyx_t_3 = ((__pyx_v_is_node_embedding == 0) != 0);
+    if (__pyx_t_3) {
+
+      /* "utils/training_sdg_inner.pyx":134
+ *         saxpy(&size, &g, &negative_embedding[row2], &ONE, work, &ONE) # work += g * negative_embeddings
+ *         if is_node_embedding == 0:
+ *             saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE) # negative_embeddings += g * node_embedding             # <<<<<<<<<<<<<<
  * 
  *     saxpy(&size, &_lambda, work, &ONE, &node_embedding[row1], &ONE)  #node_embedding += _lambda * work
  */
-    __pyx_v_5utils_18training_sdg_inner_saxpy((&__pyx_v_size), (&__pyx_v_gl), (&(__pyx_v_node_embedding[__pyx_v_row1])), (&__pyx_v_5utils_18training_sdg_inner_ONE), (&(__pyx_v_negative_embedding[__pyx_v_row2])), (&__pyx_v_5utils_18training_sdg_inner_ONE));
+      __pyx_v_5utils_18training_sdg_inner_saxpy((&__pyx_v_size), (&__pyx_v_gl), (&(__pyx_v_node_embedding[__pyx_v_row1])), (&__pyx_v_5utils_18training_sdg_inner_ONE), (&(__pyx_v_negative_embedding[__pyx_v_row2])), (&__pyx_v_5utils_18training_sdg_inner_ONE));
+
+      /* "utils/training_sdg_inner.pyx":133
+ * 
+ *         saxpy(&size, &g, &negative_embedding[row2], &ONE, work, &ONE) # work += g * negative_embeddings
+ *         if is_node_embedding == 0:             # <<<<<<<<<<<<<<
+ *             saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE) # negative_embeddings += g * node_embedding
+ * 
+ */
+    }
     __pyx_L3_continue:;
   }
 
-  /* "utils/training_sdg_inner.pyx":133
- *         saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE) # negative_embeddings += g * node_embedding
+  /* "utils/training_sdg_inner.pyx":136
+ *             saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE) # negative_embeddings += g * node_embedding
  * 
  *     saxpy(&size, &_lambda, work, &ONE, &node_embedding[row1], &ONE)  #node_embedding += _lambda * work             # <<<<<<<<<<<<<<
  * 
@@ -1848,7 +1871,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_
  */
   __pyx_v_5utils_18training_sdg_inner_saxpy((&__pyx_v_size), (&__pyx_v__lambda), __pyx_v_work, (&__pyx_v_5utils_18training_sdg_inner_ONE), (&(__pyx_v_node_embedding[__pyx_v_row1])), (&__pyx_v_5utils_18training_sdg_inner_ONE));
 
-  /* "utils/training_sdg_inner.pyx":142
+  /* "utils/training_sdg_inner.pyx":145
  *     #     print("neg_node_embedding: " + " ".join([str(negative_embedding[row2 + i]) for i in range(size)]) )
  * 
  *     return next_random             # <<<<<<<<<<<<<<
@@ -1858,10 +1881,10 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_
   __pyx_r = __pyx_v_next_random;
   goto __pyx_L0;
 
-  /* "utils/training_sdg_inner.pyx":88
+  /* "utils/training_sdg_inner.pyx":89
  * 
  * 
- * cdef unsigned long long fast_sentence0_sg_neg (             # <<<<<<<<<<<<<<
+ * cdef unsigned long long fast_context0_sg_neg (             # <<<<<<<<<<<<<<
  *         const int negative,
  *         np.uint32_t *table,
  */
@@ -1871,15 +1894,15 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence0_
   return __pyx_r;
 }
 
-/* "utils/training_sdg_inner.pyx":145
+/* "utils/training_sdg_inner.pyx":148
  * 
  * 
- * cdef unsigned long long fast_sentence1_sg_neg(             # <<<<<<<<<<<<<<
- *     const int negative,
+ * cdef unsigned long long fast_context1_sg_neg(             # <<<<<<<<<<<<<<
+ *         const int negative,
  *         np.uint32_t *table,
  */
 
-static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_sg_neg(int const __pyx_v_negative, __pyx_t_5numpy_uint32_t *__pyx_v_table, unsigned PY_LONG_LONG __pyx_v_table_len, __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_node_embedding, __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_negative_embedding, int const __pyx_v_size, __pyx_t_5numpy_uint32_t const __pyx_v_word_index, __pyx_t_5numpy_uint32_t const __pyx_v_word2_index, __pyx_t_5utils_18training_sdg_inner_REAL_t const __pyx_v_alpha, __pyx_t_5utils_18training_sdg_inner_REAL_t const __pyx_v__lambda, __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_work, unsigned PY_LONG_LONG __pyx_v_next_random) {
+static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_context1_sg_neg(int const __pyx_v_negative, __pyx_t_5numpy_uint32_t *__pyx_v_table, unsigned PY_LONG_LONG __pyx_v_table_len, __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_node_embedding, __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_negative_embedding, int const __pyx_v_size, __pyx_t_5numpy_uint32_t const __pyx_v_word_index, __pyx_t_5numpy_uint32_t const __pyx_v_word2_index, __pyx_t_5utils_18training_sdg_inner_REAL_t const __pyx_v_alpha, __pyx_t_5utils_18training_sdg_inner_REAL_t const __pyx_v__lambda, __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_work, unsigned PY_LONG_LONG __pyx_v_next_random, int const __pyx_v_is_node_embedding) {
   PY_LONG_LONG __pyx_v_row1;
   PY_LONG_LONG __pyx_v_row2;
   unsigned PY_LONG_LONG __pyx_v_modulo;
@@ -1895,7 +1918,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_
   int __pyx_t_3;
   int __pyx_t_4;
 
-  /* "utils/training_sdg_inner.pyx":160
+  /* "utils/training_sdg_inner.pyx":164
  * 
  *     cdef long long a
  *     cdef long long row1 = word2_index * size, row2             # <<<<<<<<<<<<<<
@@ -1904,7 +1927,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_
  */
   __pyx_v_row1 = (__pyx_v_word2_index * __pyx_v_size);
 
-  /* "utils/training_sdg_inner.pyx":161
+  /* "utils/training_sdg_inner.pyx":165
  *     cdef long long a
  *     cdef long long row1 = word2_index * size, row2
  *     cdef unsigned long long modulo = 281474976710655ULL             # <<<<<<<<<<<<<<
@@ -1913,7 +1936,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_
  */
   __pyx_v_modulo = 281474976710655ULL;
 
-  /* "utils/training_sdg_inner.pyx":166
+  /* "utils/training_sdg_inner.pyx":170
  *     cdef int d
  * 
  *     memset(work, 0, size * cython.sizeof(REAL_t))             # <<<<<<<<<<<<<<
@@ -1922,7 +1945,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_
  */
   memset(__pyx_v_work, 0, (__pyx_v_size * (sizeof(__pyx_t_5utils_18training_sdg_inner_REAL_t))));
 
-  /* "utils/training_sdg_inner.pyx":168
+  /* "utils/training_sdg_inner.pyx":172
  *     memset(work, 0, size * cython.sizeof(REAL_t))
  * 
  *     for d in range(negative+1):             # <<<<<<<<<<<<<<
@@ -1933,7 +1956,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_d = __pyx_t_2;
 
-    /* "utils/training_sdg_inner.pyx":170
+    /* "utils/training_sdg_inner.pyx":174
  *     for d in range(negative+1):
  * 
  *         if d == 0:             # <<<<<<<<<<<<<<
@@ -1943,7 +1966,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_
     __pyx_t_3 = ((__pyx_v_d == 0) != 0);
     if (__pyx_t_3) {
 
-      /* "utils/training_sdg_inner.pyx":171
+      /* "utils/training_sdg_inner.pyx":175
  * 
  *         if d == 0:
  *             target_index = word_index             # <<<<<<<<<<<<<<
@@ -1952,7 +1975,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_
  */
       __pyx_v_target_index = __pyx_v_word_index;
 
-      /* "utils/training_sdg_inner.pyx":172
+      /* "utils/training_sdg_inner.pyx":176
  *         if d == 0:
  *             target_index = word_index
  *             label = ONEF             # <<<<<<<<<<<<<<
@@ -1961,7 +1984,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_
  */
       __pyx_v_label = __pyx_v_5utils_18training_sdg_inner_ONEF;
 
-      /* "utils/training_sdg_inner.pyx":170
+      /* "utils/training_sdg_inner.pyx":174
  *     for d in range(negative+1):
  * 
  *         if d == 0:             # <<<<<<<<<<<<<<
@@ -1971,7 +1994,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_
       goto __pyx_L5;
     }
 
-    /* "utils/training_sdg_inner.pyx":174
+    /* "utils/training_sdg_inner.pyx":178
  *             label = ONEF
  *         else:
  *             target_index = table[(next_random >> 16) % table_len]             # <<<<<<<<<<<<<<
@@ -1981,7 +2004,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_
     /*else*/ {
       __pyx_v_target_index = (__pyx_v_table[((__pyx_v_next_random >> 16) % __pyx_v_table_len)]);
 
-      /* "utils/training_sdg_inner.pyx":175
+      /* "utils/training_sdg_inner.pyx":179
  *         else:
  *             target_index = table[(next_random >> 16) % table_len]
  *             next_random = (next_random * <unsigned long long>25214903917ULL + 11) & modulo             # <<<<<<<<<<<<<<
@@ -1990,7 +2013,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_
  */
       __pyx_v_next_random = (((__pyx_v_next_random * ((unsigned PY_LONG_LONG)25214903917ULL)) + 11) & __pyx_v_modulo);
 
-      /* "utils/training_sdg_inner.pyx":176
+      /* "utils/training_sdg_inner.pyx":180
  *             target_index = table[(next_random >> 16) % table_len]
  *             next_random = (next_random * <unsigned long long>25214903917ULL + 11) & modulo
  *             if target_index == word_index:             # <<<<<<<<<<<<<<
@@ -2000,7 +2023,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_
       __pyx_t_3 = ((__pyx_v_target_index == __pyx_v_word_index) != 0);
       if (__pyx_t_3) {
 
-        /* "utils/training_sdg_inner.pyx":177
+        /* "utils/training_sdg_inner.pyx":181
  *             next_random = (next_random * <unsigned long long>25214903917ULL + 11) & modulo
  *             if target_index == word_index:
  *                 continue             # <<<<<<<<<<<<<<
@@ -2009,7 +2032,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_
  */
         goto __pyx_L3_continue;
 
-        /* "utils/training_sdg_inner.pyx":176
+        /* "utils/training_sdg_inner.pyx":180
  *             target_index = table[(next_random >> 16) % table_len]
  *             next_random = (next_random * <unsigned long long>25214903917ULL + 11) & modulo
  *             if target_index == word_index:             # <<<<<<<<<<<<<<
@@ -2018,7 +2041,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_
  */
       }
 
-      /* "utils/training_sdg_inner.pyx":178
+      /* "utils/training_sdg_inner.pyx":182
  *             if target_index == word_index:
  *                 continue
  *             label = <REAL_t>0.0             # <<<<<<<<<<<<<<
@@ -2029,7 +2052,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_
     }
     __pyx_L5:;
 
-    /* "utils/training_sdg_inner.pyx":180
+    /* "utils/training_sdg_inner.pyx":184
  *             label = <REAL_t>0.0
  * 
  *         row2 = target_index * size             # <<<<<<<<<<<<<<
@@ -2038,7 +2061,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_
  */
     __pyx_v_row2 = (__pyx_v_target_index * __pyx_v_size);
 
-    /* "utils/training_sdg_inner.pyx":181
+    /* "utils/training_sdg_inner.pyx":185
  * 
  *         row2 = target_index * size
  *         f = <REAL_t>sdot(&size, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)             # <<<<<<<<<<<<<<
@@ -2047,7 +2070,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_
  */
     __pyx_v_f = ((__pyx_t_5utils_18training_sdg_inner_REAL_t)__pyx_v_5utils_18training_sdg_inner_sdot((&__pyx_v_size), (&(__pyx_v_node_embedding[__pyx_v_row1])), (&__pyx_v_5utils_18training_sdg_inner_ONE), (&(__pyx_v_negative_embedding[__pyx_v_row2])), (&__pyx_v_5utils_18training_sdg_inner_ONE)));
 
-    /* "utils/training_sdg_inner.pyx":182
+    /* "utils/training_sdg_inner.pyx":186
  *         row2 = target_index * size
  *         f = <REAL_t>sdot(&size, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)
  *         if f <= -MAX_EXP or f >= MAX_EXP:             # <<<<<<<<<<<<<<
@@ -2065,7 +2088,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_
     __pyx_L8_bool_binop_done:;
     if (__pyx_t_3) {
 
-      /* "utils/training_sdg_inner.pyx":183
+      /* "utils/training_sdg_inner.pyx":187
  *         f = <REAL_t>sdot(&size, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)
  *         if f <= -MAX_EXP or f >= MAX_EXP:
  *             continue             # <<<<<<<<<<<<<<
@@ -2074,7 +2097,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_
  */
       goto __pyx_L3_continue;
 
-      /* "utils/training_sdg_inner.pyx":182
+      /* "utils/training_sdg_inner.pyx":186
  *         row2 = target_index * size
  *         f = <REAL_t>sdot(&size, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)
  *         if f <= -MAX_EXP or f >= MAX_EXP:             # <<<<<<<<<<<<<<
@@ -2083,7 +2106,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_
  */
     }
 
-    /* "utils/training_sdg_inner.pyx":184
+    /* "utils/training_sdg_inner.pyx":188
  *         if f <= -MAX_EXP or f >= MAX_EXP:
  *             continue
  *         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]             # <<<<<<<<<<<<<<
@@ -2092,7 +2115,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_
  */
     __pyx_v_f = (__pyx_v_5utils_18training_sdg_inner_EXP_TABLE[((int)((__pyx_v_f + 6.0) * 83.0))]);
 
-    /* "utils/training_sdg_inner.pyx":185
+    /* "utils/training_sdg_inner.pyx":189
  *             continue
  *         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]
  *         g = (label - f) * alpha             # <<<<<<<<<<<<<<
@@ -2101,7 +2124,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_
  */
     __pyx_v_g = ((__pyx_v_label - __pyx_v_f) * __pyx_v_alpha);
 
-    /* "utils/training_sdg_inner.pyx":186
+    /* "utils/training_sdg_inner.pyx":190
  *         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]
  *         g = (label - f) * alpha
  *         gl = g * _lambda             # <<<<<<<<<<<<<<
@@ -2110,28 +2133,47 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_
  */
     __pyx_v_gl = (__pyx_v_g * __pyx_v__lambda);
 
-    /* "utils/training_sdg_inner.pyx":188
+    /* "utils/training_sdg_inner.pyx":192
  *         gl = g * _lambda
  * 
  *         saxpy(&size, &g, &negative_embedding[row2], &ONE, work, &ONE)             # <<<<<<<<<<<<<<
- *         saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)
- * 
+ *         if is_node_embedding == 0:
+ *             saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)
  */
     __pyx_v_5utils_18training_sdg_inner_saxpy((&__pyx_v_size), (&__pyx_v_g), (&(__pyx_v_negative_embedding[__pyx_v_row2])), (&__pyx_v_5utils_18training_sdg_inner_ONE), __pyx_v_work, (&__pyx_v_5utils_18training_sdg_inner_ONE));
 
-    /* "utils/training_sdg_inner.pyx":189
+    /* "utils/training_sdg_inner.pyx":193
  * 
  *         saxpy(&size, &g, &negative_embedding[row2], &ONE, work, &ONE)
- *         saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)             # <<<<<<<<<<<<<<
+ *         if is_node_embedding == 0:             # <<<<<<<<<<<<<<
+ *             saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)
+ * 
+ */
+    __pyx_t_3 = ((__pyx_v_is_node_embedding == 0) != 0);
+    if (__pyx_t_3) {
+
+      /* "utils/training_sdg_inner.pyx":194
+ *         saxpy(&size, &g, &negative_embedding[row2], &ONE, work, &ONE)
+ *         if is_node_embedding == 0:
+ *             saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)             # <<<<<<<<<<<<<<
  * 
  *     saxpy(&size, &_lambda, work, &ONE, &node_embedding[row1], &ONE)
  */
-    __pyx_v_5utils_18training_sdg_inner_saxpy((&__pyx_v_size), (&__pyx_v_gl), (&(__pyx_v_node_embedding[__pyx_v_row1])), (&__pyx_v_5utils_18training_sdg_inner_ONE), (&(__pyx_v_negative_embedding[__pyx_v_row2])), (&__pyx_v_5utils_18training_sdg_inner_ONE));
+      __pyx_v_5utils_18training_sdg_inner_saxpy((&__pyx_v_size), (&__pyx_v_gl), (&(__pyx_v_node_embedding[__pyx_v_row1])), (&__pyx_v_5utils_18training_sdg_inner_ONE), (&(__pyx_v_negative_embedding[__pyx_v_row2])), (&__pyx_v_5utils_18training_sdg_inner_ONE));
+
+      /* "utils/training_sdg_inner.pyx":193
+ * 
+ *         saxpy(&size, &g, &negative_embedding[row2], &ONE, work, &ONE)
+ *         if is_node_embedding == 0:             # <<<<<<<<<<<<<<
+ *             saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)
+ * 
+ */
+    }
     __pyx_L3_continue:;
   }
 
-  /* "utils/training_sdg_inner.pyx":191
- *         saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)
+  /* "utils/training_sdg_inner.pyx":196
+ *             saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)
  * 
  *     saxpy(&size, &_lambda, work, &ONE, &node_embedding[row1], &ONE)             # <<<<<<<<<<<<<<
  *     return next_random
@@ -2139,7 +2181,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_
  */
   __pyx_v_5utils_18training_sdg_inner_saxpy((&__pyx_v_size), (&__pyx_v__lambda), __pyx_v_work, (&__pyx_v_5utils_18training_sdg_inner_ONE), (&(__pyx_v_node_embedding[__pyx_v_row1])), (&__pyx_v_5utils_18training_sdg_inner_ONE));
 
-  /* "utils/training_sdg_inner.pyx":192
+  /* "utils/training_sdg_inner.pyx":197
  * 
  *     saxpy(&size, &_lambda, work, &ONE, &node_embedding[row1], &ONE)
  *     return next_random             # <<<<<<<<<<<<<<
@@ -2149,11 +2191,11 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_
   __pyx_r = __pyx_v_next_random;
   goto __pyx_L0;
 
-  /* "utils/training_sdg_inner.pyx":145
+  /* "utils/training_sdg_inner.pyx":148
  * 
  * 
- * cdef unsigned long long fast_sentence1_sg_neg(             # <<<<<<<<<<<<<<
- *     const int negative,
+ * cdef unsigned long long fast_context1_sg_neg(             # <<<<<<<<<<<<<<
+ *         const int negative,
  *         np.uint32_t *table,
  */
 
@@ -2162,7 +2204,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_sentence1_
   return __pyx_r;
 }
 
-/* "utils/training_sdg_inner.pyx":194
+/* "utils/training_sdg_inner.pyx":199
  *     return next_random
  * 
  * cdef inline REAL_t f_max(REAL_t a, REAL_t b) nogil: return a if a >= b else b             # <<<<<<<<<<<<<<
@@ -2186,7 +2228,7 @@ static CYTHON_INLINE __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_f_5utils_1
   return __pyx_r;
 }
 
-/* "utils/training_sdg_inner.pyx":195
+/* "utils/training_sdg_inner.pyx":200
  * 
  * cdef inline REAL_t f_max(REAL_t a, REAL_t b) nogil: return a if a >= b else b
  * cdef inline REAL_t f_min(REAL_t a, REAL_t b) nogil: return a if a <= b else b             # <<<<<<<<<<<<<<
@@ -2210,7 +2252,7 @@ static CYTHON_INLINE __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_f_5utils_1
   return __pyx_r;
 }
 
-/* "utils/training_sdg_inner.pyx":197
+/* "utils/training_sdg_inner.pyx":202
  * cdef inline REAL_t f_min(REAL_t a, REAL_t b) nogil: return a if a <= b else b
  * 
  * cdef REAL_t clamp3(REAL_t val, REAL_t minval, REAL_t maxval) nogil:             # <<<<<<<<<<<<<<
@@ -2221,7 +2263,7 @@ static CYTHON_INLINE __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_f_5utils_1
 static __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_f_5utils_18training_sdg_inner_clamp3(__pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_v_val, __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_v_minval, __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_v_maxval) {
   __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_r;
 
-  /* "utils/training_sdg_inner.pyx":198
+  /* "utils/training_sdg_inner.pyx":203
  * 
  * cdef REAL_t clamp3(REAL_t val, REAL_t minval, REAL_t maxval) nogil:
  *     return f_max(minval, f_min(val, maxval))             # <<<<<<<<<<<<<<
@@ -2231,7 +2273,7 @@ static __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_f_5utils_18training_sdg_
   __pyx_r = __pyx_f_5utils_18training_sdg_inner_f_max(__pyx_v_minval, __pyx_f_5utils_18training_sdg_inner_f_min(__pyx_v_val, __pyx_v_maxval));
   goto __pyx_L0;
 
-  /* "utils/training_sdg_inner.pyx":197
+  /* "utils/training_sdg_inner.pyx":202
  * cdef inline REAL_t f_min(REAL_t a, REAL_t b) nogil: return a if a <= b else b
  * 
  * cdef REAL_t clamp3(REAL_t val, REAL_t minval, REAL_t maxval) nogil:             # <<<<<<<<<<<<<<
@@ -2244,7 +2286,7 @@ static __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_f_5utils_18training_sdg_
   return __pyx_r;
 }
 
-/* "utils/training_sdg_inner.pyx":200
+/* "utils/training_sdg_inner.pyx":205
  *     return f_max(minval, f_min(val, maxval))
  * 
  * cdef void fast_community_sdg_0(             # <<<<<<<<<<<<<<
@@ -2266,7 +2308,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_0(__pyx_t_5ut
   int __pyx_t_2;
   int __pyx_t_3;
 
-  /* "utils/training_sdg_inner.pyx":214
+  /* "utils/training_sdg_inner.pyx":219
  *         REAL_t * work2) nogil:
  * 
  *     cdef long long row = word2_index * size, row_pi = word2_index * k, row_inv_covariance, row_centroid             # <<<<<<<<<<<<<<
@@ -2276,7 +2318,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_0(__pyx_t_5ut
   __pyx_v_row = (__pyx_v_word2_index * __pyx_v_size);
   __pyx_v_row_pi = (__pyx_v_word2_index * __pyx_v_k);
 
-  /* "utils/training_sdg_inner.pyx":215
+  /* "utils/training_sdg_inner.pyx":220
  * 
  *     cdef long long row = word2_index * size, row_pi = word2_index * k, row_inv_covariance, row_centroid
  *     cdef int size_inv_covariance = size **2             # <<<<<<<<<<<<<<
@@ -2285,7 +2327,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_0(__pyx_t_5ut
  */
   __pyx_v_size_inv_covariance = __Pyx_pow_long(((long)__pyx_v_size), 2);
 
-  /* "utils/training_sdg_inner.pyx":217
+  /* "utils/training_sdg_inner.pyx":222
  *     cdef int size_inv_covariance = size **2
  *     cdef int com_index, i, j
  *     cdef REAL_t _alpha = alpha             # <<<<<<<<<<<<<<
@@ -2294,7 +2336,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_0(__pyx_t_5ut
  */
   __pyx_v__alpha = __pyx_v_alpha;
 
-  /* "utils/training_sdg_inner.pyx":218
+  /* "utils/training_sdg_inner.pyx":223
  *     cdef int com_index, i, j
  *     cdef REAL_t _alpha = alpha
  *     cdef REAL_t _lambda2 = lambda2             # <<<<<<<<<<<<<<
@@ -2303,7 +2345,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_0(__pyx_t_5ut
  */
   __pyx_v__lambda2 = __pyx_v_lambda2;
 
-  /* "utils/training_sdg_inner.pyx":220
+  /* "utils/training_sdg_inner.pyx":225
  *     cdef REAL_t _lambda2 = lambda2
  * 
  *     memset(work, 0, size * cython.sizeof(REAL_t))             # <<<<<<<<<<<<<<
@@ -2312,7 +2354,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_0(__pyx_t_5ut
  */
   memset(__pyx_v_work, 0, (__pyx_v_size * (sizeof(__pyx_t_5utils_18training_sdg_inner_REAL_t))));
 
-  /* "utils/training_sdg_inner.pyx":221
+  /* "utils/training_sdg_inner.pyx":226
  * 
  *     memset(work, 0, size * cython.sizeof(REAL_t))
  *     memset(work1, 0, size * cython.sizeof(REAL_t))             # <<<<<<<<<<<<<<
@@ -2321,7 +2363,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_0(__pyx_t_5ut
  */
   memset(__pyx_v_work1, 0, (__pyx_v_size * (sizeof(__pyx_t_5utils_18training_sdg_inner_REAL_t))));
 
-  /* "utils/training_sdg_inner.pyx":223
+  /* "utils/training_sdg_inner.pyx":228
  *     memset(work1, 0, size * cython.sizeof(REAL_t))
  * 
  *     if not _lambda2 == 0.0:             # <<<<<<<<<<<<<<
@@ -2331,7 +2373,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_0(__pyx_t_5ut
   __pyx_t_1 = ((!((__pyx_v__lambda2 == 0.0) != 0)) != 0);
   if (__pyx_t_1) {
 
-    /* "utils/training_sdg_inner.pyx":224
+    /* "utils/training_sdg_inner.pyx":229
  * 
  *     if not _lambda2 == 0.0:
  *         for com_index in range(k):             # <<<<<<<<<<<<<<
@@ -2342,7 +2384,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_0(__pyx_t_5ut
     for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
       __pyx_v_com_index = __pyx_t_3;
 
-      /* "utils/training_sdg_inner.pyx":225
+      /* "utils/training_sdg_inner.pyx":230
  *     if not _lambda2 == 0.0:
  *         for com_index in range(k):
  *             memset(work2, 0, size_inv_covariance * cython.sizeof(REAL_t))             # <<<<<<<<<<<<<<
@@ -2351,7 +2393,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_0(__pyx_t_5ut
  */
       memset(__pyx_v_work2, 0, (__pyx_v_size_inv_covariance * (sizeof(__pyx_t_5utils_18training_sdg_inner_REAL_t))));
 
-      /* "utils/training_sdg_inner.pyx":226
+      /* "utils/training_sdg_inner.pyx":231
  *         for com_index in range(k):
  *             memset(work2, 0, size_inv_covariance * cython.sizeof(REAL_t))
  *             scopy(&size, &node_embedding[row], &ONE, work, &ONE)             # <<<<<<<<<<<<<<
@@ -2360,7 +2402,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_0(__pyx_t_5ut
  */
       __pyx_v_5utils_18training_sdg_inner_scopy((&__pyx_v_size), (&(__pyx_v_node_embedding[__pyx_v_row])), (&__pyx_v_5utils_18training_sdg_inner_ONE), __pyx_v_work, (&__pyx_v_5utils_18training_sdg_inner_ONE));
 
-      /* "utils/training_sdg_inner.pyx":228
+      /* "utils/training_sdg_inner.pyx":233
  *             scopy(&size, &node_embedding[row], &ONE, work, &ONE)
  * 
  *             row_centroid =  com_index * size             # <<<<<<<<<<<<<<
@@ -2369,7 +2411,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_0(__pyx_t_5ut
  */
       __pyx_v_row_centroid = (__pyx_v_com_index * __pyx_v_size);
 
-      /* "utils/training_sdg_inner.pyx":229
+      /* "utils/training_sdg_inner.pyx":234
  * 
  *             row_centroid =  com_index * size
  *             row_inv_covariance = com_index * size_inv_covariance             # <<<<<<<<<<<<<<
@@ -2378,7 +2420,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_0(__pyx_t_5ut
  */
       __pyx_v_row_inv_covariance = (__pyx_v_com_index * __pyx_v_size_inv_covariance);
 
-      /* "utils/training_sdg_inner.pyx":231
+      /* "utils/training_sdg_inner.pyx":236
  *             row_inv_covariance = com_index * size_inv_covariance
  * 
  *             saxpy(&size, &NONEF, &centroid[row_centroid], &ONE, work, &ONE ) # work = node_embedding_i - centroid_k             # <<<<<<<<<<<<<<
@@ -2387,7 +2429,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_0(__pyx_t_5ut
  */
       __pyx_v_5utils_18training_sdg_inner_saxpy((&__pyx_v_size), (&__pyx_v_5utils_18training_sdg_inner_NONEF), (&(__pyx_v_centroid[__pyx_v_row_centroid])), (&__pyx_v_5utils_18training_sdg_inner_ONE), __pyx_v_work, (&__pyx_v_5utils_18training_sdg_inner_ONE));
 
-      /* "utils/training_sdg_inner.pyx":232
+      /* "utils/training_sdg_inner.pyx":237
  * 
  *             saxpy(&size, &NONEF, &centroid[row_centroid], &ONE, work, &ONE ) # work = node_embedding_i - centroid_k
  *             saxpy(&size_inv_covariance, &pi[row_pi + com_index], &inv_covariance_mat[row_inv_covariance], &ONE, work2, &ONE) # work2 = pi_{ik} * inv_cov_k             # <<<<<<<<<<<<<<
@@ -2396,7 +2438,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_0(__pyx_t_5ut
  */
       __pyx_v_5utils_18training_sdg_inner_saxpy((&__pyx_v_size_inv_covariance), (&(__pyx_v_pi[(__pyx_v_row_pi + __pyx_v_com_index)])), (&(__pyx_v_inv_covariance_mat[__pyx_v_row_inv_covariance])), (&__pyx_v_5utils_18training_sdg_inner_ONE), __pyx_v_work2, (&__pyx_v_5utils_18training_sdg_inner_ONE));
 
-      /* "utils/training_sdg_inner.pyx":234
+      /* "utils/training_sdg_inner.pyx":239
  *             saxpy(&size_inv_covariance, &pi[row_pi + com_index], &inv_covariance_mat[row_inv_covariance], &ONE, work2, &ONE) # work2 = pi_{ik} * inv_cov_k
  * 
  *             sgemm("N", "N", &size, &ONE, &size,             # <<<<<<<<<<<<<<
@@ -2406,7 +2448,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_0(__pyx_t_5ut
       __pyx_v_5utils_18training_sdg_inner_sgemm(((char *)"N"), ((char *)"N"), (&__pyx_v_size), (&__pyx_v_5utils_18training_sdg_inner_ONE), (&__pyx_v_size), (&__pyx_v_5utils_18training_sdg_inner_ONEF), __pyx_v_work2, (&__pyx_v_size), __pyx_v_work, (&__pyx_v_size), (&__pyx_v_5utils_18training_sdg_inner_ONEF), __pyx_v_work1, (&__pyx_v_size));
     }
 
-    /* "utils/training_sdg_inner.pyx":242
+    /* "utils/training_sdg_inner.pyx":247
  *                 )   # work1 += pi_{ik} * inv_cov_k * (node_embedding_i - centroid_k)
  * 
  *         memset(work, 0, size * cython.sizeof(REAL_t))             # <<<<<<<<<<<<<<
@@ -2415,7 +2457,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_0(__pyx_t_5ut
  */
     memset(__pyx_v_work, 0, (__pyx_v_size * (sizeof(__pyx_t_5utils_18training_sdg_inner_REAL_t))));
 
-    /* "utils/training_sdg_inner.pyx":243
+    /* "utils/training_sdg_inner.pyx":248
  * 
  *         memset(work, 0, size * cython.sizeof(REAL_t))
  *         saxpy(&size, &_lambda2, work1, &ONE, work, &ONE ) # work = lambda2 * work1             # <<<<<<<<<<<<<<
@@ -2424,7 +2466,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_0(__pyx_t_5ut
  */
     __pyx_v_5utils_18training_sdg_inner_saxpy((&__pyx_v_size), (&__pyx_v__lambda2), __pyx_v_work1, (&__pyx_v_5utils_18training_sdg_inner_ONE), __pyx_v_work, (&__pyx_v_5utils_18training_sdg_inner_ONE));
 
-    /* "utils/training_sdg_inner.pyx":247
+    /* "utils/training_sdg_inner.pyx":252
  *         # Due to the inverse matrix, the gradient can explode making the learning unstable.
  *         # For this reason we put a saturation on the gradient, making the system robust to outlayers
  *         for i in range(size):             # <<<<<<<<<<<<<<
@@ -2435,7 +2477,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_0(__pyx_t_5ut
     for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
       __pyx_v_i = __pyx_t_3;
 
-      /* "utils/training_sdg_inner.pyx":248
+      /* "utils/training_sdg_inner.pyx":253
  *         # For this reason we put a saturation on the gradient, making the system robust to outlayers
  *         for i in range(size):
  *             work[i] = clamp3(work[i], (_alpha*-1), _alpha)             # <<<<<<<<<<<<<<
@@ -2445,7 +2487,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_0(__pyx_t_5ut
       (__pyx_v_work[__pyx_v_i]) = __pyx_f_5utils_18training_sdg_inner_clamp3((__pyx_v_work[__pyx_v_i]), (__pyx_v__alpha * -1.0), __pyx_v__alpha);
     }
 
-    /* "utils/training_sdg_inner.pyx":223
+    /* "utils/training_sdg_inner.pyx":228
  *     memset(work1, 0, size * cython.sizeof(REAL_t))
  * 
  *     if not _lambda2 == 0.0:             # <<<<<<<<<<<<<<
@@ -2454,7 +2496,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_0(__pyx_t_5ut
  */
   }
 
-  /* "utils/training_sdg_inner.pyx":200
+  /* "utils/training_sdg_inner.pyx":205
  *     return f_max(minval, f_min(val, maxval))
  * 
  * cdef void fast_community_sdg_0(             # <<<<<<<<<<<<<<
@@ -2465,7 +2507,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_0(__pyx_t_5ut
   /* function exit code */
 }
 
-/* "utils/training_sdg_inner.pyx":251
+/* "utils/training_sdg_inner.pyx":256
  * 
  * 
  * cdef void fast_community_sdg_1(             # <<<<<<<<<<<<<<
@@ -2487,7 +2529,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_1(__pyx_t_5ut
   int __pyx_t_2;
   int __pyx_t_3;
 
-  /* "utils/training_sdg_inner.pyx":265
+  /* "utils/training_sdg_inner.pyx":270
  *         REAL_t * work2) nogil:
  * 
  *     cdef long long row = word2_index * size, row_pi = word2_index * k, row_inv_covariance, row_centroid             # <<<<<<<<<<<<<<
@@ -2497,7 +2539,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_1(__pyx_t_5ut
   __pyx_v_row = (__pyx_v_word2_index * __pyx_v_size);
   __pyx_v_row_pi = (__pyx_v_word2_index * __pyx_v_k);
 
-  /* "utils/training_sdg_inner.pyx":266
+  /* "utils/training_sdg_inner.pyx":271
  * 
  *     cdef long long row = word2_index * size, row_pi = word2_index * k, row_inv_covariance, row_centroid
  *     cdef int size_inv_covariance = size **2             # <<<<<<<<<<<<<<
@@ -2506,7 +2548,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_1(__pyx_t_5ut
  */
   __pyx_v_size_inv_covariance = __Pyx_pow_long(((long)__pyx_v_size), 2);
 
-  /* "utils/training_sdg_inner.pyx":268
+  /* "utils/training_sdg_inner.pyx":273
  *     cdef int size_inv_covariance = size **2
  *     cdef int com_index, i, j
  *     cdef REAL_t _alpha = alpha             # <<<<<<<<<<<<<<
@@ -2515,7 +2557,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_1(__pyx_t_5ut
  */
   __pyx_v__alpha = __pyx_v_alpha;
 
-  /* "utils/training_sdg_inner.pyx":269
+  /* "utils/training_sdg_inner.pyx":274
  *     cdef int com_index, i, j
  *     cdef REAL_t _alpha = alpha
  *     cdef REAL_t _lambda2 = lambda2             # <<<<<<<<<<<<<<
@@ -2524,7 +2566,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_1(__pyx_t_5ut
  */
   __pyx_v__lambda2 = __pyx_v_lambda2;
 
-  /* "utils/training_sdg_inner.pyx":271
+  /* "utils/training_sdg_inner.pyx":276
  *     cdef REAL_t _lambda2 = lambda2
  * 
  *     memset(work, 0, size * cython.sizeof(REAL_t))             # <<<<<<<<<<<<<<
@@ -2533,7 +2575,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_1(__pyx_t_5ut
  */
   memset(__pyx_v_work, 0, (__pyx_v_size * (sizeof(__pyx_t_5utils_18training_sdg_inner_REAL_t))));
 
-  /* "utils/training_sdg_inner.pyx":272
+  /* "utils/training_sdg_inner.pyx":277
  * 
  *     memset(work, 0, size * cython.sizeof(REAL_t))
  *     memset(work1, 0, size * cython.sizeof(REAL_t))             # <<<<<<<<<<<<<<
@@ -2542,7 +2584,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_1(__pyx_t_5ut
  */
   memset(__pyx_v_work1, 0, (__pyx_v_size * (sizeof(__pyx_t_5utils_18training_sdg_inner_REAL_t))));
 
-  /* "utils/training_sdg_inner.pyx":274
+  /* "utils/training_sdg_inner.pyx":279
  *     memset(work1, 0, size * cython.sizeof(REAL_t))
  * 
  *     if not _lambda2 == 0.0:             # <<<<<<<<<<<<<<
@@ -2552,7 +2594,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_1(__pyx_t_5ut
   __pyx_t_1 = ((!((__pyx_v__lambda2 == 0.0) != 0)) != 0);
   if (__pyx_t_1) {
 
-    /* "utils/training_sdg_inner.pyx":275
+    /* "utils/training_sdg_inner.pyx":280
  * 
  *     if not _lambda2 == 0.0:
  *         for com_index in range(k):             # <<<<<<<<<<<<<<
@@ -2563,7 +2605,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_1(__pyx_t_5ut
     for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
       __pyx_v_com_index = __pyx_t_3;
 
-      /* "utils/training_sdg_inner.pyx":276
+      /* "utils/training_sdg_inner.pyx":281
  *     if not _lambda2 == 0.0:
  *         for com_index in range(k):
  *             memset(work2, 0, size_inv_covariance * cython.sizeof(REAL_t))             # <<<<<<<<<<<<<<
@@ -2572,7 +2614,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_1(__pyx_t_5ut
  */
       memset(__pyx_v_work2, 0, (__pyx_v_size_inv_covariance * (sizeof(__pyx_t_5utils_18training_sdg_inner_REAL_t))));
 
-      /* "utils/training_sdg_inner.pyx":277
+      /* "utils/training_sdg_inner.pyx":282
  *         for com_index in range(k):
  *             memset(work2, 0, size_inv_covariance * cython.sizeof(REAL_t))
  *             scopy(&size, &node_embedding[row], &ONE, work, &ONE)             # <<<<<<<<<<<<<<
@@ -2581,7 +2623,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_1(__pyx_t_5ut
  */
       __pyx_v_5utils_18training_sdg_inner_scopy((&__pyx_v_size), (&(__pyx_v_node_embedding[__pyx_v_row])), (&__pyx_v_5utils_18training_sdg_inner_ONE), __pyx_v_work, (&__pyx_v_5utils_18training_sdg_inner_ONE));
 
-      /* "utils/training_sdg_inner.pyx":279
+      /* "utils/training_sdg_inner.pyx":284
  *             scopy(&size, &node_embedding[row], &ONE, work, &ONE)
  * 
  *             row_centroid =  com_index * size             # <<<<<<<<<<<<<<
@@ -2590,7 +2632,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_1(__pyx_t_5ut
  */
       __pyx_v_row_centroid = (__pyx_v_com_index * __pyx_v_size);
 
-      /* "utils/training_sdg_inner.pyx":280
+      /* "utils/training_sdg_inner.pyx":285
  * 
  *             row_centroid =  com_index * size
  *             row_inv_covariance = com_index * size_inv_covariance             # <<<<<<<<<<<<<<
@@ -2599,7 +2641,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_1(__pyx_t_5ut
  */
       __pyx_v_row_inv_covariance = (__pyx_v_com_index * __pyx_v_size_inv_covariance);
 
-      /* "utils/training_sdg_inner.pyx":282
+      /* "utils/training_sdg_inner.pyx":287
  *             row_inv_covariance = com_index * size_inv_covariance
  * 
  *             saxpy(&size, &NONEF, &centroid[row_centroid], &ONE, work, &ONE ) # work = node_embedding_i - centroid_k             # <<<<<<<<<<<<<<
@@ -2608,7 +2650,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_1(__pyx_t_5ut
  */
       __pyx_v_5utils_18training_sdg_inner_saxpy((&__pyx_v_size), (&__pyx_v_5utils_18training_sdg_inner_NONEF), (&(__pyx_v_centroid[__pyx_v_row_centroid])), (&__pyx_v_5utils_18training_sdg_inner_ONE), __pyx_v_work, (&__pyx_v_5utils_18training_sdg_inner_ONE));
 
-      /* "utils/training_sdg_inner.pyx":283
+      /* "utils/training_sdg_inner.pyx":288
  * 
  *             saxpy(&size, &NONEF, &centroid[row_centroid], &ONE, work, &ONE ) # work = node_embedding_i - centroid_k
  *             saxpy(&size_inv_covariance, &pi[row_pi + com_index], &inv_covariance_mat[row_inv_covariance], &ONE, work2, &ONE) # work2 = pi_{ik} * inv_cov_k             # <<<<<<<<<<<<<<
@@ -2617,7 +2659,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_1(__pyx_t_5ut
  */
       __pyx_v_5utils_18training_sdg_inner_saxpy((&__pyx_v_size_inv_covariance), (&(__pyx_v_pi[(__pyx_v_row_pi + __pyx_v_com_index)])), (&(__pyx_v_inv_covariance_mat[__pyx_v_row_inv_covariance])), (&__pyx_v_5utils_18training_sdg_inner_ONE), __pyx_v_work2, (&__pyx_v_5utils_18training_sdg_inner_ONE));
 
-      /* "utils/training_sdg_inner.pyx":285
+      /* "utils/training_sdg_inner.pyx":290
  *             saxpy(&size_inv_covariance, &pi[row_pi + com_index], &inv_covariance_mat[row_inv_covariance], &ONE, work2, &ONE) # work2 = pi_{ik} * inv_cov_k
  * 
  *             sgemm("N", "N", &size, &ONE, &size,             # <<<<<<<<<<<<<<
@@ -2627,7 +2669,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_1(__pyx_t_5ut
       __pyx_v_5utils_18training_sdg_inner_sgemm(((char *)"N"), ((char *)"N"), (&__pyx_v_size), (&__pyx_v_5utils_18training_sdg_inner_ONE), (&__pyx_v_size), (&__pyx_v_5utils_18training_sdg_inner_ONEF), __pyx_v_work2, (&__pyx_v_size), __pyx_v_work, (&__pyx_v_size), (&__pyx_v_5utils_18training_sdg_inner_ONEF), __pyx_v_work1, (&__pyx_v_size));
     }
 
-    /* "utils/training_sdg_inner.pyx":274
+    /* "utils/training_sdg_inner.pyx":279
  *     memset(work1, 0, size * cython.sizeof(REAL_t))
  * 
  *     if not _lambda2 == 0.0:             # <<<<<<<<<<<<<<
@@ -2636,7 +2678,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_1(__pyx_t_5ut
  */
   }
 
-  /* "utils/training_sdg_inner.pyx":293
+  /* "utils/training_sdg_inner.pyx":298
  *             )   # work1 += pi_{ik} * inv_cov_k * (node_embedding_i - centroid_k)
  * 
  *     memset(work, 0, size * cython.sizeof(REAL_t))             # <<<<<<<<<<<<<<
@@ -2645,7 +2687,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_1(__pyx_t_5ut
  */
   memset(__pyx_v_work, 0, (__pyx_v_size * (sizeof(__pyx_t_5utils_18training_sdg_inner_REAL_t))));
 
-  /* "utils/training_sdg_inner.pyx":294
+  /* "utils/training_sdg_inner.pyx":299
  * 
  *     memset(work, 0, size * cython.sizeof(REAL_t))
  *     saxpy(&size, &_lambda2, work1, &ONE, work, &ONE ) # work = lambda2 * work1             # <<<<<<<<<<<<<<
@@ -2654,7 +2696,7 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_1(__pyx_t_5ut
  */
   __pyx_v_5utils_18training_sdg_inner_saxpy((&__pyx_v_size), (&__pyx_v__lambda2), __pyx_v_work1, (&__pyx_v_5utils_18training_sdg_inner_ONE), __pyx_v_work, (&__pyx_v_5utils_18training_sdg_inner_ONE));
 
-  /* "utils/training_sdg_inner.pyx":298
+  /* "utils/training_sdg_inner.pyx":303
  *     # Due to the inverse matrix, the gradient can explode making the learning unstable.
  *     # For this reason we put a saturation on the gradient, making the system robust to outlayers
  *     for i in range(size):             # <<<<<<<<<<<<<<
@@ -2665,17 +2707,17 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_1(__pyx_t_5ut
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_i = __pyx_t_3;
 
-    /* "utils/training_sdg_inner.pyx":299
+    /* "utils/training_sdg_inner.pyx":304
  *     # For this reason we put a saturation on the gradient, making the system robust to outlayers
  *     for i in range(size):
  *         work[i] = clamp3(work[i], (_alpha*-1), _alpha)             # <<<<<<<<<<<<<<
  * 
- * def train_sentence_sg(py_node_embedding, py_negative_embedding, py_path, py_alpha, py_negative, py_window, py_table,
+ * def train_sg(py_node_embedding, py_negative_embedding, py_path, py_alpha, py_negative, py_window, py_table,
  */
     (__pyx_v_work[__pyx_v_i]) = __pyx_f_5utils_18training_sdg_inner_clamp3((__pyx_v_work[__pyx_v_i]), (__pyx_v__alpha * -1.0), __pyx_v__alpha);
   }
 
-  /* "utils/training_sdg_inner.pyx":251
+  /* "utils/training_sdg_inner.pyx":256
  * 
  * 
  * cdef void fast_community_sdg_1(             # <<<<<<<<<<<<<<
@@ -2686,18 +2728,18 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_1(__pyx_t_5ut
   /* function exit code */
 }
 
-/* "utils/training_sdg_inner.pyx":301
+/* "utils/training_sdg_inner.pyx":306
  *         work[i] = clamp3(work[i], (_alpha*-1), _alpha)
  * 
- * def train_sentence_sg(py_node_embedding, py_negative_embedding, py_path, py_alpha, py_negative, py_window, py_table,             # <<<<<<<<<<<<<<
- *                       py_centroid, py_inv_covariance_mat, py_pi, py_k,
- *                       py_lambda1=1.0, py_lambda2=0.0, py_size=None, py_work=None, py_work_o3=None, py_work1_o3=None, py_work2_o3=None):
+ * def train_sg(py_node_embedding, py_negative_embedding, py_path, py_alpha, py_negative, py_window, py_table,             # <<<<<<<<<<<<<<
+ *              py_centroid, py_inv_covariance_mat, py_pi, py_k,
+ *              py_lambda1=1.0, py_lambda2=0.0, py_size=None, py_work=None, py_work_o3=None, py_work1_o3=None, py_work2_o3=None,
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5utils_18training_sdg_inner_1train_sentence_sg(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_5utils_18training_sdg_inner_1train_sentence_sg = {"train_sentence_sg", (PyCFunction)__pyx_pw_5utils_18training_sdg_inner_1train_sentence_sg, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5utils_18training_sdg_inner_1train_sentence_sg(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_5utils_18training_sdg_inner_1train_sg(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_5utils_18training_sdg_inner_1train_sg = {"train_sg", (PyCFunction)__pyx_pw_5utils_18training_sdg_inner_1train_sg, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5utils_18training_sdg_inner_1train_sg(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_py_node_embedding = 0;
   PyObject *__pyx_v_py_negative_embedding = 0;
   PyObject *__pyx_v_py_path = 0;
@@ -2716,31 +2758,34 @@ static PyObject *__pyx_pw_5utils_18training_sdg_inner_1train_sentence_sg(PyObjec
   PyObject *__pyx_v_py_work_o3 = 0;
   PyObject *__pyx_v_py_work1_o3 = 0;
   PyObject *__pyx_v_py_work2_o3 = 0;
+  PyObject *__pyx_v_py_is_node_embedding = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("train_sentence_sg (wrapper)", 0);
+  __Pyx_RefNannySetupContext("train_sg (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_py_node_embedding,&__pyx_n_s_py_negative_embedding,&__pyx_n_s_py_path,&__pyx_n_s_py_alpha,&__pyx_n_s_py_negative,&__pyx_n_s_py_window,&__pyx_n_s_py_table,&__pyx_n_s_py_centroid,&__pyx_n_s_py_inv_covariance_mat,&__pyx_n_s_py_pi,&__pyx_n_s_py_k,&__pyx_n_s_py_lambda1,&__pyx_n_s_py_lambda2,&__pyx_n_s_py_size,&__pyx_n_s_py_work,&__pyx_n_s_py_work_o3,&__pyx_n_s_py_work1_o3,&__pyx_n_s_py_work2_o3,0};
-    PyObject* values[18] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_py_node_embedding,&__pyx_n_s_py_negative_embedding,&__pyx_n_s_py_path,&__pyx_n_s_py_alpha,&__pyx_n_s_py_negative,&__pyx_n_s_py_window,&__pyx_n_s_py_table,&__pyx_n_s_py_centroid,&__pyx_n_s_py_inv_covariance_mat,&__pyx_n_s_py_pi,&__pyx_n_s_py_k,&__pyx_n_s_py_lambda1,&__pyx_n_s_py_lambda2,&__pyx_n_s_py_size,&__pyx_n_s_py_work,&__pyx_n_s_py_work_o3,&__pyx_n_s_py_work1_o3,&__pyx_n_s_py_work2_o3,&__pyx_n_s_py_is_node_embedding,0};
+    PyObject* values[19] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
     values[11] = ((PyObject *)__pyx_float_1_0);
     values[12] = ((PyObject *)__pyx_float_0_0);
 
-    /* "utils/training_sdg_inner.pyx":303
- * def train_sentence_sg(py_node_embedding, py_negative_embedding, py_path, py_alpha, py_negative, py_window, py_table,
- *                       py_centroid, py_inv_covariance_mat, py_pi, py_k,
- *                       py_lambda1=1.0, py_lambda2=0.0, py_size=None, py_work=None, py_work_o3=None, py_work1_o3=None, py_work2_o3=None):             # <<<<<<<<<<<<<<
+    /* "utils/training_sdg_inner.pyx":308
+ * def train_sg(py_node_embedding, py_negative_embedding, py_path, py_alpha, py_negative, py_window, py_table,
+ *              py_centroid, py_inv_covariance_mat, py_pi, py_k,
+ *              py_lambda1=1.0, py_lambda2=0.0, py_size=None, py_work=None, py_work_o3=None, py_work1_o3=None, py_work2_o3=None,             # <<<<<<<<<<<<<<
+ *              py_is_node_embedding=1):
  * 
- *     cdef REAL_t *node_embedding = <REAL_t *>(np.PyArray_DATA(py_node_embedding))
  */
     values[13] = ((PyObject *)Py_None);
     values[14] = ((PyObject *)Py_None);
     values[15] = ((PyObject *)Py_None);
     values[16] = ((PyObject *)Py_None);
     values[17] = ((PyObject *)Py_None);
+    values[18] = ((PyObject *)__pyx_int_1);
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
+        case 19: values[18] = PyTuple_GET_ITEM(__pyx_args, 18);
         case 18: values[17] = PyTuple_GET_ITEM(__pyx_args, 17);
         case 17: values[16] = PyTuple_GET_ITEM(__pyx_args, 16);
         case 16: values[15] = PyTuple_GET_ITEM(__pyx_args, 15);
@@ -2770,52 +2815,52 @@ static PyObject *__pyx_pw_5utils_18training_sdg_inner_1train_sentence_sg(PyObjec
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_py_negative_embedding)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("train_sentence_sg", 0, 11, 18, 1); __PYX_ERR(0, 301, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("train_sg", 0, 11, 19, 1); __PYX_ERR(0, 306, __pyx_L3_error)
         }
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_py_path)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("train_sentence_sg", 0, 11, 18, 2); __PYX_ERR(0, 301, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("train_sg", 0, 11, 19, 2); __PYX_ERR(0, 306, __pyx_L3_error)
         }
         case  3:
         if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_py_alpha)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("train_sentence_sg", 0, 11, 18, 3); __PYX_ERR(0, 301, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("train_sg", 0, 11, 19, 3); __PYX_ERR(0, 306, __pyx_L3_error)
         }
         case  4:
         if (likely((values[4] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_py_negative)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("train_sentence_sg", 0, 11, 18, 4); __PYX_ERR(0, 301, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("train_sg", 0, 11, 19, 4); __PYX_ERR(0, 306, __pyx_L3_error)
         }
         case  5:
         if (likely((values[5] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_py_window)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("train_sentence_sg", 0, 11, 18, 5); __PYX_ERR(0, 301, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("train_sg", 0, 11, 19, 5); __PYX_ERR(0, 306, __pyx_L3_error)
         }
         case  6:
         if (likely((values[6] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_py_table)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("train_sentence_sg", 0, 11, 18, 6); __PYX_ERR(0, 301, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("train_sg", 0, 11, 19, 6); __PYX_ERR(0, 306, __pyx_L3_error)
         }
         case  7:
         if (likely((values[7] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_py_centroid)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("train_sentence_sg", 0, 11, 18, 7); __PYX_ERR(0, 301, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("train_sg", 0, 11, 19, 7); __PYX_ERR(0, 306, __pyx_L3_error)
         }
         case  8:
         if (likely((values[8] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_py_inv_covariance_mat)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("train_sentence_sg", 0, 11, 18, 8); __PYX_ERR(0, 301, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("train_sg", 0, 11, 19, 8); __PYX_ERR(0, 306, __pyx_L3_error)
         }
         case  9:
         if (likely((values[9] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_py_pi)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("train_sentence_sg", 0, 11, 18, 9); __PYX_ERR(0, 301, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("train_sg", 0, 11, 19, 9); __PYX_ERR(0, 306, __pyx_L3_error)
         }
         case 10:
         if (likely((values[10] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_py_k)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("train_sentence_sg", 0, 11, 18, 10); __PYX_ERR(0, 301, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("train_sg", 0, 11, 19, 10); __PYX_ERR(0, 306, __pyx_L3_error)
         }
         case 11:
         if (kw_args > 0) {
@@ -2852,12 +2897,18 @@ static PyObject *__pyx_pw_5utils_18training_sdg_inner_1train_sentence_sg(PyObjec
           PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_py_work2_o3);
           if (value) { values[17] = value; kw_args--; }
         }
+        case 18:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_py_is_node_embedding);
+          if (value) { values[18] = value; kw_args--; }
+        }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "train_sentence_sg") < 0)) __PYX_ERR(0, 301, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "train_sg") < 0)) __PYX_ERR(0, 306, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case 19: values[18] = PyTuple_GET_ITEM(__pyx_args, 18);
         case 18: values[17] = PyTuple_GET_ITEM(__pyx_args, 17);
         case 17: values[16] = PyTuple_GET_ITEM(__pyx_args, 16);
         case 16: values[15] = PyTuple_GET_ITEM(__pyx_args, 15);
@@ -2898,23 +2949,24 @@ static PyObject *__pyx_pw_5utils_18training_sdg_inner_1train_sentence_sg(PyObjec
     __pyx_v_py_work_o3 = values[15];
     __pyx_v_py_work1_o3 = values[16];
     __pyx_v_py_work2_o3 = values[17];
+    __pyx_v_py_is_node_embedding = values[18];
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("train_sentence_sg", 0, 11, 18, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 301, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("train_sg", 0, 11, 19, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 306, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("utils.training_sdg_inner.train_sentence_sg", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("utils.training_sdg_inner.train_sg", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(__pyx_self, __pyx_v_py_node_embedding, __pyx_v_py_negative_embedding, __pyx_v_py_path, __pyx_v_py_alpha, __pyx_v_py_negative, __pyx_v_py_window, __pyx_v_py_table, __pyx_v_py_centroid, __pyx_v_py_inv_covariance_mat, __pyx_v_py_pi, __pyx_v_py_k, __pyx_v_py_lambda1, __pyx_v_py_lambda2, __pyx_v_py_size, __pyx_v_py_work, __pyx_v_py_work_o3, __pyx_v_py_work1_o3, __pyx_v_py_work2_o3);
+  __pyx_r = __pyx_pf_5utils_18training_sdg_inner_train_sg(__pyx_self, __pyx_v_py_node_embedding, __pyx_v_py_negative_embedding, __pyx_v_py_path, __pyx_v_py_alpha, __pyx_v_py_negative, __pyx_v_py_window, __pyx_v_py_table, __pyx_v_py_centroid, __pyx_v_py_inv_covariance_mat, __pyx_v_py_pi, __pyx_v_py_k, __pyx_v_py_lambda1, __pyx_v_py_lambda2, __pyx_v_py_size, __pyx_v_py_work, __pyx_v_py_work_o3, __pyx_v_py_work1_o3, __pyx_v_py_work2_o3, __pyx_v_py_is_node_embedding);
 
-  /* "utils/training_sdg_inner.pyx":301
+  /* "utils/training_sdg_inner.pyx":306
  *         work[i] = clamp3(work[i], (_alpha*-1), _alpha)
  * 
- * def train_sentence_sg(py_node_embedding, py_negative_embedding, py_path, py_alpha, py_negative, py_window, py_table,             # <<<<<<<<<<<<<<
- *                       py_centroid, py_inv_covariance_mat, py_pi, py_k,
- *                       py_lambda1=1.0, py_lambda2=0.0, py_size=None, py_work=None, py_work_o3=None, py_work1_o3=None, py_work2_o3=None):
+ * def train_sg(py_node_embedding, py_negative_embedding, py_path, py_alpha, py_negative, py_window, py_table,             # <<<<<<<<<<<<<<
+ *              py_centroid, py_inv_covariance_mat, py_pi, py_k,
+ *              py_lambda1=1.0, py_lambda2=0.0, py_size=None, py_work=None, py_work_o3=None, py_work1_o3=None, py_work2_o3=None,
  */
 
   /* function exit code */
@@ -2922,7 +2974,7 @@ static PyObject *__pyx_pw_5utils_18training_sdg_inner_1train_sentence_sg(PyObjec
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_py_node_embedding, PyObject *__pyx_v_py_negative_embedding, PyObject *__pyx_v_py_path, PyObject *__pyx_v_py_alpha, PyObject *__pyx_v_py_negative, PyObject *__pyx_v_py_window, PyObject *__pyx_v_py_table, PyObject *__pyx_v_py_centroid, PyObject *__pyx_v_py_inv_covariance_mat, PyObject *__pyx_v_py_pi, PyObject *__pyx_v_py_k, PyObject *__pyx_v_py_lambda1, PyObject *__pyx_v_py_lambda2, PyObject *__pyx_v_py_size, PyObject *__pyx_v_py_work, PyObject *__pyx_v_py_work_o3, PyObject *__pyx_v_py_work1_o3, PyObject *__pyx_v_py_work2_o3) {
+static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sg(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_py_node_embedding, PyObject *__pyx_v_py_negative_embedding, PyObject *__pyx_v_py_path, PyObject *__pyx_v_py_alpha, PyObject *__pyx_v_py_negative, PyObject *__pyx_v_py_window, PyObject *__pyx_v_py_table, PyObject *__pyx_v_py_centroid, PyObject *__pyx_v_py_inv_covariance_mat, PyObject *__pyx_v_py_pi, PyObject *__pyx_v_py_k, PyObject *__pyx_v_py_lambda1, PyObject *__pyx_v_py_lambda2, PyObject *__pyx_v_py_size, PyObject *__pyx_v_py_work, PyObject *__pyx_v_py_work_o3, PyObject *__pyx_v_py_work1_o3, PyObject *__pyx_v_py_work2_o3, PyObject *__pyx_v_py_is_node_embedding) {
   __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_node_embedding;
   __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_negative_embedding;
   __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_work;
@@ -2933,6 +2985,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
   __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_inv_covariance_mat;
   __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_pi;
   int __pyx_v__k;
+  int __pyx_v_is_node_embedding;
   __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_v__alpha;
   __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_v__lambda1;
   __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_v__lambda2;
@@ -2970,122 +3023,132 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
   __pyx_t_5numpy_uint32_t __pyx_t_15;
   int __pyx_t_16;
   int __pyx_t_17;
-  __Pyx_RefNannySetupContext("train_sentence_sg", 0);
+  __Pyx_RefNannySetupContext("train_sg", 0);
 
-  /* "utils/training_sdg_inner.pyx":305
- *                       py_lambda1=1.0, py_lambda2=0.0, py_size=None, py_work=None, py_work_o3=None, py_work1_o3=None, py_work2_o3=None):
+  /* "utils/training_sdg_inner.pyx":311
+ *              py_is_node_embedding=1):
  * 
  *     cdef REAL_t *node_embedding = <REAL_t *>(np.PyArray_DATA(py_node_embedding))             # <<<<<<<<<<<<<<
  *     cdef REAL_t *negative_embedding = <REAL_t *>(np.PyArray_DATA(py_negative_embedding))
  *     cdef REAL_t *work
  */
-  if (!(likely(((__pyx_v_py_node_embedding) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_py_node_embedding, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 305, __pyx_L1_error)
+  if (!(likely(((__pyx_v_py_node_embedding) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_py_node_embedding, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 311, __pyx_L1_error)
   __pyx_v_node_embedding = ((__pyx_t_5utils_18training_sdg_inner_REAL_t *)PyArray_DATA(((PyArrayObject *)__pyx_v_py_node_embedding)));
 
-  /* "utils/training_sdg_inner.pyx":306
+  /* "utils/training_sdg_inner.pyx":312
  * 
  *     cdef REAL_t *node_embedding = <REAL_t *>(np.PyArray_DATA(py_node_embedding))
  *     cdef REAL_t *negative_embedding = <REAL_t *>(np.PyArray_DATA(py_negative_embedding))             # <<<<<<<<<<<<<<
  *     cdef REAL_t *work
  *     cdef REAL_t *work_o3
  */
-  if (!(likely(((__pyx_v_py_negative_embedding) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_py_negative_embedding, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 306, __pyx_L1_error)
+  if (!(likely(((__pyx_v_py_negative_embedding) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_py_negative_embedding, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 312, __pyx_L1_error)
   __pyx_v_negative_embedding = ((__pyx_t_5utils_18training_sdg_inner_REAL_t *)PyArray_DATA(((PyArrayObject *)__pyx_v_py_negative_embedding)));
 
-  /* "utils/training_sdg_inner.pyx":313
+  /* "utils/training_sdg_inner.pyx":319
  * 
  * 
  *     cdef REAL_t *centroid = <REAL_t *>(np.PyArray_DATA(py_centroid))             # <<<<<<<<<<<<<<
  *     cdef REAL_t *inv_covariance_mat = <REAL_t *>(np.PyArray_DATA(py_inv_covariance_mat))
  *     cdef REAL_t *pi = <REAL_t *>(np.PyArray_DATA(py_pi))
  */
-  if (!(likely(((__pyx_v_py_centroid) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_py_centroid, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 313, __pyx_L1_error)
+  if (!(likely(((__pyx_v_py_centroid) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_py_centroid, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 319, __pyx_L1_error)
   __pyx_v_centroid = ((__pyx_t_5utils_18training_sdg_inner_REAL_t *)PyArray_DATA(((PyArrayObject *)__pyx_v_py_centroid)));
 
-  /* "utils/training_sdg_inner.pyx":314
+  /* "utils/training_sdg_inner.pyx":320
  * 
  *     cdef REAL_t *centroid = <REAL_t *>(np.PyArray_DATA(py_centroid))
  *     cdef REAL_t *inv_covariance_mat = <REAL_t *>(np.PyArray_DATA(py_inv_covariance_mat))             # <<<<<<<<<<<<<<
  *     cdef REAL_t *pi = <REAL_t *>(np.PyArray_DATA(py_pi))
  *     cdef int _k = py_k
  */
-  if (!(likely(((__pyx_v_py_inv_covariance_mat) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_py_inv_covariance_mat, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 314, __pyx_L1_error)
+  if (!(likely(((__pyx_v_py_inv_covariance_mat) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_py_inv_covariance_mat, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 320, __pyx_L1_error)
   __pyx_v_inv_covariance_mat = ((__pyx_t_5utils_18training_sdg_inner_REAL_t *)PyArray_DATA(((PyArrayObject *)__pyx_v_py_inv_covariance_mat)));
 
-  /* "utils/training_sdg_inner.pyx":315
+  /* "utils/training_sdg_inner.pyx":321
  *     cdef REAL_t *centroid = <REAL_t *>(np.PyArray_DATA(py_centroid))
  *     cdef REAL_t *inv_covariance_mat = <REAL_t *>(np.PyArray_DATA(py_inv_covariance_mat))
  *     cdef REAL_t *pi = <REAL_t *>(np.PyArray_DATA(py_pi))             # <<<<<<<<<<<<<<
  *     cdef int _k = py_k
- * 
+ *     cdef int is_node_embedding = py_is_node_embedding
  */
-  if (!(likely(((__pyx_v_py_pi) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_py_pi, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 315, __pyx_L1_error)
+  if (!(likely(((__pyx_v_py_pi) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_py_pi, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 321, __pyx_L1_error)
   __pyx_v_pi = ((__pyx_t_5utils_18training_sdg_inner_REAL_t *)PyArray_DATA(((PyArrayObject *)__pyx_v_py_pi)));
 
-  /* "utils/training_sdg_inner.pyx":316
+  /* "utils/training_sdg_inner.pyx":322
  *     cdef REAL_t *inv_covariance_mat = <REAL_t *>(np.PyArray_DATA(py_inv_covariance_mat))
  *     cdef REAL_t *pi = <REAL_t *>(np.PyArray_DATA(py_pi))
  *     cdef int _k = py_k             # <<<<<<<<<<<<<<
+ *     cdef int is_node_embedding = py_is_node_embedding
+ * 
+ */
+  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_py_k); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 322, __pyx_L1_error)
+  __pyx_v__k = __pyx_t_1;
+
+  /* "utils/training_sdg_inner.pyx":323
+ *     cdef REAL_t *pi = <REAL_t *>(np.PyArray_DATA(py_pi))
+ *     cdef int _k = py_k
+ *     cdef int is_node_embedding = py_is_node_embedding             # <<<<<<<<<<<<<<
  * 
  *     cdef REAL_t _alpha = py_alpha
  */
-  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_py_k); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 316, __pyx_L1_error)
-  __pyx_v__k = __pyx_t_1;
+  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_py_is_node_embedding); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 323, __pyx_L1_error)
+  __pyx_v_is_node_embedding = __pyx_t_1;
 
-  /* "utils/training_sdg_inner.pyx":318
- *     cdef int _k = py_k
+  /* "utils/training_sdg_inner.pyx":325
+ *     cdef int is_node_embedding = py_is_node_embedding
  * 
  *     cdef REAL_t _alpha = py_alpha             # <<<<<<<<<<<<<<
  *     cdef REAL_t _lambda1 = py_lambda1
  *     cdef REAL_t _lambda2 = -py_lambda2
  */
-  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_v_py_alpha); if (unlikely((__pyx_t_2 == (npy_float32)-1) && PyErr_Occurred())) __PYX_ERR(0, 318, __pyx_L1_error)
+  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_v_py_alpha); if (unlikely((__pyx_t_2 == (npy_float32)-1) && PyErr_Occurred())) __PYX_ERR(0, 325, __pyx_L1_error)
   __pyx_v__alpha = __pyx_t_2;
 
-  /* "utils/training_sdg_inner.pyx":319
+  /* "utils/training_sdg_inner.pyx":326
  * 
  *     cdef REAL_t _alpha = py_alpha
  *     cdef REAL_t _lambda1 = py_lambda1             # <<<<<<<<<<<<<<
  *     cdef REAL_t _lambda2 = -py_lambda2
  * 
  */
-  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_v_py_lambda1); if (unlikely((__pyx_t_2 == (npy_float32)-1) && PyErr_Occurred())) __PYX_ERR(0, 319, __pyx_L1_error)
+  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_v_py_lambda1); if (unlikely((__pyx_t_2 == (npy_float32)-1) && PyErr_Occurred())) __PYX_ERR(0, 326, __pyx_L1_error)
   __pyx_v__lambda1 = __pyx_t_2;
 
-  /* "utils/training_sdg_inner.pyx":320
+  /* "utils/training_sdg_inner.pyx":327
  *     cdef REAL_t _alpha = py_alpha
  *     cdef REAL_t _lambda1 = py_lambda1
  *     cdef REAL_t _lambda2 = -py_lambda2             # <<<<<<<<<<<<<<
  * 
  *     cdef int size = py_size
  */
-  __pyx_t_3 = PyNumber_Negative(__pyx_v_py_lambda2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 320, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_Negative(__pyx_v_py_lambda2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 327, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_t_3); if (unlikely((__pyx_t_2 == (npy_float32)-1) && PyErr_Occurred())) __PYX_ERR(0, 320, __pyx_L1_error)
+  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_t_3); if (unlikely((__pyx_t_2 == (npy_float32)-1) && PyErr_Occurred())) __PYX_ERR(0, 327, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v__lambda2 = __pyx_t_2;
 
-  /* "utils/training_sdg_inner.pyx":322
+  /* "utils/training_sdg_inner.pyx":329
  *     cdef REAL_t _lambda2 = -py_lambda2
  * 
  *     cdef int size = py_size             # <<<<<<<<<<<<<<
  * 
  *     cdef int codelens[MAX_SENTENCE_LEN]
  */
-  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_py_size); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 322, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_py_size); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 329, __pyx_L1_error)
   __pyx_v_size = __pyx_t_1;
 
-  /* "utils/training_sdg_inner.pyx":328
+  /* "utils/training_sdg_inner.pyx":335
  *     cdef int path_len
  *     cdef int negative
  *     cdef int window = py_window             # <<<<<<<<<<<<<<
  *     cdef np.uint32_t reduced_windows[MAX_SENTENCE_LEN]
  *     cdef int i, j, k
  */
-  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_py_window); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 328, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_py_window); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 335, __pyx_L1_error)
   __pyx_v_window = __pyx_t_1;
 
-  /* "utils/training_sdg_inner.pyx":331
+  /* "utils/training_sdg_inner.pyx":338
  *     cdef np.uint32_t reduced_windows[MAX_SENTENCE_LEN]
  *     cdef int i, j, k
  *     cdef long result = 0             # <<<<<<<<<<<<<<
@@ -3094,114 +3157,114 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
  */
   __pyx_v_result = 0;
 
-  /* "utils/training_sdg_inner.pyx":334
+  /* "utils/training_sdg_inner.pyx":341
  * 
  *     # For negative sampling
  *     cdef np.uint32_t *table = <np.uint32_t *>(np.PyArray_DATA(py_table))             # <<<<<<<<<<<<<<
  *     cdef unsigned long long table_len = len(py_table)
  *     cdef unsigned long long next_random = (2**24) * np.random.randint(0, 2**24) + np.random.randint(0, 2**24)
  */
-  if (!(likely(((__pyx_v_py_table) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_py_table, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 334, __pyx_L1_error)
+  if (!(likely(((__pyx_v_py_table) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_py_table, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 341, __pyx_L1_error)
   __pyx_v_table = ((__pyx_t_5numpy_uint32_t *)PyArray_DATA(((PyArrayObject *)__pyx_v_py_table)));
 
-  /* "utils/training_sdg_inner.pyx":335
+  /* "utils/training_sdg_inner.pyx":342
  *     # For negative sampling
  *     cdef np.uint32_t *table = <np.uint32_t *>(np.PyArray_DATA(py_table))
  *     cdef unsigned long long table_len = len(py_table)             # <<<<<<<<<<<<<<
  *     cdef unsigned long long next_random = (2**24) * np.random.randint(0, 2**24) + np.random.randint(0, 2**24)
  * 
  */
-  __pyx_t_4 = PyObject_Length(__pyx_v_py_table); if (unlikely(__pyx_t_4 == -1)) __PYX_ERR(0, 335, __pyx_L1_error)
+  __pyx_t_4 = PyObject_Length(__pyx_v_py_table); if (unlikely(__pyx_t_4 == -1)) __PYX_ERR(0, 342, __pyx_L1_error)
   __pyx_v_table_len = __pyx_t_4;
 
-  /* "utils/training_sdg_inner.pyx":336
+  /* "utils/training_sdg_inner.pyx":343
  *     cdef np.uint32_t *table = <np.uint32_t *>(np.PyArray_DATA(py_table))
  *     cdef unsigned long long table_len = len(py_table)
  *     cdef unsigned long long next_random = (2**24) * np.random.randint(0, 2**24) + np.random.randint(0, 2**24)             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 336, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 343, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_random); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 336, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_random); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 343, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_randint); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 336, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_randint); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 343, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 336, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 343, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyNumber_Multiply(__pyx_int_16777216, __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 336, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_Multiply(__pyx_int_16777216, __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 343, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 336, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 343, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_random); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 336, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_random); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 343, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_randint); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 336, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_randint); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 343, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 336, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 343, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = PyNumber_Add(__pyx_t_3, __pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 336, __pyx_L1_error)
+  __pyx_t_5 = PyNumber_Add(__pyx_t_3, __pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 343, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_7 = __Pyx_PyInt_As_unsigned_PY_LONG_LONG(__pyx_t_5); if (unlikely((__pyx_t_7 == (unsigned PY_LONG_LONG)-1) && PyErr_Occurred())) __PYX_ERR(0, 336, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyInt_As_unsigned_PY_LONG_LONG(__pyx_t_5); if (unlikely((__pyx_t_7 == (unsigned PY_LONG_LONG)-1) && PyErr_Occurred())) __PYX_ERR(0, 343, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_v_next_random = __pyx_t_7;
 
-  /* "utils/training_sdg_inner.pyx":341
+  /* "utils/training_sdg_inner.pyx":348
  * 
  *     # convert Python structures to primitive types, so we can release the GIL
  *     work = <REAL_t *>(np.PyArray_DATA(py_work))             # <<<<<<<<<<<<<<
  *     work_o3 = <REAL_t *>(np.PyArray_DATA(py_work_o3))
  *     work1_o3 = <REAL_t *>(np.PyArray_DATA(py_work1_o3))
  */
-  if (!(likely(((__pyx_v_py_work) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_py_work, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 341, __pyx_L1_error)
+  if (!(likely(((__pyx_v_py_work) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_py_work, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 348, __pyx_L1_error)
   __pyx_v_work = ((__pyx_t_5utils_18training_sdg_inner_REAL_t *)PyArray_DATA(((PyArrayObject *)__pyx_v_py_work)));
 
-  /* "utils/training_sdg_inner.pyx":342
+  /* "utils/training_sdg_inner.pyx":349
  *     # convert Python structures to primitive types, so we can release the GIL
  *     work = <REAL_t *>(np.PyArray_DATA(py_work))
  *     work_o3 = <REAL_t *>(np.PyArray_DATA(py_work_o3))             # <<<<<<<<<<<<<<
  *     work1_o3 = <REAL_t *>(np.PyArray_DATA(py_work1_o3))
  *     work2_o3 = <REAL_t *>(np.PyArray_DATA(py_work2_o3))
  */
-  if (!(likely(((__pyx_v_py_work_o3) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_py_work_o3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 342, __pyx_L1_error)
+  if (!(likely(((__pyx_v_py_work_o3) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_py_work_o3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 349, __pyx_L1_error)
   __pyx_v_work_o3 = ((__pyx_t_5utils_18training_sdg_inner_REAL_t *)PyArray_DATA(((PyArrayObject *)__pyx_v_py_work_o3)));
 
-  /* "utils/training_sdg_inner.pyx":343
+  /* "utils/training_sdg_inner.pyx":350
  *     work = <REAL_t *>(np.PyArray_DATA(py_work))
  *     work_o3 = <REAL_t *>(np.PyArray_DATA(py_work_o3))
  *     work1_o3 = <REAL_t *>(np.PyArray_DATA(py_work1_o3))             # <<<<<<<<<<<<<<
  *     work2_o3 = <REAL_t *>(np.PyArray_DATA(py_work2_o3))
  * 
  */
-  if (!(likely(((__pyx_v_py_work1_o3) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_py_work1_o3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 343, __pyx_L1_error)
+  if (!(likely(((__pyx_v_py_work1_o3) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_py_work1_o3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 350, __pyx_L1_error)
   __pyx_v_work1_o3 = ((__pyx_t_5utils_18training_sdg_inner_REAL_t *)PyArray_DATA(((PyArrayObject *)__pyx_v_py_work1_o3)));
 
-  /* "utils/training_sdg_inner.pyx":344
+  /* "utils/training_sdg_inner.pyx":351
  *     work_o3 = <REAL_t *>(np.PyArray_DATA(py_work_o3))
  *     work1_o3 = <REAL_t *>(np.PyArray_DATA(py_work1_o3))
  *     work2_o3 = <REAL_t *>(np.PyArray_DATA(py_work2_o3))             # <<<<<<<<<<<<<<
  * 
  *     path_len = <int>min(MAX_SENTENCE_LEN, len(py_path))
  */
-  if (!(likely(((__pyx_v_py_work2_o3) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_py_work2_o3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 344, __pyx_L1_error)
+  if (!(likely(((__pyx_v_py_work2_o3) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_py_work2_o3, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 351, __pyx_L1_error)
   __pyx_v_work2_o3 = ((__pyx_t_5utils_18training_sdg_inner_REAL_t *)PyArray_DATA(((PyArrayObject *)__pyx_v_py_work2_o3)));
 
-  /* "utils/training_sdg_inner.pyx":346
+  /* "utils/training_sdg_inner.pyx":353
  *     work2_o3 = <REAL_t *>(np.PyArray_DATA(py_work2_o3))
  * 
  *     path_len = <int>min(MAX_SENTENCE_LEN, len(py_path))             # <<<<<<<<<<<<<<
  *     negative = <int>py_negative
  * 
  */
-  __pyx_t_4 = PyObject_Length(__pyx_v_py_path); if (unlikely(__pyx_t_4 == -1)) __PYX_ERR(0, 346, __pyx_L1_error)
+  __pyx_t_4 = PyObject_Length(__pyx_v_py_path); if (unlikely(__pyx_t_4 == -1)) __PYX_ERR(0, 353, __pyx_L1_error)
   __pyx_t_8 = 0x2710;
   if (((__pyx_t_4 < __pyx_t_8) != 0)) {
     __pyx_t_9 = __pyx_t_4;
@@ -3210,17 +3273,17 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
   }
   __pyx_v_path_len = ((int)__pyx_t_9);
 
-  /* "utils/training_sdg_inner.pyx":347
+  /* "utils/training_sdg_inner.pyx":354
  * 
  *     path_len = <int>min(MAX_SENTENCE_LEN, len(py_path))
  *     negative = <int>py_negative             # <<<<<<<<<<<<<<
  * 
  *     for i in range(path_len):
  */
-  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_py_negative); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 347, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_py_negative); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 354, __pyx_L1_error)
   __pyx_v_negative = ((int)__pyx_t_1);
 
-  /* "utils/training_sdg_inner.pyx":349
+  /* "utils/training_sdg_inner.pyx":356
  *     negative = <int>py_negative
  * 
  *     for i in range(path_len):             # <<<<<<<<<<<<<<
@@ -3231,19 +3294,19 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
   for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_1; __pyx_t_10+=1) {
     __pyx_v_i = __pyx_t_10;
 
-    /* "utils/training_sdg_inner.pyx":350
+    /* "utils/training_sdg_inner.pyx":357
  * 
  *     for i in range(path_len):
  *         word = py_path[i]             # <<<<<<<<<<<<<<
  *         if word is None:
  *             codelens[i] = 0
  */
-    __pyx_t_5 = __Pyx_GetItemInt(__pyx_v_py_path, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 350, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_GetItemInt(__pyx_v_py_path, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 357, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_XDECREF_SET(__pyx_v_word, __pyx_t_5);
     __pyx_t_5 = 0;
 
-    /* "utils/training_sdg_inner.pyx":351
+    /* "utils/training_sdg_inner.pyx":358
  *     for i in range(path_len):
  *         word = py_path[i]
  *         if word is None:             # <<<<<<<<<<<<<<
@@ -3254,7 +3317,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
     __pyx_t_12 = (__pyx_t_11 != 0);
     if (__pyx_t_12) {
 
-      /* "utils/training_sdg_inner.pyx":352
+      /* "utils/training_sdg_inner.pyx":359
  *         word = py_path[i]
  *         if word is None:
  *             codelens[i] = 0             # <<<<<<<<<<<<<<
@@ -3263,7 +3326,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
  */
       (__pyx_v_codelens[__pyx_v_i]) = 0;
 
-      /* "utils/training_sdg_inner.pyx":351
+      /* "utils/training_sdg_inner.pyx":358
  *     for i in range(path_len):
  *         word = py_path[i]
  *         if word is None:             # <<<<<<<<<<<<<<
@@ -3273,7 +3336,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
       goto __pyx_L5;
     }
 
-    /* "utils/training_sdg_inner.pyx":354
+    /* "utils/training_sdg_inner.pyx":361
  *             codelens[i] = 0
  *         else:
  *             if window > 1:             # <<<<<<<<<<<<<<
@@ -3284,22 +3347,22 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
       __pyx_t_12 = ((__pyx_v_window > 1) != 0);
       if (__pyx_t_12) {
 
-        /* "utils/training_sdg_inner.pyx":355
+        /* "utils/training_sdg_inner.pyx":362
  *         else:
  *             if window > 1:
  *                 reduced_windows[i] = np.random.randint(window)             # <<<<<<<<<<<<<<
  *             else:
  *                 reduced_windows[i] = 0
  */
-        __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 355, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 362, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
-        __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_random); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 355, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_random); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 362, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_randint); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 355, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_randint); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 362, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_window); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 355, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_window); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 362, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __pyx_t_13 = NULL;
         if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_6))) {
@@ -3312,26 +3375,26 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
           }
         }
         if (!__pyx_t_13) {
-          __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 355, __pyx_L1_error)
+          __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 362, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
           __Pyx_GOTREF(__pyx_t_5);
         } else {
-          __pyx_t_14 = PyTuple_New(1+1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 355, __pyx_L1_error)
+          __pyx_t_14 = PyTuple_New(1+1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 362, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_14);
           __Pyx_GIVEREF(__pyx_t_13); PyTuple_SET_ITEM(__pyx_t_14, 0, __pyx_t_13); __pyx_t_13 = NULL;
           __Pyx_GIVEREF(__pyx_t_3);
           PyTuple_SET_ITEM(__pyx_t_14, 0+1, __pyx_t_3);
           __pyx_t_3 = 0;
-          __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_14, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 355, __pyx_L1_error)
+          __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_14, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 362, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_5);
           __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
         }
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-        __pyx_t_15 = __Pyx_PyInt_As_npy_uint32(__pyx_t_5); if (unlikely((__pyx_t_15 == (npy_uint32)-1) && PyErr_Occurred())) __PYX_ERR(0, 355, __pyx_L1_error)
+        __pyx_t_15 = __Pyx_PyInt_As_npy_uint32(__pyx_t_5); if (unlikely((__pyx_t_15 == (npy_uint32)-1) && PyErr_Occurred())) __PYX_ERR(0, 362, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         (__pyx_v_reduced_windows[__pyx_v_i]) = __pyx_t_15;
 
-        /* "utils/training_sdg_inner.pyx":354
+        /* "utils/training_sdg_inner.pyx":361
  *             codelens[i] = 0
  *         else:
  *             if window > 1:             # <<<<<<<<<<<<<<
@@ -3341,7 +3404,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
         goto __pyx_L6;
       }
 
-      /* "utils/training_sdg_inner.pyx":357
+      /* "utils/training_sdg_inner.pyx":364
  *                 reduced_windows[i] = np.random.randint(window)
  *             else:
  *                 reduced_windows[i] = 0             # <<<<<<<<<<<<<<
@@ -3353,20 +3416,20 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
       }
       __pyx_L6:;
 
-      /* "utils/training_sdg_inner.pyx":358
+      /* "utils/training_sdg_inner.pyx":365
  *             else:
  *                 reduced_windows[i] = 0
  *             indexes[i] = word.index             # <<<<<<<<<<<<<<
  *             codelens[i] = 1
  *             result += 1
  */
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_word, __pyx_n_s_index); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 358, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_word, __pyx_n_s_index); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 365, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_15 = __Pyx_PyInt_As_npy_uint32(__pyx_t_5); if (unlikely((__pyx_t_15 == (npy_uint32)-1) && PyErr_Occurred())) __PYX_ERR(0, 358, __pyx_L1_error)
+      __pyx_t_15 = __Pyx_PyInt_As_npy_uint32(__pyx_t_5); if (unlikely((__pyx_t_15 == (npy_uint32)-1) && PyErr_Occurred())) __PYX_ERR(0, 365, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       (__pyx_v_indexes[__pyx_v_i]) = __pyx_t_15;
 
-      /* "utils/training_sdg_inner.pyx":359
+      /* "utils/training_sdg_inner.pyx":366
  *                 reduced_windows[i] = 0
  *             indexes[i] = word.index
  *             codelens[i] = 1             # <<<<<<<<<<<<<<
@@ -3375,7 +3438,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
  */
       (__pyx_v_codelens[__pyx_v_i]) = 1;
 
-      /* "utils/training_sdg_inner.pyx":360
+      /* "utils/training_sdg_inner.pyx":367
  *             indexes[i] = word.index
  *             codelens[i] = 1
  *             result += 1             # <<<<<<<<<<<<<<
@@ -3387,7 +3450,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
     __pyx_L5:;
   }
 
-  /* "utils/training_sdg_inner.pyx":363
+  /* "utils/training_sdg_inner.pyx":370
  * 
  *     # release GIL & train on the sentence
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -3401,7 +3464,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
       #endif
       /*try:*/ {
 
-        /* "utils/training_sdg_inner.pyx":364
+        /* "utils/training_sdg_inner.pyx":371
  *     # release GIL & train on the sentence
  *     with nogil:
  *         for i in range(path_len):             # <<<<<<<<<<<<<<
@@ -3412,7 +3475,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
         for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_1; __pyx_t_10+=1) {
           __pyx_v_i = __pyx_t_10;
 
-          /* "utils/training_sdg_inner.pyx":365
+          /* "utils/training_sdg_inner.pyx":372
  *     with nogil:
  *         for i in range(path_len):
  *             if codelens[i] == 0:             # <<<<<<<<<<<<<<
@@ -3422,7 +3485,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
           __pyx_t_12 = (((__pyx_v_codelens[__pyx_v_i]) == 0) != 0);
           if (__pyx_t_12) {
 
-            /* "utils/training_sdg_inner.pyx":366
+            /* "utils/training_sdg_inner.pyx":373
  *         for i in range(path_len):
  *             if codelens[i] == 0:
  *                 continue             # <<<<<<<<<<<<<<
@@ -3431,7 +3494,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
  */
             goto __pyx_L10_continue;
 
-            /* "utils/training_sdg_inner.pyx":365
+            /* "utils/training_sdg_inner.pyx":372
  *     with nogil:
  *         for i in range(path_len):
  *             if codelens[i] == 0:             # <<<<<<<<<<<<<<
@@ -3440,7 +3503,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
  */
           }
 
-          /* "utils/training_sdg_inner.pyx":367
+          /* "utils/training_sdg_inner.pyx":374
  *             if codelens[i] == 0:
  *                 continue
  *             j = i - window + reduced_windows[i]             # <<<<<<<<<<<<<<
@@ -3449,7 +3512,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
  */
           __pyx_v_j = ((__pyx_v_i - __pyx_v_window) + (__pyx_v_reduced_windows[__pyx_v_i]));
 
-          /* "utils/training_sdg_inner.pyx":368
+          /* "utils/training_sdg_inner.pyx":375
  *                 continue
  *             j = i - window + reduced_windows[i]
  *             if j < 0:             # <<<<<<<<<<<<<<
@@ -3459,7 +3522,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
           __pyx_t_12 = ((__pyx_v_j < 0) != 0);
           if (__pyx_t_12) {
 
-            /* "utils/training_sdg_inner.pyx":369
+            /* "utils/training_sdg_inner.pyx":376
  *             j = i - window + reduced_windows[i]
  *             if j < 0:
  *                 j = 0             # <<<<<<<<<<<<<<
@@ -3468,7 +3531,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
  */
             __pyx_v_j = 0;
 
-            /* "utils/training_sdg_inner.pyx":368
+            /* "utils/training_sdg_inner.pyx":375
  *                 continue
  *             j = i - window + reduced_windows[i]
  *             if j < 0:             # <<<<<<<<<<<<<<
@@ -3477,7 +3540,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
  */
           }
 
-          /* "utils/training_sdg_inner.pyx":370
+          /* "utils/training_sdg_inner.pyx":377
  *             if j < 0:
  *                 j = 0
  *             k = i + window + 1 - reduced_windows[i]             # <<<<<<<<<<<<<<
@@ -3486,7 +3549,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
  */
           __pyx_v_k = (((__pyx_v_i + __pyx_v_window) + 1) - (__pyx_v_reduced_windows[__pyx_v_i]));
 
-          /* "utils/training_sdg_inner.pyx":371
+          /* "utils/training_sdg_inner.pyx":378
  *                 j = 0
  *             k = i + window + 1 - reduced_windows[i]
  *             if k > path_len:             # <<<<<<<<<<<<<<
@@ -3496,7 +3559,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
           __pyx_t_12 = ((__pyx_v_k > __pyx_v_path_len) != 0);
           if (__pyx_t_12) {
 
-            /* "utils/training_sdg_inner.pyx":372
+            /* "utils/training_sdg_inner.pyx":379
  *             k = i + window + 1 - reduced_windows[i]
  *             if k > path_len:
  *                 k = path_len             # <<<<<<<<<<<<<<
@@ -3505,7 +3568,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
  */
             __pyx_v_k = __pyx_v_path_len;
 
-            /* "utils/training_sdg_inner.pyx":371
+            /* "utils/training_sdg_inner.pyx":378
  *                 j = 0
  *             k = i + window + 1 - reduced_windows[i]
  *             if k > path_len:             # <<<<<<<<<<<<<<
@@ -3514,7 +3577,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
  */
           }
 
-          /* "utils/training_sdg_inner.pyx":373
+          /* "utils/training_sdg_inner.pyx":380
  *             if k > path_len:
  *                 k = path_len
  *             for j in range(j, k):             # <<<<<<<<<<<<<<
@@ -3525,7 +3588,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
           for (__pyx_t_17 = __pyx_v_j; __pyx_t_17 < __pyx_t_16; __pyx_t_17+=1) {
             __pyx_v_j = __pyx_t_17;
 
-            /* "utils/training_sdg_inner.pyx":374
+            /* "utils/training_sdg_inner.pyx":381
  *                 k = path_len
  *             for j in range(j, k):
  *                 if j == i or codelens[j] == 0:             # <<<<<<<<<<<<<<
@@ -3543,7 +3606,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
             __pyx_L18_bool_binop_done:;
             if (__pyx_t_12) {
 
-              /* "utils/training_sdg_inner.pyx":375
+              /* "utils/training_sdg_inner.pyx":382
  *             for j in range(j, k):
  *                 if j == i or codelens[j] == 0:
  *                     continue             # <<<<<<<<<<<<<<
@@ -3552,7 +3615,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
  */
               goto __pyx_L15_continue;
 
-              /* "utils/training_sdg_inner.pyx":374
+              /* "utils/training_sdg_inner.pyx":381
  *                 k = path_len
  *             for j in range(j, k):
  *                 if j == i or codelens[j] == 0:             # <<<<<<<<<<<<<<
@@ -3561,7 +3624,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
  */
             }
 
-            /* "utils/training_sdg_inner.pyx":378
+            /* "utils/training_sdg_inner.pyx":385
  *                 else:
  *                     #gradient O3
  *                     fast_community_sdg(node_embedding, centroid, inv_covariance_mat, pi, _k, _alpha, _lambda2, size,             # <<<<<<<<<<<<<<
@@ -3570,27 +3633,27 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
  */
             /*else*/ {
 
-              /* "utils/training_sdg_inner.pyx":379
+              /* "utils/training_sdg_inner.pyx":386
  *                     #gradient O3
  *                     fast_community_sdg(node_embedding, centroid, inv_covariance_mat, pi, _k, _alpha, _lambda2, size,
  *                                          indexes[j], work_o3, work1_o3, work2_o3)             # <<<<<<<<<<<<<<
  *                     #gradient O2/01
- *                     next_random = fast_sentence_sg_neg(negative, table, table_len, node_embedding, negative_embedding,
+ *                     next_random = fast_context_sg_neg(negative, table, table_len, node_embedding, negative_embedding,
  */
               __pyx_v_5utils_18training_sdg_inner_fast_community_sdg(__pyx_v_node_embedding, __pyx_v_centroid, __pyx_v_inv_covariance_mat, __pyx_v_pi, __pyx_v__k, __pyx_v__alpha, __pyx_v__lambda2, __pyx_v_size, (__pyx_v_indexes[__pyx_v_j]), __pyx_v_work_o3, __pyx_v_work1_o3, __pyx_v_work2_o3);
 
-              /* "utils/training_sdg_inner.pyx":381
+              /* "utils/training_sdg_inner.pyx":388
  *                                          indexes[j], work_o3, work1_o3, work2_o3)
  *                     #gradient O2/01
- *                     next_random = fast_sentence_sg_neg(negative, table, table_len, node_embedding, negative_embedding,             # <<<<<<<<<<<<<<
- *                                                        size, indexes[i], indexes[j], _alpha, _lambda1,  work, next_random)
- *                     #node_embedding = node_embedding - comEmbedding
+ *                     next_random = fast_context_sg_neg(negative, table, table_len, node_embedding, negative_embedding,             # <<<<<<<<<<<<<<
+ *                                                        size, indexes[i], indexes[j], _alpha, _lambda1,  work, next_random,
+ *                                                        is_node_embedding)
  */
-              __pyx_v_next_random = __pyx_v_5utils_18training_sdg_inner_fast_sentence_sg_neg(__pyx_v_negative, __pyx_v_table, __pyx_v_table_len, __pyx_v_node_embedding, __pyx_v_negative_embedding, __pyx_v_size, (__pyx_v_indexes[__pyx_v_i]), (__pyx_v_indexes[__pyx_v_j]), __pyx_v__alpha, __pyx_v__lambda1, __pyx_v_work, __pyx_v_next_random);
+              __pyx_v_next_random = __pyx_v_5utils_18training_sdg_inner_fast_context_sg_neg(__pyx_v_negative, __pyx_v_table, __pyx_v_table_len, __pyx_v_node_embedding, __pyx_v_negative_embedding, __pyx_v_size, (__pyx_v_indexes[__pyx_v_i]), (__pyx_v_indexes[__pyx_v_j]), __pyx_v__alpha, __pyx_v__lambda1, __pyx_v_work, __pyx_v_next_random, __pyx_v_is_node_embedding);
 
-              /* "utils/training_sdg_inner.pyx":384
- *                                                        size, indexes[i], indexes[j], _alpha, _lambda1,  work, next_random)
- *                     #node_embedding = node_embedding - comEmbedding
+              /* "utils/training_sdg_inner.pyx":392
+ *                                                        is_node_embedding)
+ * 
  *                     saxpy(&size, &ONEF, work_o3, &ONE, &node_embedding[indexes[j] * size], &ONE)             # <<<<<<<<<<<<<<
  *     return result
  * 
@@ -3603,7 +3666,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
         }
       }
 
-      /* "utils/training_sdg_inner.pyx":363
+      /* "utils/training_sdg_inner.pyx":370
  * 
  *     # release GIL & train on the sentence
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -3621,26 +3684,26 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
       }
   }
 
-  /* "utils/training_sdg_inner.pyx":385
- *                     #node_embedding = node_embedding - comEmbedding
+  /* "utils/training_sdg_inner.pyx":393
+ * 
  *                     saxpy(&size, &ONEF, work_o3, &ONE, &node_embedding[indexes[j] * size], &ONE)
  *     return result             # <<<<<<<<<<<<<<
  * 
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_5 = __Pyx_PyInt_From_long(__pyx_v_result); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 385, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_From_long(__pyx_v_result); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 393, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_r = __pyx_t_5;
   __pyx_t_5 = 0;
   goto __pyx_L0;
 
-  /* "utils/training_sdg_inner.pyx":301
+  /* "utils/training_sdg_inner.pyx":306
  *         work[i] = clamp3(work[i], (_alpha*-1), _alpha)
  * 
- * def train_sentence_sg(py_node_embedding, py_negative_embedding, py_path, py_alpha, py_negative, py_window, py_table,             # <<<<<<<<<<<<<<
- *                       py_centroid, py_inv_covariance_mat, py_pi, py_k,
- *                       py_lambda1=1.0, py_lambda2=0.0, py_size=None, py_work=None, py_work_o3=None, py_work1_o3=None, py_work2_o3=None):
+ * def train_sg(py_node_embedding, py_negative_embedding, py_path, py_alpha, py_negative, py_window, py_table,             # <<<<<<<<<<<<<<
+ *              py_centroid, py_inv_covariance_mat, py_pi, py_k,
+ *              py_lambda1=1.0, py_lambda2=0.0, py_size=None, py_work=None, py_work_o3=None, py_work1_o3=None, py_work2_o3=None,
  */
 
   /* function exit code */
@@ -3650,7 +3713,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_13);
   __Pyx_XDECREF(__pyx_t_14);
-  __Pyx_AddTraceback("utils.training_sdg_inner.train_sentence_sg", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("utils.training_sdg_inner.train_sg", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_word);
@@ -3659,7 +3722,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_train_sentence_sg(CYTHON_U
   return __pyx_r;
 }
 
-/* "utils/training_sdg_inner.pyx":388
+/* "utils/training_sdg_inner.pyx":396
  * 
  * 
  * def init():             # <<<<<<<<<<<<<<
@@ -3698,7 +3761,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_2init(CYTHON_UNUSED PyObje
   int __pyx_t_4;
   __Pyx_RefNannySetupContext("init", 0);
 
-  /* "utils/training_sdg_inner.pyx":398
+  /* "utils/training_sdg_inner.pyx":406
  * 
  *     cdef int i
  *     cdef float *x = [<float>10.0]             # <<<<<<<<<<<<<<
@@ -3708,7 +3771,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_2init(CYTHON_UNUSED PyObje
   __pyx_t_1[0] = ((float)10.0);
   __pyx_v_x = __pyx_t_1;
 
-  /* "utils/training_sdg_inner.pyx":399
+  /* "utils/training_sdg_inner.pyx":407
  *     cdef int i
  *     cdef float *x = [<float>10.0]
  *     cdef float *y = [<float>0.01]             # <<<<<<<<<<<<<<
@@ -3718,7 +3781,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_2init(CYTHON_UNUSED PyObje
   __pyx_t_2[0] = ((float)0.01);
   __pyx_v_y = __pyx_t_2;
 
-  /* "utils/training_sdg_inner.pyx":400
+  /* "utils/training_sdg_inner.pyx":408
  *     cdef float *x = [<float>10.0]
  *     cdef float *y = [<float>0.01]
  *     cdef float expected = <float>0.1             # <<<<<<<<<<<<<<
@@ -3727,7 +3790,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_2init(CYTHON_UNUSED PyObje
  */
   __pyx_v_expected = ((float)0.1);
 
-  /* "utils/training_sdg_inner.pyx":401
+  /* "utils/training_sdg_inner.pyx":409
  *     cdef float *y = [<float>0.01]
  *     cdef float expected = <float>0.1
  *     cdef int size = 1             # <<<<<<<<<<<<<<
@@ -3736,7 +3799,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_2init(CYTHON_UNUSED PyObje
  */
   __pyx_v_size = 1;
 
-  /* "utils/training_sdg_inner.pyx":406
+  /* "utils/training_sdg_inner.pyx":414
  * 
  *     # build the sigmoid table
  *     for i in range(EXP_TABLE_SIZE):             # <<<<<<<<<<<<<<
@@ -3746,7 +3809,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_2init(CYTHON_UNUSED PyObje
   for (__pyx_t_3 = 0; __pyx_t_3 < 0x3E8; __pyx_t_3+=1) {
     __pyx_v_i = __pyx_t_3;
 
-    /* "utils/training_sdg_inner.pyx":407
+    /* "utils/training_sdg_inner.pyx":415
  *     # build the sigmoid table
  *     for i in range(EXP_TABLE_SIZE):
  *         EXP_TABLE[i] = <REAL_t>exp((i / <REAL_t>EXP_TABLE_SIZE * 2 - 1) * MAX_EXP)             # <<<<<<<<<<<<<<
@@ -3755,7 +3818,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_2init(CYTHON_UNUSED PyObje
  */
     (__pyx_v_5utils_18training_sdg_inner_EXP_TABLE[__pyx_v_i]) = ((__pyx_t_5utils_18training_sdg_inner_REAL_t)exp(((((__pyx_v_i / ((__pyx_t_5utils_18training_sdg_inner_REAL_t)0x3E8)) * 2.0) - 1.0) * 6.0)));
 
-    /* "utils/training_sdg_inner.pyx":408
+    /* "utils/training_sdg_inner.pyx":416
  *     for i in range(EXP_TABLE_SIZE):
  *         EXP_TABLE[i] = <REAL_t>exp((i / <REAL_t>EXP_TABLE_SIZE * 2 - 1) * MAX_EXP)
  *         EXP_TABLE[i] = <REAL_t>(EXP_TABLE[i] / (EXP_TABLE[i] + 1))             # <<<<<<<<<<<<<<
@@ -3765,7 +3828,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_2init(CYTHON_UNUSED PyObje
     (__pyx_v_5utils_18training_sdg_inner_EXP_TABLE[__pyx_v_i]) = ((__pyx_t_5utils_18training_sdg_inner_REAL_t)((__pyx_v_5utils_18training_sdg_inner_EXP_TABLE[__pyx_v_i]) / ((__pyx_v_5utils_18training_sdg_inner_EXP_TABLE[__pyx_v_i]) + 1.0)));
   }
 
-  /* "utils/training_sdg_inner.pyx":411
+  /* "utils/training_sdg_inner.pyx":419
  * 
  *     # check whether sdot returns double or float
  *     d_res = dsdot(&size, x, &ONE, y, &ONE)             # <<<<<<<<<<<<<<
@@ -3774,94 +3837,94 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_2init(CYTHON_UNUSED PyObje
  */
   __pyx_v_d_res = __pyx_v_5utils_18training_sdg_inner_dsdot((&__pyx_v_size), __pyx_v_x, (&__pyx_v_5utils_18training_sdg_inner_ONE), __pyx_v_y, (&__pyx_v_5utils_18training_sdg_inner_ONE));
 
-  /* "utils/training_sdg_inner.pyx":412
+  /* "utils/training_sdg_inner.pyx":420
  *     # check whether sdot returns double or float
  *     d_res = dsdot(&size, x, &ONE, y, &ONE)
  *     p_res = <float *>&d_res             # <<<<<<<<<<<<<<
  *     if (abs(d_res - expected) < 0.0001):
- *         fast_sentence_sg_neg = fast_sentence0_sg_neg
+ *         fast_context_sg_neg = fast_context0_sg_neg
  */
   __pyx_v_p_res = ((float *)(&__pyx_v_d_res));
 
-  /* "utils/training_sdg_inner.pyx":413
+  /* "utils/training_sdg_inner.pyx":421
  *     d_res = dsdot(&size, x, &ONE, y, &ONE)
  *     p_res = <float *>&d_res
  *     if (abs(d_res - expected) < 0.0001):             # <<<<<<<<<<<<<<
- *         fast_sentence_sg_neg = fast_sentence0_sg_neg
+ *         fast_context_sg_neg = fast_context0_sg_neg
  *         fast_community_sdg = fast_community_sdg_1
  */
   __pyx_t_4 = ((fabs((__pyx_v_d_res - __pyx_v_expected)) < 0.0001) != 0);
   if (__pyx_t_4) {
 
-    /* "utils/training_sdg_inner.pyx":414
+    /* "utils/training_sdg_inner.pyx":422
  *     p_res = <float *>&d_res
  *     if (abs(d_res - expected) < 0.0001):
- *         fast_sentence_sg_neg = fast_sentence0_sg_neg             # <<<<<<<<<<<<<<
+ *         fast_context_sg_neg = fast_context0_sg_neg             # <<<<<<<<<<<<<<
  *         fast_community_sdg = fast_community_sdg_1
  *         return 0  # double
  */
-    __pyx_v_5utils_18training_sdg_inner_fast_sentence_sg_neg = __pyx_f_5utils_18training_sdg_inner_fast_sentence0_sg_neg;
+    __pyx_v_5utils_18training_sdg_inner_fast_context_sg_neg = __pyx_f_5utils_18training_sdg_inner_fast_context0_sg_neg;
 
-    /* "utils/training_sdg_inner.pyx":415
+    /* "utils/training_sdg_inner.pyx":423
  *     if (abs(d_res - expected) < 0.0001):
- *         fast_sentence_sg_neg = fast_sentence0_sg_neg
+ *         fast_context_sg_neg = fast_context0_sg_neg
  *         fast_community_sdg = fast_community_sdg_1             # <<<<<<<<<<<<<<
  *         return 0  # double
  *     elif (abs(p_res[0] - expected) < 0.0001):
  */
     __pyx_v_5utils_18training_sdg_inner_fast_community_sdg = __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_1;
 
-    /* "utils/training_sdg_inner.pyx":416
- *         fast_sentence_sg_neg = fast_sentence0_sg_neg
+    /* "utils/training_sdg_inner.pyx":424
+ *         fast_context_sg_neg = fast_context0_sg_neg
  *         fast_community_sdg = fast_community_sdg_1
  *         return 0  # double             # <<<<<<<<<<<<<<
  *     elif (abs(p_res[0] - expected) < 0.0001):
- *         fast_sentence_sg_neg = fast_sentence1_sg_neg
+ *         fast_context_sg_neg = fast_context1_sg_neg
  */
     __Pyx_XDECREF(__pyx_r);
     __Pyx_INCREF(__pyx_int_0);
     __pyx_r = __pyx_int_0;
     goto __pyx_L0;
 
-    /* "utils/training_sdg_inner.pyx":413
+    /* "utils/training_sdg_inner.pyx":421
  *     d_res = dsdot(&size, x, &ONE, y, &ONE)
  *     p_res = <float *>&d_res
  *     if (abs(d_res - expected) < 0.0001):             # <<<<<<<<<<<<<<
- *         fast_sentence_sg_neg = fast_sentence0_sg_neg
+ *         fast_context_sg_neg = fast_context0_sg_neg
  *         fast_community_sdg = fast_community_sdg_1
  */
   }
 
-  /* "utils/training_sdg_inner.pyx":417
+  /* "utils/training_sdg_inner.pyx":425
  *         fast_community_sdg = fast_community_sdg_1
  *         return 0  # double
  *     elif (abs(p_res[0] - expected) < 0.0001):             # <<<<<<<<<<<<<<
- *         fast_sentence_sg_neg = fast_sentence1_sg_neg
+ *         fast_context_sg_neg = fast_context1_sg_neg
  *         fast_community_sdg = fast_community_sdg_1
  */
   __pyx_t_4 = ((fabsf(((__pyx_v_p_res[0]) - __pyx_v_expected)) < 0.0001) != 0);
   if (__pyx_t_4) {
 
-    /* "utils/training_sdg_inner.pyx":418
+    /* "utils/training_sdg_inner.pyx":426
  *         return 0  # double
  *     elif (abs(p_res[0] - expected) < 0.0001):
- *         fast_sentence_sg_neg = fast_sentence1_sg_neg             # <<<<<<<<<<<<<<
+ *         fast_context_sg_neg = fast_context1_sg_neg             # <<<<<<<<<<<<<<
  *         fast_community_sdg = fast_community_sdg_1
  *         return 1  # float
  */
-    __pyx_v_5utils_18training_sdg_inner_fast_sentence_sg_neg = __pyx_f_5utils_18training_sdg_inner_fast_sentence1_sg_neg;
+    __pyx_v_5utils_18training_sdg_inner_fast_context_sg_neg = __pyx_f_5utils_18training_sdg_inner_fast_context1_sg_neg;
 
-    /* "utils/training_sdg_inner.pyx":419
+    /* "utils/training_sdg_inner.pyx":427
  *     elif (abs(p_res[0] - expected) < 0.0001):
- *         fast_sentence_sg_neg = fast_sentence1_sg_neg
+ *         fast_context_sg_neg = fast_context1_sg_neg
  *         fast_community_sdg = fast_community_sdg_1             # <<<<<<<<<<<<<<
  *         return 1  # float
  * 
  */
     __pyx_v_5utils_18training_sdg_inner_fast_community_sdg = __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_1;
 
-    /* "utils/training_sdg_inner.pyx":420
- *         fast_sentence_sg_neg = fast_sentence1_sg_neg
+    /* "utils/training_sdg_inner.pyx":428
+ *         fast_context_sg_neg = fast_context1_sg_neg
  *         fast_community_sdg = fast_community_sdg_1
  *         return 1  # float             # <<<<<<<<<<<<<<
  * 
@@ -3872,16 +3935,16 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_2init(CYTHON_UNUSED PyObje
     __pyx_r = __pyx_int_1;
     goto __pyx_L0;
 
-    /* "utils/training_sdg_inner.pyx":417
+    /* "utils/training_sdg_inner.pyx":425
  *         fast_community_sdg = fast_community_sdg_1
  *         return 0  # double
  *     elif (abs(p_res[0] - expected) < 0.0001):             # <<<<<<<<<<<<<<
- *         fast_sentence_sg_neg = fast_sentence1_sg_neg
+ *         fast_context_sg_neg = fast_context1_sg_neg
  *         fast_community_sdg = fast_community_sdg_1
  */
   }
 
-  /* "utils/training_sdg_inner.pyx":388
+  /* "utils/training_sdg_inner.pyx":396
  * 
  * 
  * def init():             # <<<<<<<<<<<<<<
@@ -6065,6 +6128,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_indexes, __pyx_k_indexes, sizeof(__pyx_k_indexes), 0, 0, 1, 1},
   {&__pyx_n_s_init, __pyx_k_init, sizeof(__pyx_k_init), 0, 0, 1, 1},
   {&__pyx_n_s_inv_covariance_mat, __pyx_k_inv_covariance_mat, sizeof(__pyx_k_inv_covariance_mat), 0, 0, 1, 1},
+  {&__pyx_n_s_is_node_embedding, __pyx_k_is_node_embedding, sizeof(__pyx_k_is_node_embedding), 0, 0, 1, 1},
   {&__pyx_n_s_j, __pyx_k_j, sizeof(__pyx_k_j), 0, 0, 1, 1},
   {&__pyx_n_s_k, __pyx_k_k, sizeof(__pyx_k_k), 0, 0, 1, 1},
   {&__pyx_n_s_k_2, __pyx_k_k_2, sizeof(__pyx_k_k_2), 0, 0, 1, 1},
@@ -6085,6 +6149,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_py_alpha, __pyx_k_py_alpha, sizeof(__pyx_k_py_alpha), 0, 0, 1, 1},
   {&__pyx_n_s_py_centroid, __pyx_k_py_centroid, sizeof(__pyx_k_py_centroid), 0, 0, 1, 1},
   {&__pyx_n_s_py_inv_covariance_mat, __pyx_k_py_inv_covariance_mat, sizeof(__pyx_k_py_inv_covariance_mat), 0, 0, 1, 1},
+  {&__pyx_n_s_py_is_node_embedding, __pyx_k_py_is_node_embedding, sizeof(__pyx_k_py_is_node_embedding), 0, 0, 1, 1},
   {&__pyx_n_s_py_k, __pyx_k_py_k, sizeof(__pyx_k_py_k), 0, 0, 1, 1},
   {&__pyx_n_s_py_lambda1, __pyx_k_py_lambda1, sizeof(__pyx_k_py_lambda1), 0, 0, 1, 1},
   {&__pyx_n_s_py_lambda2, __pyx_k_py_lambda2, sizeof(__pyx_k_py_lambda2), 0, 0, 1, 1},
@@ -6117,7 +6182,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_table, __pyx_k_table, sizeof(__pyx_k_table), 0, 0, 1, 1},
   {&__pyx_n_s_table_len, __pyx_k_table_len, sizeof(__pyx_k_table_len), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
-  {&__pyx_n_s_train_sentence_sg, __pyx_k_train_sentence_sg, sizeof(__pyx_k_train_sentence_sg), 0, 0, 1, 1},
+  {&__pyx_n_s_train_sg, __pyx_k_train_sg, sizeof(__pyx_k_train_sg), 0, 0, 1, 1},
   {&__pyx_kp_u_unknown_dtype_code_in_numpy_pxd, __pyx_k_unknown_dtype_code_in_numpy_pxd, sizeof(__pyx_k_unknown_dtype_code_in_numpy_pxd), 0, 1, 0, 0},
   {&__pyx_n_s_utils_training_sdg_inner, __pyx_k_utils_training_sdg_inner, sizeof(__pyx_k_utils_training_sdg_inner), 0, 0, 1, 1},
   {&__pyx_n_s_window, __pyx_k_window, sizeof(__pyx_k_window), 0, 0, 1, 1},
@@ -6131,7 +6196,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 111, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 113, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 218, __pyx_L1_error)
   __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) __PYX_ERR(1, 799, __pyx_L1_error)
   return 0;
@@ -6143,17 +6208,17 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "utils/training_sdg_inner.pyx":336
+  /* "utils/training_sdg_inner.pyx":343
  *     cdef np.uint32_t *table = <np.uint32_t *>(np.PyArray_DATA(py_table))
  *     cdef unsigned long long table_len = len(py_table)
  *     cdef unsigned long long next_random = (2**24) * np.random.randint(0, 2**24) + np.random.randint(0, 2**24)             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_tuple_ = PyTuple_Pack(2, __pyx_int_0, __pyx_int_16777216); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 336, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(2, __pyx_int_0, __pyx_int_16777216); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 343, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
-  __pyx_tuple__2 = PyTuple_Pack(2, __pyx_int_0, __pyx_int_16777216); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 336, __pyx_L1_error)
+  __pyx_tuple__2 = PyTuple_Pack(2, __pyx_int_0, __pyx_int_16777216); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 343, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
@@ -6223,29 +6288,29 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
 
-  /* "utils/training_sdg_inner.pyx":301
+  /* "utils/training_sdg_inner.pyx":306
  *         work[i] = clamp3(work[i], (_alpha*-1), _alpha)
  * 
- * def train_sentence_sg(py_node_embedding, py_negative_embedding, py_path, py_alpha, py_negative, py_window, py_table,             # <<<<<<<<<<<<<<
- *                       py_centroid, py_inv_covariance_mat, py_pi, py_k,
- *                       py_lambda1=1.0, py_lambda2=0.0, py_size=None, py_work=None, py_work_o3=None, py_work1_o3=None, py_work2_o3=None):
+ * def train_sg(py_node_embedding, py_negative_embedding, py_path, py_alpha, py_negative, py_window, py_table,             # <<<<<<<<<<<<<<
+ *              py_centroid, py_inv_covariance_mat, py_pi, py_k,
+ *              py_lambda1=1.0, py_lambda2=0.0, py_size=None, py_work=None, py_work_o3=None, py_work1_o3=None, py_work2_o3=None,
  */
-  __pyx_tuple__10 = PyTuple_Pack(46, __pyx_n_s_py_node_embedding, __pyx_n_s_py_negative_embedding, __pyx_n_s_py_path, __pyx_n_s_py_alpha, __pyx_n_s_py_negative, __pyx_n_s_py_window, __pyx_n_s_py_table, __pyx_n_s_py_centroid, __pyx_n_s_py_inv_covariance_mat, __pyx_n_s_py_pi, __pyx_n_s_py_k, __pyx_n_s_py_lambda1, __pyx_n_s_py_lambda2, __pyx_n_s_py_size, __pyx_n_s_py_work, __pyx_n_s_py_work_o3, __pyx_n_s_py_work1_o3, __pyx_n_s_py_work2_o3, __pyx_n_s_node_embedding, __pyx_n_s_negative_embedding, __pyx_n_s_work, __pyx_n_s_work_o3, __pyx_n_s_work1_o3, __pyx_n_s_work2_o3, __pyx_n_s_centroid, __pyx_n_s_inv_covariance_mat, __pyx_n_s_pi, __pyx_n_s_k, __pyx_n_s_alpha, __pyx_n_s_lambda1, __pyx_n_s_lambda2, __pyx_n_s_size, __pyx_n_s_codelens, __pyx_n_s_indexes, __pyx_n_s_path_len, __pyx_n_s_negative, __pyx_n_s_window, __pyx_n_s_reduced_windows, __pyx_n_s_i, __pyx_n_s_j, __pyx_n_s_k_2, __pyx_n_s_result, __pyx_n_s_table, __pyx_n_s_table_len, __pyx_n_s_next_random, __pyx_n_s_word); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 301, __pyx_L1_error)
+  __pyx_tuple__10 = PyTuple_Pack(48, __pyx_n_s_py_node_embedding, __pyx_n_s_py_negative_embedding, __pyx_n_s_py_path, __pyx_n_s_py_alpha, __pyx_n_s_py_negative, __pyx_n_s_py_window, __pyx_n_s_py_table, __pyx_n_s_py_centroid, __pyx_n_s_py_inv_covariance_mat, __pyx_n_s_py_pi, __pyx_n_s_py_k, __pyx_n_s_py_lambda1, __pyx_n_s_py_lambda2, __pyx_n_s_py_size, __pyx_n_s_py_work, __pyx_n_s_py_work_o3, __pyx_n_s_py_work1_o3, __pyx_n_s_py_work2_o3, __pyx_n_s_py_is_node_embedding, __pyx_n_s_node_embedding, __pyx_n_s_negative_embedding, __pyx_n_s_work, __pyx_n_s_work_o3, __pyx_n_s_work1_o3, __pyx_n_s_work2_o3, __pyx_n_s_centroid, __pyx_n_s_inv_covariance_mat, __pyx_n_s_pi, __pyx_n_s_k, __pyx_n_s_is_node_embedding, __pyx_n_s_alpha, __pyx_n_s_lambda1, __pyx_n_s_lambda2, __pyx_n_s_size, __pyx_n_s_codelens, __pyx_n_s_indexes, __pyx_n_s_path_len, __pyx_n_s_negative, __pyx_n_s_window, __pyx_n_s_reduced_windows, __pyx_n_s_i, __pyx_n_s_j, __pyx_n_s_k_2, __pyx_n_s_result, __pyx_n_s_table, __pyx_n_s_table_len, __pyx_n_s_next_random, __pyx_n_s_word); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 306, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__10);
   __Pyx_GIVEREF(__pyx_tuple__10);
-  __pyx_codeobj__11 = (PyObject*)__Pyx_PyCode_New(18, 0, 46, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_ando_Project_comEmbed_uti, __pyx_n_s_train_sentence_sg, 301, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__11)) __PYX_ERR(0, 301, __pyx_L1_error)
+  __pyx_codeobj__11 = (PyObject*)__Pyx_PyCode_New(19, 0, 48, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_ando_Project_comEmbed_uti, __pyx_n_s_train_sg, 306, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__11)) __PYX_ERR(0, 306, __pyx_L1_error)
 
-  /* "utils/training_sdg_inner.pyx":388
+  /* "utils/training_sdg_inner.pyx":396
  * 
  * 
  * def init():             # <<<<<<<<<<<<<<
  *     """
  *     Precompute function `sigmoid(x) = 1 / (1 + exp(-x))`, for x values discretized
  */
-  __pyx_tuple__12 = PyTuple_Pack(7, __pyx_n_s_i, __pyx_n_s_x, __pyx_n_s_y, __pyx_n_s_expected, __pyx_n_s_size, __pyx_n_s_d_res, __pyx_n_s_p_res); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 388, __pyx_L1_error)
+  __pyx_tuple__12 = PyTuple_Pack(7, __pyx_n_s_i, __pyx_n_s_x, __pyx_n_s_y, __pyx_n_s_expected, __pyx_n_s_size, __pyx_n_s_d_res, __pyx_n_s_p_res); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 396, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__12);
   __Pyx_GIVEREF(__pyx_tuple__12);
-  __pyx_codeobj__13 = (PyObject*)__Pyx_PyCode_New(0, 0, 7, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_ando_Project_comEmbed_uti, __pyx_n_s_init, 388, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__13)) __PYX_ERR(0, 388, __pyx_L1_error)
+  __pyx_codeobj__13 = (PyObject*)__Pyx_PyCode_New(0, 0, 7, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_ando_Project_comEmbed_uti, __pyx_n_s_init, 396, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__13)) __PYX_ERR(0, 396, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -6429,66 +6494,48 @@ PyMODINIT_FUNC PyInit_training_sdg_inner(void)
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_REAL, __pyx_t_1) < 0) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "utils/training_sdg_inner.pyx":60
+  /* "utils/training_sdg_inner.pyx":61
  *         REAL_t * work2) nogil
  * 
  * cdef scopy_ptr scopy=<scopy_ptr>PyCObject_AsVoidPtr(fblas.scopy._cpointer)  # y = x             # <<<<<<<<<<<<<<
  * cdef saxpy_ptr saxpy=<saxpy_ptr>PyCObject_AsVoidPtr(fblas.saxpy._cpointer)  # y += alpha * x
  * 
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_fblas); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_fblas); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 61, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_scopy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_scopy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 61, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_cpointer); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_cpointer); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 61, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_5utils_18training_sdg_inner_scopy = ((__pyx_t_5utils_18training_sdg_inner_scopy_ptr)PyCObject_AsVoidPtr(__pyx_t_1));
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "utils/training_sdg_inner.pyx":61
+  /* "utils/training_sdg_inner.pyx":62
  * 
  * cdef scopy_ptr scopy=<scopy_ptr>PyCObject_AsVoidPtr(fblas.scopy._cpointer)  # y = x
  * cdef saxpy_ptr saxpy=<saxpy_ptr>PyCObject_AsVoidPtr(fblas.saxpy._cpointer)  # y += alpha * x             # <<<<<<<<<<<<<<
  * 
  * cdef sdot_ptr sdot=<sdot_ptr>PyCObject_AsVoidPtr(fblas.sdot._cpointer)  # float = dot(x, y)
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_fblas); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 61, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_fblas); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_saxpy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 61, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_saxpy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 62, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_cpointer); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 61, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_cpointer); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_5utils_18training_sdg_inner_saxpy = ((__pyx_t_5utils_18training_sdg_inner_saxpy_ptr)PyCObject_AsVoidPtr(__pyx_t_1));
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "utils/training_sdg_inner.pyx":63
+  /* "utils/training_sdg_inner.pyx":64
  * cdef saxpy_ptr saxpy=<saxpy_ptr>PyCObject_AsVoidPtr(fblas.saxpy._cpointer)  # y += alpha * x
  * 
  * cdef sdot_ptr sdot=<sdot_ptr>PyCObject_AsVoidPtr(fblas.sdot._cpointer)  # float = dot(x, y)             # <<<<<<<<<<<<<<
  * cdef dsdot_ptr dsdot=<dsdot_ptr>PyCObject_AsVoidPtr(fblas.sdot._cpointer)  # double = dot(x, y)
  * 
- */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_fblas); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 63, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_sdot); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 63, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_cpointer); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 63, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_5utils_18training_sdg_inner_sdot = ((__pyx_t_5utils_18training_sdg_inner_sdot_ptr)PyCObject_AsVoidPtr(__pyx_t_1));
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-  /* "utils/training_sdg_inner.pyx":64
- * 
- * cdef sdot_ptr sdot=<sdot_ptr>PyCObject_AsVoidPtr(fblas.sdot._cpointer)  # float = dot(x, y)
- * cdef dsdot_ptr dsdot=<dsdot_ptr>PyCObject_AsVoidPtr(fblas.sdot._cpointer)  # double = dot(x, y)             # <<<<<<<<<<<<<<
- * 
- * cdef snrm2_ptr snrm2=<snrm2_ptr>PyCObject_AsVoidPtr(fblas.snrm2._cpointer)  # sqrt(x^2)
  */
   __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_fblas); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -6498,69 +6545,69 @@ PyMODINIT_FUNC PyInit_training_sdg_inner(void)
   __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_cpointer); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_v_5utils_18training_sdg_inner_sdot = ((__pyx_t_5utils_18training_sdg_inner_sdot_ptr)PyCObject_AsVoidPtr(__pyx_t_1));
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "utils/training_sdg_inner.pyx":65
+ * 
+ * cdef sdot_ptr sdot=<sdot_ptr>PyCObject_AsVoidPtr(fblas.sdot._cpointer)  # float = dot(x, y)
+ * cdef dsdot_ptr dsdot=<dsdot_ptr>PyCObject_AsVoidPtr(fblas.sdot._cpointer)  # double = dot(x, y)             # <<<<<<<<<<<<<<
+ * 
+ * cdef snrm2_ptr snrm2=<snrm2_ptr>PyCObject_AsVoidPtr(fblas.snrm2._cpointer)  # sqrt(x^2)
+ */
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_fblas); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_sdot); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_cpointer); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_5utils_18training_sdg_inner_dsdot = ((__pyx_t_5utils_18training_sdg_inner_dsdot_ptr)PyCObject_AsVoidPtr(__pyx_t_1));
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "utils/training_sdg_inner.pyx":66
+  /* "utils/training_sdg_inner.pyx":67
  * cdef dsdot_ptr dsdot=<dsdot_ptr>PyCObject_AsVoidPtr(fblas.sdot._cpointer)  # double = dot(x, y)
  * 
  * cdef snrm2_ptr snrm2=<snrm2_ptr>PyCObject_AsVoidPtr(fblas.snrm2._cpointer)  # sqrt(x^2)             # <<<<<<<<<<<<<<
  * cdef sscal_ptr sscal=<sscal_ptr>PyCObject_AsVoidPtr(fblas.sscal._cpointer) # x = alpha * x
  * 
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_fblas); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_fblas); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_snrm2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_snrm2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_cpointer); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_cpointer); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_5utils_18training_sdg_inner_snrm2 = ((__pyx_t_5utils_18training_sdg_inner_snrm2_ptr)PyCObject_AsVoidPtr(__pyx_t_1));
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "utils/training_sdg_inner.pyx":67
+  /* "utils/training_sdg_inner.pyx":68
  * 
  * cdef snrm2_ptr snrm2=<snrm2_ptr>PyCObject_AsVoidPtr(fblas.snrm2._cpointer)  # sqrt(x^2)
  * cdef sscal_ptr sscal=<sscal_ptr>PyCObject_AsVoidPtr(fblas.sscal._cpointer) # x = alpha * x             # <<<<<<<<<<<<<<
  * 
  * cdef sgemm_ptr sgemm=<sgemm_ptr>PyCObject_AsVoidPtr(fblas.sgemm._cpointer) # float x = alpha * (A B) + beta * (x)
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_fblas); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_fblas); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_sscal); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_sscal); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_cpointer); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_cpointer); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_5utils_18training_sdg_inner_sscal = ((__pyx_t_5utils_18training_sdg_inner_sscal_ptr)PyCObject_AsVoidPtr(__pyx_t_1));
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "utils/training_sdg_inner.pyx":69
+  /* "utils/training_sdg_inner.pyx":70
  * cdef sscal_ptr sscal=<sscal_ptr>PyCObject_AsVoidPtr(fblas.sscal._cpointer) # x = alpha * x
  * 
  * cdef sgemm_ptr sgemm=<sgemm_ptr>PyCObject_AsVoidPtr(fblas.sgemm._cpointer) # float x = alpha * (A B) + beta * (x)             # <<<<<<<<<<<<<<
  * cdef dgemm_ptr dgemm=<dgemm_ptr>PyCObject_AsVoidPtr(fblas.sgemm._cpointer) # double x = alpha * (A B) + beta * (x)
  * 
- */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_fblas); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_sgemm); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 69, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_cpointer); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_5utils_18training_sdg_inner_sgemm = ((__pyx_t_5utils_18training_sdg_inner_sgemm_ptr)PyCObject_AsVoidPtr(__pyx_t_1));
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-  /* "utils/training_sdg_inner.pyx":70
- * 
- * cdef sgemm_ptr sgemm=<sgemm_ptr>PyCObject_AsVoidPtr(fblas.sgemm._cpointer) # float x = alpha * (A B) + beta * (x)
- * cdef dgemm_ptr dgemm=<dgemm_ptr>PyCObject_AsVoidPtr(fblas.sgemm._cpointer) # double x = alpha * (A B) + beta * (x)             # <<<<<<<<<<<<<<
- * 
- * cdef fast_sentence_sg_neg_ptr fast_sentence_sg_neg
  */
   __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_fblas); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -6570,10 +6617,28 @@ PyMODINIT_FUNC PyInit_training_sdg_inner(void)
   __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_cpointer); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_v_5utils_18training_sdg_inner_sgemm = ((__pyx_t_5utils_18training_sdg_inner_sgemm_ptr)PyCObject_AsVoidPtr(__pyx_t_1));
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "utils/training_sdg_inner.pyx":71
+ * 
+ * cdef sgemm_ptr sgemm=<sgemm_ptr>PyCObject_AsVoidPtr(fblas.sgemm._cpointer) # float x = alpha * (A B) + beta * (x)
+ * cdef dgemm_ptr dgemm=<dgemm_ptr>PyCObject_AsVoidPtr(fblas.sgemm._cpointer) # double x = alpha * (A B) + beta * (x)             # <<<<<<<<<<<<<<
+ * 
+ * cdef fast_context_sg_neg_ptr fast_context_sg_neg
+ */
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_fblas); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 71, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_sgemm); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 71, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_cpointer); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 71, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_5utils_18training_sdg_inner_dgemm = ((__pyx_t_5utils_18training_sdg_inner_dgemm_ptr)PyCObject_AsVoidPtr(__pyx_t_1));
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "utils/training_sdg_inner.pyx":80
+  /* "utils/training_sdg_inner.pyx":81
  * cdef REAL_t[EXP_TABLE_SIZE] EXP_TABLE
  * 
  * cdef int ONE = 1             # <<<<<<<<<<<<<<
@@ -6582,7 +6647,7 @@ PyMODINIT_FUNC PyInit_training_sdg_inner(void)
  */
   __pyx_v_5utils_18training_sdg_inner_ONE = 1;
 
-  /* "utils/training_sdg_inner.pyx":81
+  /* "utils/training_sdg_inner.pyx":82
  * 
  * cdef int ONE = 1
  * cdef REAL_t ONEF = <REAL_t>1.0             # <<<<<<<<<<<<<<
@@ -6591,7 +6656,7 @@ PyMODINIT_FUNC PyInit_training_sdg_inner(void)
  */
   __pyx_v_5utils_18training_sdg_inner_ONEF = ((__pyx_t_5utils_18training_sdg_inner_REAL_t)1.0);
 
-  /* "utils/training_sdg_inner.pyx":82
+  /* "utils/training_sdg_inner.pyx":83
  * cdef int ONE = 1
  * cdef REAL_t ONEF = <REAL_t>1.0
  * cdef REAL_t NONEF = <REAL_t>-1.0             # <<<<<<<<<<<<<<
@@ -6600,7 +6665,7 @@ PyMODINIT_FUNC PyInit_training_sdg_inner(void)
  */
   __pyx_v_5utils_18training_sdg_inner_NONEF = ((__pyx_t_5utils_18training_sdg_inner_REAL_t)-1.0);
 
-  /* "utils/training_sdg_inner.pyx":84
+  /* "utils/training_sdg_inner.pyx":85
  * cdef REAL_t NONEF = <REAL_t>-1.0
  * 
  * cdef REAL_t DECF = <REAL_t>0.05             # <<<<<<<<<<<<<<
@@ -6609,7 +6674,7 @@ PyMODINIT_FUNC PyInit_training_sdg_inner(void)
  */
   __pyx_v_5utils_18training_sdg_inner_DECF = ((__pyx_t_5utils_18training_sdg_inner_REAL_t)0.05);
 
-  /* "utils/training_sdg_inner.pyx":85
+  /* "utils/training_sdg_inner.pyx":86
  * 
  * cdef REAL_t DECF = <REAL_t>0.05
  * cdef REAL_t NDECF = <REAL_t>-0.05             # <<<<<<<<<<<<<<
@@ -6618,36 +6683,36 @@ PyMODINIT_FUNC PyInit_training_sdg_inner(void)
  */
   __pyx_v_5utils_18training_sdg_inner_NDECF = ((__pyx_t_5utils_18training_sdg_inner_REAL_t)-0.05);
 
-  /* "utils/training_sdg_inner.pyx":301
+  /* "utils/training_sdg_inner.pyx":306
  *         work[i] = clamp3(work[i], (_alpha*-1), _alpha)
  * 
- * def train_sentence_sg(py_node_embedding, py_negative_embedding, py_path, py_alpha, py_negative, py_window, py_table,             # <<<<<<<<<<<<<<
- *                       py_centroid, py_inv_covariance_mat, py_pi, py_k,
- *                       py_lambda1=1.0, py_lambda2=0.0, py_size=None, py_work=None, py_work_o3=None, py_work1_o3=None, py_work2_o3=None):
+ * def train_sg(py_node_embedding, py_negative_embedding, py_path, py_alpha, py_negative, py_window, py_table,             # <<<<<<<<<<<<<<
+ *              py_centroid, py_inv_covariance_mat, py_pi, py_k,
+ *              py_lambda1=1.0, py_lambda2=0.0, py_size=None, py_work=None, py_work_o3=None, py_work1_o3=None, py_work2_o3=None,
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5utils_18training_sdg_inner_1train_sentence_sg, NULL, __pyx_n_s_utils_training_sdg_inner); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 301, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5utils_18training_sdg_inner_1train_sg, NULL, __pyx_n_s_utils_training_sdg_inner); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 306, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_train_sentence_sg, __pyx_t_1) < 0) __PYX_ERR(0, 301, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_train_sg, __pyx_t_1) < 0) __PYX_ERR(0, 306, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "utils/training_sdg_inner.pyx":388
+  /* "utils/training_sdg_inner.pyx":396
  * 
  * 
  * def init():             # <<<<<<<<<<<<<<
  *     """
  *     Precompute function `sigmoid(x) = 1 / (1 + exp(-x))`, for x values discretized
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5utils_18training_sdg_inner_3init, NULL, __pyx_n_s_utils_training_sdg_inner); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 388, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5utils_18training_sdg_inner_3init, NULL, __pyx_n_s_utils_training_sdg_inner); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 396, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_init, __pyx_t_1) < 0) __PYX_ERR(0, 388, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_init, __pyx_t_1) < 0) __PYX_ERR(0, 396, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "utils/training_sdg_inner.pyx":422
+  /* "utils/training_sdg_inner.pyx":430
  *         return 1  # float
  * 
  * FAST_VERSION = init()  # initialize the module             # <<<<<<<<<<<<<<
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_init); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 422, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_init); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 430, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_2))) {
@@ -6660,14 +6725,14 @@ PyMODINIT_FUNC PyInit_training_sdg_inner(void)
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 422, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 430, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 422, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 430, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_FAST_VERSION, __pyx_t_1) < 0) __PYX_ERR(0, 422, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_FAST_VERSION, __pyx_t_1) < 0) __PYX_ERR(0, 430, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "utils/training_sdg_inner.pyx":1

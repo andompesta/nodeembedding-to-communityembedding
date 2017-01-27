@@ -27,7 +27,7 @@ ctypedef void (*sgemm_ptr) (char *transA, char *transB, int *m, int *n, int *k, 
 ctypedef void (*dgemm_ptr) (char *transA, char *transB, int *m, int *n, int *k, float *alpha, double *a, int *lda, double *b, int *ldb, float *beta, double *c, int *ldc) nogil
 
 
-ctypedef unsigned long long (*fast_sentence_sg_neg_ptr) (
+ctypedef unsigned long long (*fast_context_sg_neg_ptr) (
     const int negative,
     np.uint32_t *table,
     unsigned long long table_len,
@@ -39,7 +39,8 @@ ctypedef unsigned long long (*fast_sentence_sg_neg_ptr) (
     const REAL_t alpha,
     const REAL_t _lambda,
     REAL_t *work,
-    unsigned long long next_random
+    unsigned long long next_random,
+    const int is_node_embedding
     ) nogil
 
 
@@ -69,7 +70,7 @@ cdef sscal_ptr sscal=<sscal_ptr>PyCObject_AsVoidPtr(fblas.sscal._cpointer) # x =
 cdef sgemm_ptr sgemm=<sgemm_ptr>PyCObject_AsVoidPtr(fblas.sgemm._cpointer) # float x = alpha * (A B) + beta * (x)
 cdef dgemm_ptr dgemm=<dgemm_ptr>PyCObject_AsVoidPtr(fblas.sgemm._cpointer) # double x = alpha * (A B) + beta * (x)
 
-cdef fast_sentence_sg_neg_ptr fast_sentence_sg_neg
+cdef fast_context_sg_neg_ptr fast_context_sg_neg
 cdef fast_community_sdg_ptr fast_community_sdg
 
 DEF EXP_TABLE_SIZE = 1000
@@ -85,7 +86,7 @@ cdef REAL_t DECF = <REAL_t>0.05
 cdef REAL_t NDECF = <REAL_t>-0.05
 
 
-cdef unsigned long long fast_sentence0_sg_neg (
+cdef unsigned long long fast_context0_sg_neg (
         const int negative,
         np.uint32_t *table,
         unsigned long long table_len,
@@ -97,7 +98,8 @@ cdef unsigned long long fast_sentence0_sg_neg (
         const REAL_t alpha,
         const REAL_t _lambda,
         REAL_t *work,
-        unsigned long long next_random) nogil:
+        unsigned long long next_random,
+        const int is_node_embedding) nogil:
 
     cdef long long a
     cdef long long row1 = word2_index * size, row2
@@ -128,7 +130,8 @@ cdef unsigned long long fast_sentence0_sg_neg (
         gl = g * _lambda
 
         saxpy(&size, &g, &negative_embedding[row2], &ONE, work, &ONE) # work += g * negative_embeddings
-        saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE) # negative_embeddings += g * node_embedding
+        if is_node_embedding == 0:
+            saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE) # negative_embeddings += g * node_embedding
 
     saxpy(&size, &_lambda, work, &ONE, &node_embedding[row1], &ONE)  #node_embedding += _lambda * work
 
@@ -142,8 +145,8 @@ cdef unsigned long long fast_sentence0_sg_neg (
     return next_random
 
 
-cdef unsigned long long fast_sentence1_sg_neg(
-    const int negative,
+cdef unsigned long long fast_context1_sg_neg(
+        const int negative,
         np.uint32_t *table,
         unsigned long long table_len,
         REAL_t *node_embedding,
@@ -154,7 +157,8 @@ cdef unsigned long long fast_sentence1_sg_neg(
         const REAL_t alpha,
         const REAL_t _lambda,
         REAL_t *work,
-        unsigned long long next_random) nogil:
+        unsigned long long next_random,
+        const int is_node_embedding) nogil:
 
     cdef long long a
     cdef long long row1 = word2_index * size, row2
@@ -186,7 +190,8 @@ cdef unsigned long long fast_sentence1_sg_neg(
         gl = g * _lambda
 
         saxpy(&size, &g, &negative_embedding[row2], &ONE, work, &ONE)
-        saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)
+        if is_node_embedding == 0:
+            saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)
 
     saxpy(&size, &_lambda, work, &ONE, &node_embedding[row1], &ONE)
     return next_random
@@ -298,9 +303,10 @@ cdef void fast_community_sdg_1(
     for i in range(size):
         work[i] = clamp3(work[i], (_alpha*-1), _alpha)
 
-def train_sentence_sg(py_node_embedding, py_negative_embedding, py_path, py_alpha, py_negative, py_window, py_table,
-                      py_centroid, py_inv_covariance_mat, py_pi, py_k,
-                      py_lambda1=1.0, py_lambda2=0.0, py_size=None, py_work=None, py_work_o3=None, py_work1_o3=None, py_work2_o3=None):
+def train_sg(py_node_embedding, py_negative_embedding, py_path, py_alpha, py_negative, py_window, py_table,
+             py_centroid, py_inv_covariance_mat, py_pi, py_k,
+             py_lambda1=1.0, py_lambda2=0.0, py_size=None, py_work=None, py_work_o3=None, py_work1_o3=None, py_work2_o3=None,
+             py_is_node_embedding=1):
 
     cdef REAL_t *node_embedding = <REAL_t *>(np.PyArray_DATA(py_node_embedding))
     cdef REAL_t *negative_embedding = <REAL_t *>(np.PyArray_DATA(py_negative_embedding))
@@ -314,6 +320,7 @@ def train_sentence_sg(py_node_embedding, py_negative_embedding, py_path, py_alph
     cdef REAL_t *inv_covariance_mat = <REAL_t *>(np.PyArray_DATA(py_inv_covariance_mat))
     cdef REAL_t *pi = <REAL_t *>(np.PyArray_DATA(py_pi))
     cdef int _k = py_k
+    cdef int is_node_embedding = py_is_node_embedding
 
     cdef REAL_t _alpha = py_alpha
     cdef REAL_t _lambda1 = py_lambda1
@@ -378,9 +385,10 @@ def train_sentence_sg(py_node_embedding, py_negative_embedding, py_path, py_alph
                     fast_community_sdg(node_embedding, centroid, inv_covariance_mat, pi, _k, _alpha, _lambda2, size,
                                          indexes[j], work_o3, work1_o3, work2_o3)
                     #gradient O2/01
-                    next_random = fast_sentence_sg_neg(negative, table, table_len, node_embedding, negative_embedding,
-                                                       size, indexes[i], indexes[j], _alpha, _lambda1,  work, next_random)
-                    #node_embedding = node_embedding - comEmbedding
+                    next_random = fast_context_sg_neg(negative, table, table_len, node_embedding, negative_embedding,
+                                                       size, indexes[i], indexes[j], _alpha, _lambda1,  work, next_random,
+                                                       is_node_embedding)
+
                     saxpy(&size, &ONEF, work_o3, &ONE, &node_embedding[indexes[j] * size], &ONE)
     return result
 
@@ -391,7 +399,7 @@ def init():
     into table EXP_TABLE.
 
     """
-    global fast_sentence_sg_neg
+    global fast_context_sg_neg
     global fast_community_sdg
 
     cdef int i
@@ -411,11 +419,11 @@ def init():
     d_res = dsdot(&size, x, &ONE, y, &ONE)
     p_res = <float *>&d_res
     if (abs(d_res - expected) < 0.0001):
-        fast_sentence_sg_neg = fast_sentence0_sg_neg
+        fast_context_sg_neg = fast_context0_sg_neg
         fast_community_sdg = fast_community_sdg_1
         return 0  # double
     elif (abs(p_res[0] - expected) < 0.0001):
-        fast_sentence_sg_neg = fast_sentence1_sg_neg
+        fast_context_sg_neg = fast_context1_sg_neg
         fast_community_sdg = fast_community_sdg_1
         return 1  # float
 

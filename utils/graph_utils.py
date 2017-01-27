@@ -14,7 +14,7 @@ from os import path
 from collections import Counter
 import os.path
 
-logger = logging.getLogger("adsc")
+logger = logging.getLogger()
 
 
 def __random_walk__(G, path_length, alpha=0, rand=random.Random(), start=None):
@@ -86,7 +86,7 @@ def load_adjacencylist(file_, undirected=False, chunksize=10000):
 
     #read the matrix file
     t0 = time()
-    with open(file_) as f:
+    with open(file_, 'r') as f:
         with ProcessPoolExecutor(max_workers=cpu_count()) as executor:
             total = 0
             for idx, adj_chunk in enumerate(executor.map(parse_func, grouper(int(chunksize), f))): #execute pare_function on the adiacent list of the file in multipe process

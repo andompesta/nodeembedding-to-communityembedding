@@ -5,7 +5,7 @@ import time
 import threading
 from queue import Queue
 import numpy as np
-from utils.embedding import train_sentence_sg, chunkize_serial
+from utils.embedding import train_sg, chunkize_serial
 
 
 
@@ -35,7 +35,6 @@ class Context2Vec(object):
         """
         Update the model's neural weights from a sequence of paths (can be a once-only generator stream).
         """
-        np.random.seed(model.seed)
         logger.warning("training model with %i workers on %i vocabulary and %i features and 'negative sampling'=%s" %
                     (self.workers, len(model.vocab), model.layer1_size, self.negative))
 
@@ -68,10 +67,10 @@ class Context2Vec(object):
                 # how many words did we train on? out-of-vocabulary (unknown) words do not count
                 job_words = 0
                 if _lambda1 > 0:
-                    job_words = sum(train_sentence_sg(model.node_embedding, model.context_embedding, path, alpha, self.negative, self.window, model.table,
+                    job_words = sum(train_sg(model.node_embedding, model.context_embedding, path, alpha, self.negative, self.window, model.table,
                                                       py_centroid=model.centroid, py_inv_covariance_mat=model.inv_covariance_mat, py_pi=model.pi, py_k=model.k,
                                                       py_lambda1=_lambda1, py_lambda2=_lambda2, py_size=model.layer1_size,
-                                                      py_work=py_work, py_work_o3=py_work_o3, py_work1_o3=py_work1_o3, py_work2_o3=py_work2_o3) for path in job) #execute the sgd
+                                                      py_work=py_work, py_work_o3=py_work_o3, py_work1_o3=py_work1_o3, py_work2_o3=py_work2_o3, py_is_node_embedding=0) for path in job) #execute the sgd
 
                 with lock:
                     word_count[0] += job_words

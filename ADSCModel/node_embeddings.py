@@ -5,9 +5,9 @@ import time
 import threading
 from queue import Queue
 import numpy as np
-from utils.embedding import chunkize_serial, RepeatCorpusNTimes, train_sentence_sg
+from utils.embedding import chunkize_serial, RepeatCorpusNTimes, train_sg
 
-logger = logging.getLogger("adsc")
+logger = logging.getLogger()
 
 
 
@@ -19,19 +19,18 @@ class Node2Vec(object):
         self.negative = negative
 
 
-    def train(self, model, paths, _lambda2=0.0, total_words=None, word_count=0, chunksize=100, iter = 1):
+    def train(self, model, edges, _lambda2=0.0, total_node=None, word_count=0, chunksize=100, iter = 1):
         """
         Update the model's neural weights from a sequence of paths (can be a once-only generator stream).
         """
-        np.random.seed(model.seed)
         logger.info("training model with %i workers on %i vocabulary and %i features and 'negative sampling'=%s" %
                     (self.workers, len(model.vocab), model.layer1_size, self.negative))
 
         if not model.vocab:
             raise RuntimeError("you must first build vocabulary before training the model")
 
-        paths = RepeatCorpusNTimes(paths, iter)
-        total_words = paths.total_word
+        edges = RepeatCorpusNTimes(edges, iter)
+        total_node = edges.total_node
 
         start, next_report = time.time(), [1.0]
         word_count = [word_count]
@@ -52,12 +51,13 @@ class Node2Vec(object):
                 py_work1_o3 = np.zeros(model.layer1_size)
                 py_work2_o3 = np.zeros(model.layer1_size ** 2)
                 # update the learning rate before every job
-                alpha = max(self.min_alpha, self.alpha * (1 - 1.0 * word_count[0] / total_words))
+                alpha = max(self.min_alpha, self.alpha * (1 - 1.0 * word_count[0] / total_node))
                 # how many words did we train on? out-of-vocabulary (unknown) words do not count
-                job_words = sum(train_sentence_sg(model.node_embedding, model.node_embedding, path, alpha, self.negative, 1, model.table,
-                                               py_centroid=model.centroid, py_inv_covariance_mat=model.inv_covariance_mat, py_pi=model.pi, py_k=model.k,
-                                               py_lambda1=1.0, py_lambda2=_lambda2,
-                                               py_size=model.layer1_size, py_work=py_work, py_work_o3=py_work_o3, py_work1_o3=py_work1_o3, py_work2_o3=py_work2_o3) for path in job)
+                job_words = sum(train_sg(model.node_embedding, model.node_embedding, path, alpha, self.negative, 1, model.table,
+                                         py_centroid=model.centroid, py_inv_covariance_mat=model.inv_covariance_mat, py_pi=model.pi, py_k=model.k,
+                                         py_lambda1=1.0, py_lambda2=_lambda2,
+                                         py_size=model.layer1_size, py_work=py_work, py_work_o3=py_work_o3, py_work1_o3=py_work1_o3, py_work2_o3=py_work2_o3,
+                                         py_is_node_embedding=1) for path in job)
 
 
                 with lock:
@@ -65,7 +65,7 @@ class Node2Vec(object):
                     elapsed = time.time() - start
                     if elapsed >= next_report[0]:
                         logger.info("PROGRESS: at %.2f%% words, alpha %.05f, %.0f words/s" %
-                                    (100.0 * word_count[0] / total_words, alpha, word_count[0] / elapsed if elapsed else 0.0))
+                                    (100.0 * word_count[0] / total_node, alpha, word_count[0] / elapsed if elapsed else 0.0))
                         next_report[0] = elapsed + 1.0  # don't flood the log, wait at least a second between progress reports
 
 
@@ -76,9 +76,9 @@ class Node2Vec(object):
             thread.start()
 
         def prepare_sentences():
-            for path in paths:
+            for edge in edges:
                 # avoid calling random_sample() where prob >= 1, to speed things up a little:
-                sampled = [model.vocab[word] for word in path
+                sampled = [model.vocab[word] for word in edge
                            if word in model.vocab and (model.vocab[word].sample_probability >= 1.0 or model.vocab[word].sample_probability >= np.random.random_sample())]
                 yield sampled
 

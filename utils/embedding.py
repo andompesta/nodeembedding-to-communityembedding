@@ -7,17 +7,17 @@ from scipy.special import expit as sigmoid
 
 from ADSCModel.community_embeddings import community_sdg as community_sdg
 
-logger = logging.getLogger("adsc")
+logger = logging.getLogger()
 
 try:
-    # raise ImportError
-    from utils.training_sdg_inner import train_sentence_sg, FAST_VERSION
+    from utils.training_sdg_inner import train_sg, FAST_VERSION
     logging.info('Fast version ' + str(FAST_VERSION))
 except ImportError as e:
     logger.error(e)
-    def train_sentence_sg(py_node_embedding, py_context_embedding, py_path, py_alpha, py_negative, py_window, py_table,
+    def train_sg(py_node_embedding, py_context_embedding, py_path, py_alpha, py_negative, py_window, py_table,
                           py_centroid, py_inv_covariance_mat, py_pi, py_k,
-                          py_lambda1=1.0, py_lambda2=0.0, py_size=None, py_work=None, py_work_o3=None, py_work1_o3=None, py_work2_o3=None):
+                          py_lambda1=1.0, py_lambda2=0.0, py_size=None, py_work=None, py_work_o3=None, py_work1_o3=None, py_work2_o3=None,
+                          py_is_node_embedding=1):
         """
         Update skip-gram model by training on a single path.
 
@@ -26,7 +26,7 @@ except ImportError as e:
 
         This is the non-optimized, Python version.
         """
-        for pos, node in enumerate(py_path):  # node = input vertex of the sistem
+        for pos, node in enumerate(py_path):  # node = input vertex of the system
             if node is None:
                 continue  # OOV node in the input path => skip
 
@@ -60,7 +60,8 @@ except ImportError as e:
                     py_sgd1 = gradient_update(positive_node_embedding, negative_nodes_embedding, labels, py_alpha)
 
                     py_work += np.dot(py_sgd1, negative_nodes_embedding)
-                    py_context_embedding[word_indices] += np.outer(py_sgd1, positive_node_embedding) # Update context embeddings
+                    if py_is_node_embedding == 0:
+                        py_context_embedding[word_indices] += np.outer(py_sgd1, positive_node_embedding) # Update context embeddings, note sure if needed in first order
 
 
                     py_node_embedding[node2.index] += (py_lambda1 * py_work) + community_embedding # Update node embeddings
@@ -103,7 +104,7 @@ class RepeatCorpusNTimes():
     def __init__(self, corpus, n):
         self.corpus = corpus
         self.n = n
-        self.total_word = self.corpus.shape[0] * self.corpus.shape[1] * self.n
+        self.total_node = self.corpus.shape[0] * self.corpus.shape[1] * self.n
         self.total_examples = len(self.corpus) * self.n
 
     def __iter__(self):

@@ -3,7 +3,7 @@ import configparser
 import logging
 import os
 import random
-import sys
+import sklearn.mixture as mixture
 from multiprocessing import cpu_count
 
 
@@ -38,7 +38,7 @@ logger.setLevel(level)
 LOGFORMAT = "%(asctime).19s %(levelname)s %(filename)s: %(lineno)s %(message)s"
 
 prop = configparser.ConfigParser()
-prop.read('conf.ini')
+prop.read('../conf.ini')
 
 
 
@@ -54,13 +54,13 @@ def process_node(node_learner, model, edges, iter=1, lambda2=0.0):
 if __name__ == "__main__":
 
     #Reading the input parameters form the configuration files
-    number_walks = int(prop.get('MY', 'number_walks'))                      # number of walks for each node
-    walk_length = int(prop.get('MY', 'walk_length'))                        # length of each walk
-    window_size = int(prop.get('MY', 'window_size'))                        # windows size used to compute the context embedding
-    negative = int(prop.get('MY', 'negative'))                              # number of negative sample
-    representation_size = int(prop.get('MY', 'representation_size'))        # size of the embedding
-    num_workers = int(prop.get('MY', 'num_workers'))                        # number of thread
-    num_iter = int(prop.get('MY', 'num_iter'))                              # number of iteration
+    number_walks = prop.getint('MY', 'number_walks')                      # number of walks for each node
+    walk_length = prop.getint('MY', 'walk_length')                        # length of each walk
+    window_size = prop.getint('MY', 'window_size')                        # windows size used to compute the context embedding
+    negative = prop.getint('MY', 'negative')                              # number of negative sample
+    representation_size = prop.getint('MY', 'representation_size')        # size of the embedding
+    num_workers = prop.getint('MY', 'num_workers')                        # number of thread
+    num_iter = prop.getint('MY', 'num_iter')                              # number of iteration
 
     input_file = prop.get('MY', 'input_file_name')                          # name of the input file
     output_file = prop.get('MY', 'input_file_name')                         # name of the output file
@@ -69,18 +69,19 @@ if __name__ == "__main__":
     # lambda_2_val = float(prop.get('MY', 'lambda_2'))                        # beta parameter for O3
     # down_sample = float(prop.get('MY', 'down_sample'))
 
-    lambda_1_vals = [1, 0.1, 0.001, 0.0001]
-    lambda_2_vals = [1, 0.1, 0.001, 0.0001]
-    down_samples = [0, 0.1, 0.001, 0.0001]
+    # lambda_1_vals = [1, 0.1, 0.01, 0.001, 0.0001]
+    lambda_1_vals = [0.001, 0.0001]
+    lambda_2_vals = [1, 0.1, 0.01, 0.001, 0.0001]
+    down_samples = [0]
 
-    walks_filebase = 'data/' + output_file + ".walks"                       # where read/write the sampled path
+    walks_filebase = '../data/' + output_file + ".walks"                       # where read/write the sampled path
     sampling_path = prop.get('MY', 'sampling_path') == 'True'               # execute sampling of new walks
     pretraining = prop.get('MY', 'pretraining') == 'True'                   # execute pretraining
 
 
 
     #CONSTRUCT THE GRAPH
-    G = graph_utils.load_adjacencylist('data/' + input_file + '/' + input_file + '.adjlist', True)
+    G = graph_utils.load_adjacencylist('../data/' + input_file + '/' + input_file + '.adjlist', True)
     node_color = plot_utils.graph_plot(G=G, save=False, show=False)
 
     # Sampling the random walks for context
@@ -108,6 +109,7 @@ if __name__ == "__main__":
                       size=representation_size,
                       min_count=0,
                       table_size=1000000,
+                      path_labels='../data/',
                       input_file=input_file + '/' + input_file,
                       vocabulary_counts=vertex_counts,
                       downsampling=down_sample)
@@ -146,20 +148,42 @@ if __name__ == "__main__":
                 #   EMBEDDING LEARNING    #
                 ###########################
                 for it in range(num_iter):
+                    logging.info('\n_______________________________________\n')
                     if it == 0:
                         l2=0
                     else:
                         l2=lambda_2_val
-
-                    logging.info('\n_______________________________________\n')
                     process_node(node_learner, model, edges, iter=int(context_total_path/G.number_of_edges()), lambda2=l2)
                     process_context(cont_learner, model, graph_utils.combine_files_iter(walk_files), _lambda1=lambda_1_val,
                                     _lambda2=l2, total_nodes=context_total_path)
-                    Com2Vec.training(model, is_debug=False, plot=True)
 
-                    io_utils.save_embedding(model.node_embedding, file_name=output_file + "_comEmb" +
-                                                                            "_l1-"+str(lambda_1_val) +
-                                                                            "_l2-"+str(lambda_2_val) +
-                                                                            "_ds-"+str(down_sample) +
-                                                                            "_iter-"+str(it)
-                                            )
+                    # Com2Vec.training(model, reg_covar=0.000001, is_debug=False, plot=True)
+
+                    g = mixture.GaussianMixture(n_components=model.k, reg_covar=0.000001, covariance_type='diag', n_init=1)
+                    g.fit(model.node_embedding)
+
+                    diag_covars = []
+                    for covar in g.covariances_:
+                        diag = np.diag(covar)
+                        diag_covars.append(diag)
+
+                    model.centroid = np.float32(g.means_)
+                    model.covariance_mat = np.float32(diag_covars)
+                    model.inv_covariance_mat = np.float32(np.linalg.inv(diag_covars))
+                    model.pi = np.float32(g.predict_proba(model.node_embedding))
+                    model.predict_label = g.predict(model.node_embedding)
+                    model.node_color = node_color
+
+                    # plot_utils.node_space_plot_2D_elipsoid(model.node_embedding, node_color)
+
+                    # io_utils.save_embedding(model.node_embedding, path='../data', file_name=output_file + "_comEmb" +
+                    #                                                         "_l1-"+str(lambda_1_val) +
+                    #                                                         "_l2-"+str(lambda_2_val) +
+                    #                                                         "_ds-"+str(down_sample) +
+                    #                                                         "_iter-"+str(it))
+                    model.save(path='../data', file_name=output_file + "_comEmb" +
+                                                         "_l1-"+str(lambda_1_val) +
+                                                         "_l2-"+str(lambda_2_val) +
+                                                         "_ds-"+str(down_sample) +
+                                                         "_iter-"+str(it))
+

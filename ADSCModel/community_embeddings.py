@@ -21,12 +21,12 @@ def community_sdg(node_embedding, centroid, inv_covariance_mat, pi, k, _alpha, _
 
 
 
-def training(model, is_debug=False, plot=False):
+def training(model, reg_covar, is_debug=False, plot=False):
     '''
     Fit the GMM model with the current node embedding
     '''
     logger.debug("num community %d" % model.k)
-    g = mixture.GaussianMixture(n_components=model.k, covariance_type='diag', n_init=1)
+    g = mixture.GaussianMixture(n_components=model.k, reg_covar=reg_covar, covariance_type='diag', n_init=1)
 
     g.fit(model.node_embedding)
 
@@ -38,6 +38,8 @@ def training(model, is_debug=False, plot=False):
     model.centroid = np.float32(g.means_)
     model.inv_covariance_mat = np.float32(np.linalg.inv(diag_covars))
     model.pi = np.float32(g.predict_proba(model.node_embedding))
+
+    model.predict_label = g.predict(model.node_embedding)
 
     if is_debug:
         print('mean')

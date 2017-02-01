@@ -6,47 +6,55 @@ import logging
 logger = logging.getLogger("adsc")
 
 
-def community_sdg(node_embedding, centroid, inv_covariance_mat, pi, k, _alpha, _lambda2, index):
+class Community2Vec():
     '''
-      Perform stochastic gradient descent of the comunity embedding.
-      NOTE: using the cython implementation (fast_community_sdg_X) is much more fast
+    Class that train the community embedding
     '''
-    grad = np.zeros(node_embedding[index].shape, dtype=np.float32)
-    if _lambda2 > 0:
-        for com in range(k):
-            diff = (node_embedding[index] - centroid[com])
-            m = pi[index, com] * inv_covariance_mat[com]
-            grad += np.dot(m, diff) * _lambda2
-    return - np.clip((grad), -_alpha, _alpha)
+    def __init__(self, reg_covar=0, is_debug=False, plot=False, save_predict_labels=False):
+        '''
+        :param alpha: learning rate
+        :param window: windows size used to compute the context embeddings
+        :param workers: number of thread
+        :param min_alpha: min learning rate
+        :param negative: number of negative samples
+        :return:
+        '''
+
+        self.reg_covar = reg_covar
+        self.is_debug = is_debug
+        self.plot = plot
+        self.save_predict_labels = save_predict_labels
 
 
+    def train(self, model):
+        '''
+        Fit the GMM model with the current node embedding
+        '''
+        logger.debug("num community %d" % model.k)
+        g = mixture.GaussianMixture(n_components=model.k, reg_covar=self.reg_covar, covariance_type='diag', n_init=1)
 
-def training(model, reg_covar, is_debug=False, plot=False):
-    '''
-    Fit the GMM model with the current node embedding
-    '''
-    logger.debug("num community %d" % model.k)
-    g = mixture.GaussianMixture(n_components=model.k, reg_covar=reg_covar, covariance_type='diag', n_init=1)
+        g.fit(model.node_embedding)
 
-    g.fit(model.node_embedding)
+        diag_covars = []
+        for covar in g.covariances_:
+            diag = np.diag(covar)
+            diag_covars.append(diag)
 
-    diag_covars = []
-    for covar in g.covariances_:
-        diag = np.diag(covar)
-        diag_covars.append(diag)
+        model.centroid = np.float32(g.means_)
+        model.covariance_mat = np.float32(diag_covars)
+        model.inv_covariance_mat = np.linalg.inv(model.covariance_mat)
+        model.pi = np.float32(g.predict_proba(model.node_embedding))
 
-    model.centroid = np.float32(g.means_)
-    model.inv_covariance_mat = np.float32(np.linalg.inv(diag_covars))
-    model.pi = np.float32(g.predict_proba(model.node_embedding))
+        if self.save_predict_labels:
+            model.predict_label = g.predict(model.node_embedding)
 
-    model.predict_label = g.predict(model.node_embedding)
 
-    if is_debug:
-        print('mean')
-        print(model.centroid)
+        if self.is_debug:
+            print('mean')
+            print(model.centroid)
 
-        print('covar mtrix')
-        print(model.inv_covariance_mat)
+            print('covar mtrix')
+            print(model.inv_covariance_mat)
 
-    if plot:
-        model.predict_label = g.predict(model.node_embedding)
+        if self.plot:
+            model.predict_label = g.predict(model.node_embedding)

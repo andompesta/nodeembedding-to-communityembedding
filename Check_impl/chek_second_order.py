@@ -11,8 +11,7 @@ import psutil
 
 from ADSCModel.model import Model
 from ADSCModel.context_embeddings import Context2Vec
-from ADSCModel.node_embeddings import Node2Vec
-import ADSCModel.community_embeddings as Com2Vec
+from ADSCModel.community_embeddings import Community2Vec
 
 import utils.plot_utils as plot_utils
 import utils.graph_utils as graph_utils
@@ -54,7 +53,7 @@ if __name__ == "__main__":
     representation_size = prop.getint('MY', 'representation_size')        # size of the embedding
     num_workers = prop.getint('MY', 'num_workers')                        # number of thread
     num_iter = prop.getint('MY', 'num_iter')                              # number of iteration
-
+    reg_covar = prop.getfloat('MY', 'reg_covar')                          # regularization coefficient to ensure positive covar
     input_file = prop.get('MY', 'input_file_name')                          # name of the input file
     output_file = prop.get('MY', 'input_file_name')                         # name of the output file
 
@@ -99,6 +98,7 @@ if __name__ == "__main__":
 
     #Learning algorithm
     cont_learner = Context2Vec(window=window_size, workers=num_workers, negative=3)
+    comm_learner = Community2Vec(reg_covar=reg_covar)
 
     context_total_path = G.number_of_nodes() * number_walks * walk_length
     logger.debug("context_total_node: %d" % (context_total_path))
@@ -107,6 +107,6 @@ if __name__ == "__main__":
     edges = np.array(G.edges())
 
     process_context(cont_learner, model, graph_utils.combine_files_iter(walk_files), _lambda1=lambda_1_val,
-                    _lambda2=lambda_2_val, total_nodes=context_total_path)
+                    _lambda2=0, total_nodes=context_total_path)
 
-    plot_utils.node_space_plot_2D_elipsoid(model.node_embedding, node_color, grid=False)
+    # plot_utils.node_space_plot_2D_elipsoid(model.node_embedding, node_color, grid=False)

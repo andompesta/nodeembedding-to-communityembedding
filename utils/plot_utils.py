@@ -13,7 +13,6 @@ import math
 # plt.rc('ytick', labelsize=20)
 
 STARTING_NODE = 16
-
 def graph_plot(G, path="graph", graph_name='graph', nodes_color=None,save=True, show=True):
     spring_pos = nx.spring_layout(G)
 

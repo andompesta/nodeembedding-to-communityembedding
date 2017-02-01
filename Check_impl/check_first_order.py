@@ -34,7 +34,7 @@ logging.basicConfig(format=FORMAT, level=level)
 logger = logging.getLogger()
 
 prop = configparser.ConfigParser()
-prop.read('conf.ini')
+prop.read('../conf.ini')
 
 
 

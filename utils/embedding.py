@@ -4,8 +4,7 @@ import logging
 
 import numpy as np
 from scipy.special import expit as sigmoid
-
-from ADSCModel.community_embeddings import community_sdg as community_sdg
+from scipy.stats import multivariate_normal
 
 logger = logging.getLogger()
 
@@ -15,7 +14,7 @@ try:
 except ImportError as e:
     logger.error(e)
     def train_sg(py_node_embedding, py_context_embedding, py_path, py_alpha, py_negative, py_window, py_table,
-                          py_centroid, py_inv_covariance_mat, py_pi, py_k,
+                          py_centroid, py_inv_covariance_mat, py_pi, py_k, py_covariance_mat,
                           py_lambda1=1.0, py_lambda2=0.0, py_size=None, py_work=None, py_work_o3=None, py_work1_o3=None, py_work2_o3=None,
                           py_is_node_embedding=1):
         """
@@ -26,6 +25,7 @@ except ImportError as e:
 
         This is the non-optimized, Python version.
         """
+        loss = 0
         for pos, node in enumerate(py_path):  # node = input vertex of the system
             if node is None:
                 continue  # OOV node in the input path => skip
@@ -52,27 +52,57 @@ except ImportError as e:
                         if w != node.index and w != node2.index:
                             word_indices.append(w)
 
-                    # SDG 2
-                    community_embedding = community_sdg(py_node_embedding, py_centroid, py_inv_covariance_mat, py_pi, py_k, py_alpha, py_lambda2, node2.index )
+                    negative_nodes_embedding = py_context_embedding[word_indices]
 
                     # SGD 1
-                    negative_nodes_embedding = py_context_embedding[word_indices]
-                    py_sgd1 = gradient_update(positive_node_embedding, negative_nodes_embedding, labels, py_alpha)
-
+                    py_sgd1, partial_loss = gradient_update(positive_node_embedding, negative_nodes_embedding, labels, py_alpha)
                     py_work += np.dot(py_sgd1, negative_nodes_embedding)
+                    loss += (py_lambda1 * np.log(partial_loss[0]))
+
+                    # SDG 2
+                    community_embedding = 0
+                    if py_lambda2 > 0:
+                        py_sgd2, partial_comm_loss = community_sdg(py_node_embedding, py_centroid, py_inv_covariance_mat, py_pi,
+                                                                           py_k, py_alpha, py_lambda2, node2.index, py_covariance_mat)
+                        loss += py_lambda2 * np.log(partial_comm_loss)
+                        community_embedding = py_sgd2
+
                     if py_is_node_embedding == 0:
                         py_context_embedding[word_indices] += np.outer(py_sgd1, positive_node_embedding) # Update context embeddings, note sure if needed in first order
+                        loss += py_lambda1 * sum(np.log(partial_loss[1:]))
 
 
                     py_node_embedding[node2.index] += (py_lambda1 * py_work) + community_embedding # Update node embeddings
-        return len([word for word in py_path if word is not None])
+
+        return len([word for word in py_path if word is not None]), loss
 
 
     #sdg gradient update
     def gradient_update(positive_node_embedding, negative_nodes_embedding, neg_labels, _alpha):
+        '''
+          Perform stochastic gradient descent of the first and second order embedding.
+          NOTE: using the cython implementation (fast_community_sdg_X) is much more fast
+        '''
         fb = sigmoid(np.dot(positive_node_embedding, negative_nodes_embedding.T))  #  propagate hidden -> output
         gb = (neg_labels - fb) * _alpha# vector of error gradients multiplied by the learning rate
-        return gb
+        return gb, fb
+
+
+    def community_sdg(node_embedding, centroid, inv_covariance_mat, pi, k, _alpha, _lambda2, index, covariance_mat):
+        '''
+          Perform stochastic gradient descent of the community embedding.
+          NOTE: using the cython implementation (fast_community_sdg_X) is much more fast
+        '''
+        grad = np.zeros(node_embedding[index].shape, dtype=np.float32)
+        node_loss =  0
+        for com in range(k):
+            diff = (node_embedding[index] - centroid[com])
+            m = pi[index, com] * inv_covariance_mat[com]
+            grad += np.dot(m, diff) * _lambda2
+
+            node_loss += pi[index, com] * multivariate_normal.pdf(node_embedding[index], centroid[com], covariance_mat[com])
+
+        return - np.clip((grad), -_alpha, _alpha), node_loss
 
 
 def chunkize_serial(iterable, chunksize, as_numpy=False):

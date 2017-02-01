@@ -62,6 +62,7 @@ class Model(object):
         self.downsampling = downsampling
         self.seed = seed
         np.random.seed(self.seed)
+        self.loss = 0
 
         if size % 4 != 0:
             logger.warning("consider setting layer size to a multiple of 4 for greater performance")
@@ -131,6 +132,7 @@ class Model(object):
 
         self.context_embedding = np.zeros((len(self.vocab), self.layer1_size), dtype=np.float32)
         self.centroid = np.zeros((self.k, self.layer1_size), dtype=np.float32)
+        self.covariance_mat = np.zeros((self.k, self.layer1_size), dtype=np.float32)
         self.inv_covariance_mat = np.zeros((self.k, self.layer1_size), dtype=np.float32)
         self.pi = np.zeros(self.k, dtype=np.float32)
 
@@ -175,11 +177,11 @@ class Model(object):
         if not exists(path):
             makedirs(path)
 
-        with open(path + '/' + file_name + '.txt', 'wb') as file:
+        with open(path + '/' + file_name + '.bin', 'wb') as file:
             pickle.dump(self.__dict__, file)
 
     def load_model(self, path='data', file_name=None):
-        with open(path + '/' + file_name + '.txt', 'rb') as file:
+        with open(path + '/' + file_name + '.bin', 'rb') as file:
             self.__dict__ = pickle.load(file)
             logger.info('model loaded , size: %d \t table_size: %d \t down_sampling: %.5f \t communities %d' % (self.layer1_size, self.table_size, self.downsampling, self.k))
             return self

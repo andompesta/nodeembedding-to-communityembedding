@@ -68,6 +68,6 @@ def save(node_embedding, file_name, path='data'):
         pickle.dump(node_embedding, file)
 
 def load_model(file_name, path='data'):
-    with open(path + '/' + file_name + '.txt', 'rb') as file:
+    with open(path + '/' + file_name + '.bin', 'rb') as file:
         model = pickle.load(file)
         return model

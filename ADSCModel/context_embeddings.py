@@ -31,7 +31,7 @@ class Context2Vec(object):
         self.negative = negative
         self.window_size = int(window_size)
 
-    def train(self, model, paths, _lambda1=1.0, _lambda2=0.0, total_words=None, word_count=0, chunksize=100):
+    def train(self, model, paths, _lambda1=1.0, _lambda2=0.0, total_words=None, word_count=0, chunksize=500):
         """
         Update the model's neural weights from a sequence of paths (can be a once-only generator stream).
         """

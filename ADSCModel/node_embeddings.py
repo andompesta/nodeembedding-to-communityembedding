@@ -19,7 +19,7 @@ class Node2Vec(object):
         self.negative = negative
         self.window_size = 1
 
-    def train(self, model, edges, _lambda2=0.0, total_node=None, word_count=0, chunksize=100, iter = 1):
+    def train(self, model, edges, _lambda2=0.0, total_node=None, word_count=0, chunksize=500, iter = 1):
         """
         Update the model's neural weights from a sequence of paths (can be a once-only generator stream).
         """

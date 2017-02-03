@@ -8,7 +8,7 @@ from utils.embedding import Vocab
 from utils.IO_utils import load_ground_true
 
 
-logger = logging.getLogger()
+logger = logging.getLogger('adsc')
 
 class Model(object):
     '''

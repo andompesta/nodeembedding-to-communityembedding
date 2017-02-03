@@ -7,7 +7,7 @@ from queue import Queue
 import numpy as np
 from utils.embedding import chunkize_serial, RepeatCorpusNTimes, train_sg
 
-logger = logging.getLogger()
+logger = logging.getLogger('adsc')
 
 
 
@@ -34,7 +34,6 @@ class Node2Vec(object):
 
         start, next_report = time.time(), [1.0]
         word_count = [word_count]
-        loss = []
 
         #int(sum(v.count * v.sample_probability for v in self.vocab.values()))
         jobs = Queue(maxsize=2*self.workers)  # buffer ahead only a limited number of jobs.. this is the reason we can't simply use ThreadPool :(
@@ -55,34 +54,22 @@ class Node2Vec(object):
                 # update the learning rate before every job
                 alpha = max(self.min_alpha, self.alpha * (1 - 1.0 * word_count[0] / total_node))
                 # how many words did we train on? out-of-vocabulary (unknown) words do not count
-                job_words = 0
-                job_loss = 0
 
-                for path in job:
-                    words_path, loss_path = train_sg(model.node_embedding, model.node_embedding, path, alpha, self.negative, self.window_size, model.table,
-                                             py_centroid=model.centroid, py_inv_covariance_mat=model.inv_covariance_mat, py_pi=model.pi, py_k=model.k, py_covariance_mat=model.covariance_mat,
-                                             py_lambda1=1.0, py_lambda2=_lambda2,
-                                             py_size=model.layer1_size, py_work=py_work, py_work_o3=py_work_o3, py_work1_o3=py_work1_o3, py_work2_o3=py_work2_o3,
-                                             py_is_node_embedding=1)
-                    job_words += words_path
-                    job_loss += loss_path/(len(path) * ((self.window_size*2)-1))
 
-                # job_words = sum(train_sg(model.node_embedding, model.node_embedding, path, alpha, self.negative, self.window_size, model.table,
-                #                          py_centroid=model.centroid, py_inv_covariance_mat=model.inv_covariance_mat, py_pi=model.pi, py_k=model.k, py_covariance_mat=model.covariance_mat,
-                #                          py_lambda1=1.0, py_lambda2=_lambda2,
-                #                          py_size=model.layer1_size, py_work=py_work, py_work_o3=py_work_o3, py_work1_o3=py_work1_o3, py_work2_o3=py_work2_o3,
-                #                          py_is_node_embedding=1) for path in job)
+                job_words = sum(train_sg(model.node_embedding, model.node_embedding, path, alpha, self.negative, self.window_size, model.table,
+                                         py_centroid=model.centroid, py_inv_covariance_mat=model.inv_covariance_mat, py_pi=model.pi, py_k=model.k, py_covariance_mat=model.covariance_mat,
+                                         py_lambda1=1.0, py_lambda2=_lambda2,
+                                         py_size=model.layer1_size, py_work=py_work, py_work_o3=py_work_o3, py_work1_o3=py_work1_o3, py_work2_o3=py_work2_o3,
+                                         py_is_node_embedding=1) for path in job)
 
 
                 with lock:
                     word_count[0] += job_words
-                    loss.append(job_loss)
 
                     elapsed = time.time() - start
                     if elapsed >= next_report[0]:
                         logger.info("PROGRESS: at %.2f%% words, alpha %.05f, %.0f words/s" %
                                     (100.0 * word_count[0] / total_node, alpha, word_count[0] / elapsed if elapsed else 0.0))
-                        logger.info('loss: %f' % np.mean(loss))
                         next_report[0] = elapsed + 1.0  # don't flood the log, wait at least a second between progress reports
 
 
@@ -113,6 +100,3 @@ class Node2Vec(object):
         elapsed = time.time() - start
         logger.warning("training on %i words took %.1fs, %.0f words/s" %
                     (word_count[0], elapsed, word_count[0] / elapsed if elapsed else 0.0))
-        loss = np.mean(loss)
-        logging.info('LOSS: %f' % loss)
-        return loss

@@ -1,6 +1,5 @@
 __author__ = 'ando'
 import configparser
-import logging
 import os
 import random
 import sys
@@ -18,6 +17,10 @@ from ADSCModel.community_embeddings import Community2Vec
 import utils.IO_utils as io_utils
 import utils.graph_utils as graph_utils
 import utils.plot_utils as plot_utils
+import logging
+
+
+
 
 p = psutil.Process(os.getpid())
 try:
@@ -28,14 +31,12 @@ except AttributeError:
     except AttributeError:
         pass
 
-
 #Setting the logger parameters
-
+FORMAT = "%(levelname)s %(filename)s: %(lineno)s\t|\t%(message)s"
 level = logging.DEBUG
-logger = logging.getLogger("adsc")
+logger = logging.getLogger('adsc')
 logger.setLevel(level)
 
-LOGFORMAT = "%(asctime).19s %(levelname)s %(filename)s: %(lineno)s %(message)s"
 
 prop = configparser.ConfigParser()
 prop.read('conf.ini')
@@ -70,24 +71,29 @@ if __name__ == "__main__":
     # lambda_2_val = float(prop.get('MY', 'lambda_2'))                        # beta parameter for O3
     # down_sample = float(prop.get('MY', 'down_sample'))
 
-    lambda_1_vals = [1]
-    lambda_2_vals = [0.1]
-    down_samples = [0]
+    # lambda_1_vals = [1]
+    # lambda_2_vals = [0.1]
+    down_samples = [0, 0.001]
+
+    values = [(0.001, 0.1), (0.01, 0.1), (0.1, 0.1), (1, 0.1),
+              (0.1, 0.001), (0.1, 0.01), (0.1, 1)]
+
+    # values = [(1, 0.1), (0.1, 0.001), (0.1, 0.01), (0.1, 1)]
 
     walks_filebase = 'data/' + output_file + ".walks"                       # where read/write the sampled path
-    sampling_path = prop.get('MY', 'sampling_path') == 'True'               # execute sampling of new walks
-    pretraining = prop.get('MY', 'pretraining') == 'True'                   # execute pretraining
+    sampling_path = prop.getboolean('MY', 'sampling_path')                  # execute sampling of new walks
+    pretraining = prop.getboolean('MY', 'pretraining')                      # execute pretraining
 
 
 
     #CONSTRUCT THE GRAPH
     G = graph_utils.load_adjacencylist('data/' + input_file + '/' + input_file + '.adjlist', True)
-    node_color = plot_utils.graph_plot(G=G, save=False, show=False)
+    # node_color = plot_utils.graph_plot(G=G, save=False, show=False)
 
     # Sampling the random walks for context
     walk_files = None
     if sampling_path:
-        logger.debug("sampling the paths")
+        logger.info("sampling the paths")
         walk_files = graph_utils.write_walks_to_disk(G, walks_filebase,
                                                      num_paths=number_walks,
                                                      path_length=walk_length,
@@ -97,8 +103,15 @@ if __name__ == "__main__":
     else:
         walk_files = [walks_filebase + '.' + str(i) for i in range(number_walks)]
 
-    for down_sample in down_samples:
 
+
+    #Learning algorithm
+    node_learner = Node2Vec(workers=num_workers, negative=negative)
+    cont_learner = Context2Vec(window_size=window_size, workers=num_workers, negative=negative)
+    comm_learner = Community2Vec(reg_covar=reg_covar)
+
+
+    for down_sample in down_samples:
         vertex_counts = None
         if down_sample:
             vertex_counts = graph_utils.count_textfiles(walk_files, num_workers)
@@ -108,67 +121,51 @@ if __name__ == "__main__":
         model = Model(G=G,
                       size=representation_size,
                       min_count=0,
-                      table_size=1000000,
+                      table_size=5000000,
                       input_file=input_file + '/' + input_file,
                       vocabulary_counts=vertex_counts,
                       downsampling=down_sample)
 
-        #Learning algorithm
-        node_learner = Node2Vec(workers=num_workers, negative=negative)
-        cont_learner = Context2Vec(window_size=window_size, workers=num_workers, negative=negative)
-        comm_learner = Community2Vec(reg_covar=reg_covar)
 
         context_total_path = G.number_of_nodes() * number_walks * walk_length
         logger.debug("context_total_node: %d" % (context_total_path))
-
-        # Sampling edges for node embedding
         edges = np.array(G.edges())
 
-        #####################
-        #   INIT MODEL      #
-        #####################
 
-        # if pretraining:
-        #     logger.info("Pre-train the model")
-        #     process_node(node_learner, model,  edges, iter=int(context_total_path/G.number_of_edges()), lambda2=0.0)
-        #     process_context(cont_learner, model, graph_utils.combine_files_iter(walk_files), _lambda1=1.0, _lambda2=0.0, total_nodes=context_total_path)
-        #     model.save(file_name=output_file+'_comEmb_init')
-        #     io_utils.save_embedding(model.node_embedding, file_name=output_file+'_comEmb_init_nodeembedding')
-        # else:
-        #     model.load_model(file_name=output_file+'_comEmb_init')
+        if pretraining:
+            logger.info("Pre-train the model")
+            process_node(node_learner, model,  edges, iter=int(context_total_path/G.number_of_edges()), lambda2=0.0)
+            process_context(cont_learner, model, graph_utils.combine_files_iter(walk_files), _lambda1=1.0, _lambda2=0.0, total_nodes=context_total_path)
+            model.save(file_name=output_file+'_comEmb')
+
+        for lambda_1_val, lambda_2_val in values:
+            logger.info('\n_______________________________________\n')
+            logger.info('using down_sample: %.5f lambda 1:%.4f \t lambda 2:%.4f' % (down_sample, lambda_1_val, lambda_2_val))
+            model = model.load_model(path='data', file_name=output_file+'_comEmb')
+            logger.info('Number of community: %d' % model.k)
+
+            ###########################
+            #   EMBEDDING LEARNING    #
+            ###########################
+            for it in range(2):
+                logging.info('\n_______________________________________\n')
+                comm_learner.train(model)
+                process_node(node_learner, model, edges, iter=int(context_total_path/G.number_of_edges()), lambda2=lambda_2_val)
+                process_context(cont_learner, model, graph_utils.combine_files_iter(walk_files), _lambda1=lambda_1_val,
+                                _lambda2=lambda_2_val, total_nodes=context_total_path)
 
 
-        for lambda_1_val in lambda_1_vals:
-            for lambda_2_val in lambda_2_vals:
-                logger.info('\n_______________________________________\n')
-                logger.info('using down_sample: %.5f lambda 1:%.4f \t lambda 2:%.4f' % (down_sample, lambda_1_val, lambda_2_val))
 
-                ###########################
-                #   EMBEDDING LEARNING    #
-                ###########################
-                for it in range(num_iter):
-                    if it == 0:
-                        l2=0
-                    else:
-                        l2=lambda_2_val
+                io_utils.save_embedding(model.node_embedding, file_name=output_file + "_comEmb" +
+                                                                        "_l1-"+str(lambda_1_val) +
+                                                                        "_l2-"+str(lambda_2_val) +
+                                                                        "_ds-"+str(down_sample) +
+                                                                        "_it-"+str(it)
+                                        )
 
-                    logging.info('\n_______________________________________\n')
-                    loss_first = process_node(node_learner, model, edges, iter=int(context_total_path/G.number_of_edges()), lambda2=l2)
-                    loss_second = process_context(cont_learner, model, graph_utils.combine_files_iter(walk_files), _lambda1=lambda_1_val,
-                                    _lambda2=l2, total_nodes=context_total_path)
-
-                    comm_learner.train(model)
-                    model.loss = np.mean([loss_first, loss_second])
-                    logger.info('ITERATION: %d \t LOSS: %f' % (it, model.loss))
-
-                    io_utils.save_embedding(model.node_embedding, file_name=output_file + "_comEmb" +
-                                                                            "_l1-"+str(lambda_1_val) +
-                                                                            "_l2-"+str(lambda_2_val) +
-                                                                            "_ds-"+str(down_sample) +
-                                                                            "_iter-"+str(it)
-                                            )
-                    model.save(path='data', file_name=output_file + "_comEmb" +
-                                                      "_l1-"+str(lambda_1_val) +
-                                                      "_l2-"+str(lambda_2_val) +
-                                                      "_ds-"+str(down_sample) +
-                                                      "_iter-"+str(it))
+                model.save(path='data', file_name=output_file + "_comEmb" +
+                                                  "_l1-"+str(lambda_1_val) +
+                                                  "_l2-"+str(lambda_2_val) +
+                                                  "_ds-"+str(down_sample) +
+                                                  "_it-"+str(it)
+                           )

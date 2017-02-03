@@ -14,7 +14,7 @@ from os import path
 from collections import Counter
 import os.path
 
-logger = logging.getLogger()
+logger = logging.getLogger('adsc')
 
 
 def __random_walk__(G, path_length, alpha=0, rand=random.Random(), start=None):

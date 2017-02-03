@@ -304,7 +304,7 @@ cdef void fast_community_sdg_1(
         work[i] = clamp3(work[i], (_alpha*-1), _alpha)
 
 def train_sg(py_node_embedding, py_negative_embedding, py_path, py_alpha, py_negative, py_window, py_table,
-             py_centroid, py_inv_covariance_mat, py_pi, py_k,
+             py_centroid, py_inv_covariance_mat, py_pi, py_k, py_covariance_mat,
              py_lambda1=1.0, py_lambda2=0.0, py_size=None, py_work=None, py_work_o3=None, py_work1_o3=None, py_work2_o3=None,
              py_is_node_embedding=1):
 

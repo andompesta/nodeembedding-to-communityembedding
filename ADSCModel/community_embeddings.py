@@ -30,8 +30,8 @@ class Community2Vec():
         '''
         Fit the GMM model with the current node embedding
         '''
-        logger.debug("num community %d" % model.k)
-        g = mixture.GaussianMixture(n_components=model.k, reg_covar=self.reg_covar, covariance_type='diag', n_init=1)
+        logger.info("train community \t num community %d" % model.k)
+        g = mixture.GaussianMixture(n_components=model.k, reg_covar=self.reg_covar, covariance_type='diag')
 
         g.fit(model.node_embedding)
 
@@ -48,13 +48,8 @@ class Community2Vec():
         if self.save_predict_labels:
             model.predict_label = g.predict(model.node_embedding)
 
-
-        if self.is_debug:
-            print('mean')
-            print(model.centroid)
-
-            print('covar mtrix')
-            print(model.inv_covariance_mat)
+        # logger.debug('centroid')
+        # logger.debug(model.centroid)
 
         if self.plot:
             model.predict_label = g.predict(model.node_embedding)

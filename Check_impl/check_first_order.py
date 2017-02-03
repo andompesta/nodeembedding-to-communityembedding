@@ -45,7 +45,7 @@ def process_node(node_learner, model, edges, iter=1, lambda2=0.0):
 
 
 if __name__ == "__main__":
-
+    logger.info('init')
     #Reading the input parameters form the configuration files
     number_walks = prop.getint('MY', 'number_walks')                      # number of walks for each node
     walk_length = prop.getint('MY', 'walk_length')                        # length of each walk

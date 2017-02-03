@@ -6,7 +6,7 @@ import numpy as np
 from scipy.special import expit as sigmoid
 from scipy.stats import multivariate_normal
 
-logger = logging.getLogger()
+logger = logging.getLogger('adsc')
 
 try:
     from utils.training_sdg_inner import train_sg, FAST_VERSION

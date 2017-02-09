@@ -75,8 +75,7 @@ if __name__ == "__main__":
     # lambda_2_vals = [0.1]
     down_samples = [0.001, 0.00001]
 
-    values = [(0.001, 0.1), (0.01, 0.1), (0.1, 0.1), (1, 0.1),
-              (0.1, 0.001), (0.1, 0.01), (0.1, 1)]
+    values = [(0.1, 0.001), (0.1, 0.01), (0.1, 1)]
 
     # values = [(1, 0.1), (0.1, 0.001), (0.1, 0.01), (0.1, 1)]
 
@@ -147,12 +146,12 @@ if __name__ == "__main__":
             ###########################
             #   EMBEDDING LEARNING    #
             ###########################
-            for it in range(2):
+            for it in range(1):
                 logging.info('\n_______________________________________\n')
                 comm_learner.train(model)
                 process_node(node_learner, model, edges, iter=int(context_total_path/G.number_of_edges()), lambda2=lambda_2_val)
                 process_context(cont_learner, model, graph_utils.combine_files_iter(walk_files), _lambda1=lambda_1_val,
-                                _lambda2=lambda_2_val, total_nodes=context_total_path)
+                                _lambda2=0, total_nodes=context_total_path)
 
 
 

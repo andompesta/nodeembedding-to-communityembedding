@@ -25,15 +25,18 @@ if __name__ == '__main__':
     # prefix = 'my_'
     # prefix = 'line_'
     # prefix = 'node2vec'
-    seeds = [8, 45, 49, 51, 30, 42, 1, 3, 35, 24]
-
+    seeds = [10, 78, 20, 30, 31, 74, 45, 50, 51, 79]
     # seeds = range(100)
 
 
-    values = [ (0.1, 0.001), (1, 0.1), (0.1, 0.01), (0.1, 1),
+    values = [ (1, 0.1), (0.1, 0.001), (0.1, 0.01), (0.1, 1),
                (0.001, 0.1), (0.01, 0.1), (0.1, 0.1)]
-    C = [1]
-    dwon_sampling = [0.001]
+
+    values = [ (0.1, 0.001)]
+    C = [5, 1, 0.1, 0.01]
+
+    dwon_sampling = [0, 0.001]
+    iterations = [0]
     input_file = 'BlogCatalog'
 
     X = None
@@ -41,7 +44,7 @@ if __name__ == '__main__':
     for c in C:
         for ds in dwon_sampling:
             for lambda_1_val, lambda_2_val in values:
-                for it in [1]:
+                for it in iterations:
                     logger.info('\n_______________________________________\n')
                     logger.info('using c:%.2f \t l1:%.4f \tl2:%.4f ' % (c, lambda_1_val, lambda_2_val))
 
@@ -55,11 +58,11 @@ if __name__ == '__main__':
                     X = model_utils.load_embedding(path='data', file_name=file_name)
                     y = model_utils.load_ground_true(path='data', file_name=input_file + '/' + input_file)[0]
 
-                    # X = normalize(X)
+                    X = normalize(X)
                     # [print('node %d features %s' % (node_id, values)) for node_id, values in enumerate(X)]
                     # [print('node %d label %d' % (node_id, values)) for node_id, values in enumerate(y)]
 
-                    for ratio in np.arange(0.1, 0.3, 0.1):
+                    for ratio in np.arange(0.1, 1, 0.1):
                         avg_micro_f1 = []
                         avg_macro_f1 = []
                         for i, seed in enumerate(seeds):

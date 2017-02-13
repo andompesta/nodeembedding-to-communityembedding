@@ -111,8 +111,6 @@ if __name__ == "__main__":
 
     logger.info('\n_______________________________________\n')
     model = model.load_model(path='data', file_name=output_file+'_comEmb')
-    for v in model.vocab:
-        model.vocab[v].sample_probability = 1.0
 
     logger.info('Number of community: %d' % model.k)
     logger.debug('Number of edges: %d' % len(edges)*2)
@@ -123,6 +121,6 @@ if __name__ == "__main__":
     for it in range(1):
         logging.info('\n_______________________________________\n')
         comm_learner.train(model)
-        node_learner.train(model, edges=edges, iter=1, _lambda2=(1/model.k), _lambda1=0)
+        node_learner.train(model, edges=edges, iter=1, _lambda2=1.0, _lambda1=0)
         io_utils.save_embedding(model.node_embedding, file_name=output_file + "_comEmb_pipeline")
         model.save(path='data', file_name=output_file + "_comEmb_pipeline")

@@ -2546,22 +2546,22 @@ static void __pyx_f_5utils_18training_sdg_inner_fast_community_sdg_1(__pyx_t_5ut
  *     cdef long long row = word2_index * size, row_pi = word2_index * k, row_inv_covariance, row_centroid
  *     cdef int size_inv_covariance = size **2             # <<<<<<<<<<<<<<
  *     cdef int com_index, i, j
- *     cdef REAL_t _alpha = alpha
+ *     cdef REAL_t _alpha = alpha * 0.1
  */
   __pyx_v_size_inv_covariance = __Pyx_pow_long(((long)__pyx_v_size), 2);
 
   /* "utils/training_sdg_inner.pyx":273
  *     cdef int size_inv_covariance = size **2
  *     cdef int com_index, i, j
- *     cdef REAL_t _alpha = alpha             # <<<<<<<<<<<<<<
+ *     cdef REAL_t _alpha = alpha * 0.1             # <<<<<<<<<<<<<<
  *     cdef REAL_t _lambda2 = lambda2
  * 
  */
-  __pyx_v__alpha = __pyx_v_alpha;
+  __pyx_v__alpha = (__pyx_v_alpha * 0.1);
 
   /* "utils/training_sdg_inner.pyx":274
  *     cdef int com_index, i, j
- *     cdef REAL_t _alpha = alpha
+ *     cdef REAL_t _alpha = alpha * 0.1
  *     cdef REAL_t _lambda2 = lambda2             # <<<<<<<<<<<<<<
  * 
  *     memset(work, 0, size * cython.sizeof(REAL_t))

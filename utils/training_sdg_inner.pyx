@@ -270,7 +270,7 @@ cdef void fast_community_sdg_1(
     cdef long long row = word2_index * size, row_pi = word2_index * k, row_inv_covariance, row_centroid
     cdef int size_inv_covariance = size **2
     cdef int com_index, i, j
-    cdef REAL_t _alpha = alpha
+    cdef REAL_t _alpha = alpha * 0.1
     cdef REAL_t _lambda2 = lambda2
 
     memset(work, 0, size * cython.sizeof(REAL_t))

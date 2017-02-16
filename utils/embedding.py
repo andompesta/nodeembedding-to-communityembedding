@@ -102,7 +102,7 @@ except ImportError as e:
 
             node_loss += pi[index, com] * multivariate_normal.pdf(node_embedding[index], centroid[com], covariance_mat[com])
 
-        return - np.clip((grad), -_alpha, _alpha), node_loss
+        return - np.clip((grad), -0.1*_alpha, 0.1*_alpha), node_loss
 
 
 def chunkize_serial(iterable, chunksize, as_numpy=False):

@@ -36,9 +36,9 @@ if __name__ == '__main__':
 
     C = [1]
 
-    dwon_sampling = [0.001]
-    iterations = [0]
-    input_file = 'Flickr'
+    dwon_sampling = [0]
+    iterations = [0, 1]
+    input_file = 'BlogCatalog'
 
     X = None
     y = None
@@ -63,7 +63,7 @@ if __name__ == '__main__':
                     # [print('node %d features %s' % (node_id, values)) for node_id, values in enumerate(X)]
                     # [print('node %d label %d' % (node_id, values)) for node_id, values in enumerate(y)]
 
-                    for ratio in np.arange(0.9, 1, 0.01):
+                    for ratio in np.arange(0.1, 1, 0.1):
                         avg_micro_f1 = []
                         avg_macro_f1 = []
                         for i, seed in enumerate(seeds[input_file]):

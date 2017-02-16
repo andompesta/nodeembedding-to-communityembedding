@@ -31,7 +31,7 @@ class Community2Vec():
         Fit the GMM model with the current node embedding
         '''
         logger.info("train community \t num community %d" % model.k)
-        g = mixture.GaussianMixture(n_components=model.k, reg_covar=self.reg_covar, covariance_type='diag')
+        g = mixture.GaussianMixture(n_components=model.k, reg_covar=self.reg_covar, covariance_type='diag', n_init=20)
 
         g.fit(model.node_embedding)
 

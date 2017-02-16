@@ -15,6 +15,7 @@ if __name__ == '__main__':
     prefix = '_comEmb_pipeline'
     # prefix = 'line_'
     # prefix = 'node2vec'
+    # prefix = '_deepWalk'
 
     seeds = {'BlogCatalog': [10, 78, 20, 30, 31, 74, 45, 50, 51, 79],
              'PPI': [13, 18, 22, 26, 29, 30, 34, 36, 43, 50],
@@ -23,7 +24,7 @@ if __name__ == '__main__':
              'Wikipedia': [7, 22, 31, 53, 72, 98, 79],
              'Flickr' : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
              }
-    C = [1, 0.1, 0.01]
+    C = [1]
 
     input_file = 'Flickr'
 
@@ -37,11 +38,11 @@ if __name__ == '__main__':
         X = model_utils.load_embedding(path='data', file_name=file_name)
         y = model_utils.load_ground_true(path='data', file_name=input_file + '/' + input_file)[0]
 
-        X = normalize(X)
+        # X = normalize(X)
         # [print('node %d features %s' % (node_id, values)) for node_id, values in enumerate(X)]
         # [print('node %d label %d' % (node_id, values)) for node_id, values in enumerate(y)]
 
-        for ratio in np.arange(0.01, 0.1, 0.01):
+        for ratio in np.arange(0.9, 1, 0.01):
             avg_micro_f1 = []
             avg_macro_f1 = []
             for i, seed in enumerate(seeds[input_file]):

@@ -22,7 +22,7 @@ class Node2Vec(object):
         self.negative = negative
         self.window_size = 1
 
-    def train(self, model, edges, _lambda1=1.0, _lambda2=0.0, total_node=None, chunksize=500, iter = 1):
+    def train(self, model, edges, _lambda1=1.0, _lambda2=0.0, total_node=None, chunksize=150, iter = 1):
         """
         Update the model's neural weights from a sequence of paths (can be a once-only generator stream).
         """
@@ -35,7 +35,6 @@ class Node2Vec(object):
         edges = RepeatCorpusNTimes(edges, iter)
         total_node = edges.total_node
         logger.info('total edges: %d' % total_node)
-        logger.debug('TEST DEBUG')
         start, next_report, word_count = time.time(), [5.0], [0]
 
 
@@ -135,17 +134,12 @@ class Node2Vec(object):
             # logger.debug("putting job #%i in the queue, qsize=%i" % (job_no, jobs.qsize()))
             jobs.put(job)
 
-        logger.debug("reached the end of input; waiting to finish %i outstanding jobs" % jobs.qsize())
-        jobs.join()
-        logger.debug("reached the end of input; waiting to finish %i outstanding jobs" % jobs.qsize())
 
         for _ in range(self.workers):
             jobs.put(None)  # give the workers heads up that they can finish -- no more work!
-            logger.debug('put none')
 
         for thread in workers:
             thread.join()
-            logger.debug('thread join')
 
         elapsed = time.time() - start
         logger.warning("training on %i words took %.1fs, %.0f words/s" %

@@ -59,6 +59,20 @@ def load_embedding(file_name, path='data'):
             ret.append(node_values)
     return np.array(ret)
 
+def load_embedding_node2vec(file_name, path='data'):
+    ret = []
+    file_data = {}
+    with open(path + '/' + file_name + '.txt', 'r') as file:
+        for line in file:
+
+            tokens = line.strip().split(' ')
+            node_id = int(tokens.pop(0))
+            values = [float(token) for token in tokens]
+            file_data[node_id] = values
+
+    ret = [file_data[key] for key in sorted(file_data.keys())]
+    return np.array(ret)
+
 def load_embedding_graphRep(file_name, path='data'):
     embedding = sio.loadmat(path + '/' + file_name + '.mat')
     return embedding

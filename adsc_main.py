@@ -18,7 +18,7 @@ import utils.IO_utils as io_utils
 import utils.graph_utils as graph_utils
 import utils.plot_utils as plot_utils
 import logging
-
+import timeit
 
 
 
@@ -63,21 +63,22 @@ if __name__ == "__main__":
     num_workers = prop.getint('MY', 'num_workers')                        # number of thread
     num_iter = prop.getint('MY', 'num_iter')                              # number of iteration
     reg_covar = prop.getfloat('MY', 'reg_covar')                          # regularization coefficient to ensure positive covar
-
     input_file = prop.get('MY', 'input_file_name')                          # name of the input file
     output_file = prop.get('MY', 'input_file_name')                         # name of the output file
-
     # lambda_1_val = float(prop.get('MY', 'lambda_1'))                        # alpha parameter for O2
     # lambda_2_val = float(prop.get('MY', 'lambda_2'))                        # beta parameter for O3
     # down_sample = float(prop.get('MY', 'down_sample'))
 
     # lambda_1_vals = [1]
     # lambda_2_vals = [0.1]
-    down_samples = [0.001, 0.00001]
 
-    values = [(0.1, 0.001), (0.1, 0.01), (0.1, 1)]
+    down_samples = [0]
+    persentage = prop.get('MY', 'persentage')
 
-    # values = [(1, 0.1), (0.1, 0.001), (0.1, 0.01), (0.1, 1)]
+    # values = [(1, 1)]
+
+    values = [(1, 0.1), (0.1, 0.001), (0.1, 0.01), (0.1, 1),
+              (0.1, 0.1), (0.01, 0.1), (0.001, 0.1)]
 
     walks_filebase = 'data/' + output_file + ".walks"                       # where read/write the sampled path
     sampling_path = prop.getboolean('MY', 'sampling_path')                  # execute sampling of new walks
@@ -86,7 +87,7 @@ if __name__ == "__main__":
 
 
     #CONSTRUCT THE GRAPH
-    G = graph_utils.load_adjacencylist('data/' + input_file + '/' + input_file + '.adjlist', True)
+    G = graph_utils.load_adjacencylist('data/' + input_file + '/' + input_file + persentage + '.adjlist', True)
     # node_color = plot_utils.graph_plot(G=G, save=False, show=False)
 
     # Sampling the random walks for context
@@ -146,8 +147,9 @@ if __name__ == "__main__":
             ###########################
             #   EMBEDDING LEARNING    #
             ###########################
-            for it in range(1):
-                logging.info('\n_______________________________________\n')
+            for it in range(2):
+                logger.info('\n_______________________________________\n')
+                start_time = timeit.default_timer()
                 comm_learner.train(model)
                 process_node(node_learner, model, edges, iter=int(context_total_path/G.number_of_edges()), lambda2=lambda_2_val)
                 process_context(cont_learner, model, graph_utils.combine_files_iter(walk_files), _lambda1=lambda_1_val,
@@ -155,16 +157,17 @@ if __name__ == "__main__":
 
 
 
-                io_utils.save_embedding(model.node_embedding, file_name=output_file + "_comEmb" +
+                io_utils.save_embedding(model.node_embedding, file_name=output_file + persentage + "_comEmb" +
                                                                         "_l1-"+str(lambda_1_val) +
                                                                         "_l2-"+str(lambda_2_val) +
                                                                         "_ds-"+str(down_sample) +
                                                                         "_it-"+str(it)
                                         )
 
-                model.save(path='data', file_name=output_file + "_comEmb" +
+                model.save(path='data', file_name=output_file + persentage + "_comEmb" +
                                                   "_l1-"+str(lambda_1_val) +
                                                   "_l2-"+str(lambda_2_val) +
                                                   "_ds-"+str(down_sample) +
                                                   "_it-"+str(it)
                            )
+                logger.info('time: %.2fs' % (timeit.default_timer() - start_time))

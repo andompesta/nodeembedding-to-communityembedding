@@ -2,11 +2,12 @@ __author__ = 'ando'
 import sklearn.mixture as mixture
 import numpy as np
 import logging
+from scipy.stats import multivariate_normal
 
 logger = logging.getLogger("adsc")
 
 
-class Community2Vec():
+class Community2Vec(object):
     '''
     Class that train the community embedding
     '''
@@ -25,12 +26,31 @@ class Community2Vec():
         self.plot = plot
         self.save_predict_labels = save_predict_labels
 
+    def loss(self, model, lambda2):
+        ret_loss = 0
+        # mul_variats = [multivariate_normal(model.centroid[com], model.covariance_mat[com]) for com in range(model.k)]
+        for com in range(model.k):
+            rd = multivariate_normal(model.centroid[com], model.covariance_mat[com])
+            ret_loss += rd.pdf(model.node_embedding) * model.pi[:, com]
+        ret_loss = sum(np.log(ret_loss))
+        return ret_loss * (-lambda2/model.k)
+
+
+
+        # for pos, node_embedding in enumerate(model.node_embedding):
+        #     comm_loss = 0
+        #     for com in range(model.k):
+        #         pdf = multivariate_normal.pdf(node_embedding, model.centroid[com], model.covariance_mat[com])
+        #         comm_loss += model.pi[pos, com] * pdf
+        #     ret_loss += np.log(comm_loss)
+        # return ret_loss
+
 
     def train(self, model):
         '''
         Fit the GMM model with the current node embedding
         '''
-        logger.info("train community \t num community %d" % model.k)
+        print("train community \t num community %d" % model.k)
         g = mixture.GaussianMixture(n_components=model.k, reg_covar=self.reg_covar, covariance_type='diag', n_init=20)
 
         g.fit(model.node_embedding)

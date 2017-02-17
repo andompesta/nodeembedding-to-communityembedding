@@ -65,7 +65,7 @@ class Model(object):
         self.loss = 0
 
         if size % 4 != 0:
-            logger.warning("consider setting layer size to a multiple of 4 for greater performance")
+            print("consider setting layer size to a multiple of 4 for greater performance")
         self.layer1_size = int(size)
         self.table_size = table_size
 
@@ -112,7 +112,7 @@ class Model(object):
         '''
 
         if self.downsampling:
-            logger.info("frequent-word downsampling, threshold %g; progress tallies will be approximate" % (self.downsampling))
+            print("frequent-word downsampling, threshold %g; progress tallies will be approximate" % (self.downsampling))
             total_words = sum(v.count for v in self.vocab.values())
             threshold_count = float(self.downsampling) * total_words
 
@@ -132,9 +132,9 @@ class Model(object):
 
         self.context_embedding = np.zeros((len(self.vocab), self.layer1_size), dtype=np.float32)
         self.centroid = np.zeros((self.k, self.layer1_size), dtype=np.float32)
-        self.covariance_mat = np.zeros((self.k, self.layer1_size), dtype=np.float32)
-        self.inv_covariance_mat = np.zeros((self.k, self.layer1_size), dtype=np.float32)
-        self.pi = np.zeros(self.k, dtype=np.float32)
+        self.covariance_mat = np.zeros((self.k, self.layer1_size, self.layer1_size), dtype=np.float32)
+        self.inv_covariance_mat = np.zeros((self.k, self.layer1_size, self.layer1_size), dtype=np.float32)
+        self.pi = np.zeros((len(self.vocab), self.k), dtype=np.float32)
 
 
 
@@ -147,13 +147,13 @@ class Model(object):
         Called internally from `build_vocab()`.
 
         """
-        logger.info("constructing a table with noise distribution from %i words" % len(self.vocab))
+        print("constructing a table with noise distribution from %i words" % len(self.vocab))
         # table (= list of words) of noise distribution for negative sampling
         vocab_size = len(self.index2word)
         self.table = np.zeros(self.table_size, dtype=np.uint32)
 
         if not vocab_size:
-            logger.warning("empty vocabulary in word2vec, is this intended?")
+            print("empty vocabulary in word2vec, is this intended?")
             return
 
         # compute sum of all power (Z in paper)
@@ -183,5 +183,5 @@ class Model(object):
     def load_model(self, path='data', file_name=None):
         with open(path + '/' + file_name + '.bin', 'rb') as file:
             self.__dict__ = pickle.load(file)
-            logger.info('model loaded , size: %d \t table_size: %d \t down_sampling: %.5f \t communities %d' % (self.layer1_size, self.table_size, self.downsampling, self.k))
+            print('model loaded , size: %d \t table_size: %d \t down_sampling: %.5f \t communities %d' % (self.layer1_size, self.table_size, self.downsampling, self.k))
             return self

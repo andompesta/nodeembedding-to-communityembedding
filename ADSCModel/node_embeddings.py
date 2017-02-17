@@ -5,8 +5,9 @@ import time
 import threading
 from queue import Queue
 import numpy as np
-from utils.embedding import chunkize_serial, RepeatCorpusNTimes, train_sg
+from utils.embedding import chunkize_serial, RepeatCorpusNTimes, train_sg, prepare_sentences
 from itertools import islice, chain, zip_longest
+from scipy.special import expit as sigmoid
 level = logging.DEBUG
 logger = logging.getLogger('adsc')
 logger.setLevel(level)
@@ -22,11 +23,19 @@ class Node2Vec(object):
         self.negative = negative
         self.window_size = 1
 
+    def loss(self, model, edges):
+        ret_loss = 0
+        for edge in prepare_sentences(model, edges):
+            ret_loss -= np.log(sigmoid(np.dot(model.node_embedding[edge[1].index], model.node_embedding[edge[0].index].T)))
+        return ret_loss
+
+
+
     def train(self, model, edges, _lambda1=1.0, _lambda2=0.0, total_node=None, chunksize=150, iter = 1):
         """
         Update the model's neural weights from a sequence of paths (can be a once-only generator stream).
         """
-        logger.info("training model with %i workers on %i vocabulary and %i features and 'negative sampling'=%s" %
+        print("training model with %i workers on %i vocabulary and %i features and 'negative sampling'=%s" %
                     (self.workers, len(model.vocab), model.layer1_size, self.negative))
 
         if not model.vocab:
@@ -34,20 +43,13 @@ class Node2Vec(object):
 
         edges = RepeatCorpusNTimes(edges, iter)
         total_node = edges.total_node
-        logger.info('total edges: %d' % total_node)
+        print('total edges: %d' % total_node)
         start, next_report, word_count = time.time(), [5.0], [0]
 
 
         #int(sum(v.count * v.sample_probability for v in self.vocab.values()))
         jobs = Queue(maxsize=2*self.workers)  # buffer ahead only a limited number of jobs.. this is the reason we can't simply use ThreadPool :(
         lock = threading.Lock()
-
-        def prepare_sentences(paths):
-            for path in paths:
-                # avoid calling random_sample() where prob >= 1, to speed things up a little:
-                sampled = [model.vocab[node] for node in path
-                           if node in model.vocab and (model.vocab[node].sample_probability >= 1.0 or model.vocab[node].sample_probability >= np.random.random_sample())]
-                yield sampled
 
         def batch_generator(iterable, batch_size=1):
             args = [iterable] * batch_size
@@ -75,7 +77,7 @@ class Node2Vec(object):
         #     elapsed = time.time() - start
         #     if elapsed >= next_report[0]:
         #         word_count += job_words
-        #         logger.info("PROGRESS: at %.2f%% words, alpha %.05f, %.0f words/s" %
+        #         print("PROGRESS: at %.2f%% words, alpha %.05f, %.0f words/s" %
         #                     (100.0 * word_count / total_node, alpha, word_count / elapsed if elapsed else 0.0))
         #         next_report[0] = elapsed + 1.0  # don't flood the log, wait at least a second between progress reports
         #     return word_count
@@ -89,8 +91,8 @@ class Node2Vec(object):
             while True:
                 job = jobs.get(block=True)
                 if job is None:  # data finished, exit
-                    logger.debug('thread %s break' % threading.current_thread().name)
                     jobs.task_done()
+                    logger.debug('thread %s break' % threading.current_thread().name)
                     break
 
 
@@ -115,7 +117,7 @@ class Node2Vec(object):
 
                     elapsed = time.time() - start
                     if elapsed >= next_report[0]:
-                        logger.info("PROGRESS: at %.2f%% words\tword_computed %d\talpha %.05f\t %.0f words/s" %
+                        print("PROGRESS: at %.2f%% words\tword_computed %d\talpha %.05f\t %.0f words/s" %
                                     (100.0 * word_count[0] / total_node, word_count[0], alpha, word_count[0] / elapsed if elapsed else 0.0))
                         next_report[0] = elapsed + 5.0  # don't flood the log, wait at least a second between progress reports
                 finally:
@@ -130,7 +132,7 @@ class Node2Vec(object):
 
 
         # convert input strings to Vocab objects (eliding OOV/downsampled words), and start filling the jobs queue
-        for job_no, job in enumerate(batch_generator(prepare_sentences(edges), chunksize)):
+        for job_no, job in enumerate(batch_generator(prepare_sentences(model, edges), chunksize)):
             # logger.debug("putting job #%i in the queue, qsize=%i" % (job_no, jobs.qsize()))
             jobs.put(job)
 
@@ -142,5 +144,5 @@ class Node2Vec(object):
             thread.join()
 
         elapsed = time.time() - start
-        logger.warning("training on %i words took %.1fs, %.0f words/s" %
+        print("training on %i words took %.1fs, %.0f words/s" %
                     (word_count[0], elapsed, word_count[0]/ elapsed if elapsed else 0.0))

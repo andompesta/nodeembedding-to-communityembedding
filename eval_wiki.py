@@ -57,7 +57,7 @@ if __name__ == '__main__':
                                 '_ds-' + str(ds) + \
                                 '_it-' +str(it)
 
-                    logger.info('%s\t%f' %(file_name, c))
+                    print('%s\t%f' %(file_name, c))
 
                     X = model_utils.load_embedding(path='data', file_name=file_name)
                     y = model_utils.load_ground_true(path='data', file_name=input_file + '/' + input_file, multilabel=True)[0]
@@ -95,7 +95,7 @@ if __name__ == '__main__':
                                 macro_f1 = f1_score(y_test, y_pred, average='macro')
                                 avg_micro_f1.append(micro_f1)
                                 avg_macro_f1.append(macro_f1)
-                                logger.info('%d\t%f\t%f\t%f' % (i, 1-ratio, micro_f1, macro_f1))
+                                print('%d\t%f\t%f\t%f' % (i, 1-ratio, micro_f1, macro_f1))
 
-                            logger.info('%f\t%f\t%f' % (1-ratio, np.mean(avg_micro_f1), np.mean(avg_macro_f1)) )
+                            print('%f\t%f\t%f' % (1-ratio, np.mean(avg_micro_f1), np.mean(avg_macro_f1)) )
 

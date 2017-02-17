@@ -43,12 +43,12 @@ prop.read('../conf.ini')
 
 
 def process_context(context_learner, model, walks, _lambda1=1.0, _lambda2=0.1, total_nodes=None):
-    logger.info("Training context...")
+    print("Training context...")
     context_learner.train(model=model, paths=walks, _lambda1=_lambda1, _lambda2=(_lambda2/(model.k * cont_learner.window)), total_words=total_nodes)
 
 
 def process_node(node_learner, model, edges, iter=1, lambda2=0.0):
-    logger.info("Training node embedding...")
+    print("Training node embedding...")
     node_learner.train(model, edges=edges, iter=iter, _lambda2=(lambda2/model.k))
 
 if __name__ == "__main__":
@@ -130,7 +130,7 @@ if __name__ == "__main__":
         #####################
 
         # if pretraining:
-        #     logger.info("Pre-train the model")
+        #     print("Pre-train the model")
         #     process_node(node_learner, model,  edges, iter=int(context_total_path/G.number_of_edges()), lambda2=0.0)
         #     process_context(cont_learner, model, graph_utils.combine_files_iter(walk_files), _lambda1=1.0, _lambda2=0.0, total_nodes=context_total_path)
         #     model.save(file_name=output_file+'_comEmb_init')
@@ -141,8 +141,8 @@ if __name__ == "__main__":
 
         for lambda_1_val in lambda_1_vals:
             for lambda_2_val in lambda_2_vals:
-                logger.info('\n_______________________________________\n')
-                logger.info('using down_sample: %.5f lambda 1:%.4f \t lambda 2:%.4f' % (down_sample, lambda_1_val, lambda_2_val))
+                print('\n_______________________________________\n')
+                print('using down_sample: %.5f lambda 1:%.4f \t lambda 2:%.4f' % (down_sample, lambda_1_val, lambda_2_val))
 
                 ###########################
                 #   EMBEDDING LEARNING    #

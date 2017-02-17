@@ -160,7 +160,7 @@ def node_space_plot_2D_elipsoid(embedding, color_values, labels=None, means=None
     data = np.concatenate((embedding, nodes_id.reshape(len(nodes_id), 1)), axis=1)
 
     for node in data:
-        ax.scatter(node[0], node[1], c=color_values[node[2]-1], marker='o', s=100)
+        ax.scatter(node[0], node[1], c=color_values[int(node[2]-1)], marker='o', s=100)
         ax.text(node[0], node[1],  '%s' % (str(int(node[2]))), size=10)
 
 

@@ -35,11 +35,11 @@ if __name__ == '__main__':
     X = None
     y = None
     file_name = input_file + prefix
-    logger.info(file_name)
+    print(file_name)
 
     X = model_utils.load_embedding_graphRep(path='data', file_name=file_name)['res']
 
-    logger.info(X.shape)
+    print(X.shape)
 
     model_utils.save_embedding(X, file_name=file_name, path='data')
 

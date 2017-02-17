@@ -95,13 +95,13 @@ def load_adjacencylist(file_, undirected=False, chunksize=10000):
     t1 = time()
     adjlist = np.asarray(adjlist)
 
-    logger.info('Parsed {} edges with {} chunks in {}s'.format(total, idx, t1-t0))
+    print('Parsed {} edges with {} chunks in {}s'.format(total, idx, t1-t0))
 
     t0 = time()
     G = convert_func(adjlist)
     t1 = time()
 
-    logger.info('Converted edges to graph in {}s'.format(t1-t0))
+    print('Converted edges to graph in {}s'.format(t1-t0))
 
     if undirected:
         G = G.to_undirected()

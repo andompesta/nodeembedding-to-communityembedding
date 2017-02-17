@@ -10,9 +10,9 @@ logger = logging.getLogger('adsc')
 
 try:
     from utils.training_sdg_inner import train_sg, FAST_VERSION
-    logging.info('Fast version ' + str(FAST_VERSION))
+    print('Fast version ' + str(FAST_VERSION))
 except ImportError as e:
-    logger.error(e)
+    print(e)
     def train_sg(py_node_embedding, py_context_embedding, py_path, py_alpha, py_negative, py_window, py_table,
                           py_centroid, py_inv_covariance_mat, py_pi, py_k, py_covariance_mat,
                           py_lambda1=1.0, py_lambda2=0.0, py_size=None, py_work=None, py_work_o3=None, py_work1_o3=None, py_work2_o3=None,
@@ -25,7 +25,7 @@ except ImportError as e:
 
         This is the non-optimized, Python version.
         """
-        loss = 0
+        # loss = 0
         for pos, node in enumerate(py_path):  # node = input vertex of the system
             if node is None:
                 continue  # OOV node in the input path => skip
@@ -55,26 +55,22 @@ except ImportError as e:
                     negative_nodes_embedding = py_context_embedding[word_indices]
 
                     # SGD 1
-                    py_sgd1, partial_loss = gradient_update(positive_node_embedding, negative_nodes_embedding, labels, py_alpha)
+                    py_sgd1 = gradient_update(positive_node_embedding, negative_nodes_embedding, labels, py_alpha)
                     py_work += np.dot(py_sgd1, negative_nodes_embedding)
-                    loss += (py_lambda1 * np.log(partial_loss[0]))
 
                     # SDG 2
-                    community_embedding = 0
+                    community_embedding_sgd = 0
                     if py_lambda2 > 0:
-                        py_sgd2, partial_comm_loss = community_sdg(py_node_embedding, py_centroid, py_inv_covariance_mat, py_pi,
-                                                                           py_k, py_alpha, py_lambda2, node2.index, py_covariance_mat)
-                        loss += py_lambda2 * np.log(partial_comm_loss)
-                        community_embedding = py_sgd2
-
+                        community_embedding_sgd = community_sdg(py_node_embedding, py_centroid, py_inv_covariance_mat,
+                                                                py_pi,py_k, py_alpha, py_lambda2, node2.index, py_covariance_mat)
+                    # update context
                     if py_is_node_embedding == 0:
                         py_context_embedding[word_indices] += np.outer(py_sgd1, positive_node_embedding) # Update context embeddings, note sure if needed in first order
-                        loss += py_lambda1 * sum(np.log(partial_loss[1:]))
 
+                    # update node embedding
+                    py_node_embedding[node2.index] += (py_lambda1 * py_work) + community_embedding_sgd # Update node embeddings
 
-                    py_node_embedding[node2.index] += (py_lambda1 * py_work) + community_embedding # Update node embeddings
-
-        return len([word for word in py_path if word is not None]), loss
+        return len([word for word in py_path if word is not None])
 
 
     #sdg gradient update
@@ -85,7 +81,7 @@ except ImportError as e:
         '''
         fb = sigmoid(np.dot(positive_node_embedding, negative_nodes_embedding.T))  #  propagate hidden -> output
         gb = (neg_labels - fb) * _alpha# vector of error gradients multiplied by the learning rate
-        return gb, fb
+        return gb
 
 
     def community_sdg(node_embedding, centroid, inv_covariance_mat, pi, k, _alpha, _lambda2, index, covariance_mat):
@@ -94,15 +90,15 @@ except ImportError as e:
           NOTE: using the cython implementation (fast_community_sdg_X) is much more fast
         '''
         grad = np.zeros(node_embedding[index].shape, dtype=np.float32)
-        node_loss =  0
+        # node_loss =  0
         for com in range(k):
             diff = (node_embedding[index] - centroid[com])
             m = pi[index, com] * inv_covariance_mat[com]
             grad += np.dot(m, diff) * _lambda2
 
-            node_loss += pi[index, com] * multivariate_normal.pdf(node_embedding[index], centroid[com], covariance_mat[com])
-
-        return - np.clip((grad), -0.1*_alpha, 0.1*_alpha), node_loss
+        return - np.clip((grad), -0.1 * _alpha, 0.1 * _alpha)
+            # node_loss += pi[index, com] * np.log(multivariate_normal.pdf(node_embedding[index], centroid[com], covariance_mat[com]))
+        # return - np.clip((grad), -0.1*_alpha, 0.1*_alpha), node_loss
 
 
 def chunkize_serial(iterable, chunksize, as_numpy=False):
@@ -128,7 +124,12 @@ def chunkize_serial(iterable, chunksize, as_numpy=False):
         # memory opt: wrap the chunk and then pop(), to avoid leaving behind a dangling reference
         yield wrapped_chunk.pop()
 
-
+def prepare_sentences(model, paths):
+    for path in paths:
+        # avoid calling random_sample() where prob >= 1, to speed things up a little:
+        sampled = [model.vocab[word] for word in path
+                   if word in model.vocab and (model.vocab[word].sample_probability >= 1.0 or model.vocab[word].sample_probability >= np.random.random_sample())]
+        yield sampled
 
 class RepeatCorpusNTimes():
     def __init__(self, corpus, n):

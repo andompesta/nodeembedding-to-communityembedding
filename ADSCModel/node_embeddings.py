@@ -101,11 +101,11 @@ class Node2Vec(object):
                 py_work1_o3 = np.zeros(model.layer1_size)
                 py_work2_o3 = np.zeros(model.layer1_size ** 2)
                 # update the learning rate before every job
-                alpha = max(self.min_alpha, self.alpha * (1 - 1.0 * word_count[0] / total_node))
+                # alpha = max(self.min_alpha, self.alpha * (1 - 1.0 * word_count[0] / total_node))
                 # how many words did we train on? out-of-vocabulary (unknown) words do not count
 
 
-                job_words = sum(train_sg(model.node_embedding, model.node_embedding, path, alpha, self.negative, self.window_size, model.table,
+                job_words = sum(train_sg(model.node_embedding, model.node_embedding, path, self.alpha, self.negative, self.window_size, model.table,
                                          py_centroid=model.centroid, py_inv_covariance_mat=model.inv_covariance_mat, py_pi=model.pi, py_k=model.k, py_covariance_mat=model.covariance_mat,
                                          py_lambda1=_lambda1, py_lambda2=_lambda2,
                                          py_size=model.layer1_size, py_work=py_work, py_work_o3=py_work_o3, py_work1_o3=py_work1_o3, py_work2_o3=py_work2_o3,
@@ -118,7 +118,7 @@ class Node2Vec(object):
                     elapsed = time.time() - start
                     if elapsed >= next_report[0]:
                         print("PROGRESS: at %.2f%% words\tword_computed %d\talpha %.05f\t %.0f words/s" %
-                                    (100.0 * word_count[0] / total_node, word_count[0], alpha, word_count[0] / elapsed if elapsed else 0.0))
+                                    (100.0 * word_count[0] / total_node, word_count[0], self.alpha, word_count[0] / elapsed if elapsed else 0.0))
                         next_report[0] = elapsed + 5.0  # don't flood the log, wait at least a second between progress reports
                 finally:
                     lock.release()

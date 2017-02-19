@@ -2,13 +2,9 @@ __author__ = 'ando'
 import configparser
 import os
 import random
-import sys
 from multiprocessing import cpu_count
-
-
 import numpy as np
 import psutil
-
 from ADSCModel.model import Model
 from ADSCModel.context_embeddings import Context2Vec
 from ADSCModel.node_embeddings import Node2Vec
@@ -17,7 +13,7 @@ from ADSCModel.community_embeddings import Community2Vec
 import utils.IO_utils as io_utils
 import utils.graph_utils as graph_utils
 import utils.plot_utils as plot_utils
-import logging
+
 import timeit
 
 
@@ -31,25 +27,18 @@ except AttributeError:
     except AttributeError:
         pass
 
-#Setting the logger parameters
-FORMAT = "%(levelname)s %(filename)s: %(lineno)s\t|\t%(message)s"
-level = logging.DEBUG
-logger = logging.getLogger('adsc')
-logger.setLevel(level)
-
-
 prop = configparser.ConfigParser()
 prop.read('conf.ini')
 
 
 
-def process_context(context_learner, model, walks, _lambda1=1.0, _lambda2=0.1, total_nodes=None):
-    logger.info("Training context...")
-    return context_learner.train(model=model, paths=walks, _lambda1=_lambda1, _lambda2=(_lambda2/(model.k * cont_learner.window_size)), total_words=total_nodes)
+def process_context(context_learner, model, walks, total_nodes, _lambda1=1.0, _lambda2=0.1):
+    print("Training context...")
+    return context_learner.train(model=model, paths=walks, total_words=total_nodes, _lambda1=_lambda1, _lambda2=(_lambda2/(model.k * cont_learner.window_size)))
 
 
 def process_node(node_learner, model, edges, iter=1, lambda2=0.0):
-    logger.info("Training node embedding...")
+    print("Training node embedding...")
     return node_learner.train(model, edges=edges, iter=iter, _lambda2=(lambda2/model.k))
 
 if __name__ == "__main__":
@@ -93,7 +82,7 @@ if __name__ == "__main__":
     # Sampling the random walks for context
     walk_files = None
     if sampling_path:
-        logger.info("sampling the paths")
+        print("sampling the paths")
         walk_files = graph_utils.write_walks_to_disk(G, walks_filebase,
                                                      num_paths=number_walks,
                                                      path_length=walk_length,
@@ -133,22 +122,22 @@ if __name__ == "__main__":
 
 
         if pretraining:
-            logger.info("Pre-train the model")
+            print("Pre-train the model")
             process_node(node_learner, model,  edges, iter=int(context_total_path/G.number_of_edges()), lambda2=0.0)
             process_context(cont_learner, model, graph_utils.combine_files_iter(walk_files), _lambda1=1.0, _lambda2=0.0, total_nodes=context_total_path)
             model.save(file_name=output_file+'_comEmb')
 
         for lambda_1_val, lambda_2_val in values:
-            logger.info('\n_______________________________________\n')
-            logger.info('using down_sample: %.5f lambda 1:%.4f \t lambda 2:%.4f' % (down_sample, lambda_1_val, lambda_2_val))
+            print('\n_______________________________________\n')
+            print('using down_sample: %.5f lambda 1:%.4f \t lambda 2:%.4f' % (down_sample, lambda_1_val, lambda_2_val))
             model = model.load_model(path='data', file_name=output_file+'_comEmb')
-            logger.info('Number of community: %d' % model.k)
+            print('Number of community: %d' % model.k)
 
             ###########################
             #   EMBEDDING LEARNING    #
             ###########################
             for it in range(2):
-                logger.info('\n_______________________________________\n')
+                print('\n_______________________________________\n')
                 start_time = timeit.default_timer()
                 comm_learner.train(model)
                 process_node(node_learner, model, edges, iter=int(context_total_path/G.number_of_edges()), lambda2=lambda_2_val)
@@ -170,4 +159,4 @@ if __name__ == "__main__":
                                                   "_ds-"+str(down_sample) +
                                                   "_it-"+str(it)
                            )
-                logger.info('time: %.2fs' % (timeit.default_timer() - start_time))
+                print('time: %.2fs' % (timeit.default_timer() - start_time))

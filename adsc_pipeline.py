@@ -43,13 +43,13 @@ prop.read('conf.ini')
 
 
 
-def process_context(context_learner, model, walks, _lambda1=1.0, _lambda2=0.1, total_nodes=None):
-    logger.info("Training context...")
-    return context_learner.train(model=model, paths=walks, _lambda1=_lambda1, _lambda2=(_lambda2/(model.k * cont_learner.window_size)), total_words=total_nodes)
+def process_context(context_learner, model, walks, total_nodes, _lambda1=1.0, _lambda2=0.1):
+    print("Training context...")
+    return context_learner.train(model=model, paths=walks, total_words=total_nodes, _lambda1=_lambda1, _lambda2=(_lambda2/(model.k * cont_learner.window_size)))
 
 
 def process_node(node_learner, model, edges, iter=1, lambda2=0.0):
-    logger.info("Training node embedding...")
+    print("Training node embedding...")
     return node_learner.train(model, edges=edges, iter=iter, _lambda2=(lambda2/model.k))
 
 if __name__ == "__main__":
@@ -105,14 +105,14 @@ if __name__ == "__main__":
 
 
     context_total_path = G.number_of_nodes() * number_walks * walk_length
-    logger.info("context_total_node: %d" % (context_total_path))
+    print("context_total_node: %d" % (context_total_path))
     edges = np.array(G.edges())
 
 
-    logger.info('\n_______________________________________\n')
+    print('\n_______________________________________\n')
     model = model.load_model(path='data', file_name=output_file+'_comEmb')
 
-    logger.info('Number of community: %d' % model.k)
+    print('Number of community: %d' % model.k)
     logger.debug('Number of edges: %d' % len(edges)*2)
 
     ###########################

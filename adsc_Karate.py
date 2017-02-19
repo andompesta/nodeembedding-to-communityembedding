@@ -2,7 +2,6 @@ __author__ = 'ando'
 import configparser
 import os
 import random
-import sys
 from multiprocessing import cpu_count
 
 
@@ -14,10 +13,8 @@ from ADSCModel.context_embeddings import Context2Vec
 from ADSCModel.node_embeddings import Node2Vec
 from ADSCModel.community_embeddings import Community2Vec
 
-import utils.IO_utils as io_utils
 import utils.graph_utils as graph_utils
 import utils.plot_utils as plot_utils
-import logging
 import timeit
 
 
@@ -31,20 +28,14 @@ except AttributeError:
     except AttributeError:
         pass
 
-#Setting the logger parameters
-level = logging.INFO
-logger = logging.getLogger()
-logger.setLevel(level)
-
-
 prop = configparser.ConfigParser()
 prop.read('conf.ini')
 
 
 
-def process_context(context_learner, model, walks, _lambda1=1.0, _lambda2=0.1, total_nodes=None):
+def process_context(context_learner, model, walks, total_nodes, _lambda1=1.0, _lambda2=0.1):
     print("Training context...")
-    return context_learner.train(model=model, paths=walks, _lambda1=_lambda1, _lambda2=(_lambda2/(model.k * cont_learner.window_size)), total_words=total_nodes)
+    return context_learner.train(model=model, paths=walks, total_words=total_nodes, _lambda1=_lambda1, _lambda2=(_lambda2/(model.k * cont_learner.window_size)))
 
 
 def process_node(node_learner, model, edges, iter=1, lambda2=0.0):
@@ -66,7 +57,7 @@ if __name__ == "__main__":
     output_file = 'karate'                         # name of the output file
 
     lambda_1_val = 1
-    lambda_2_val = 0.001
+    lambda_2_val = 0.0005
 
     walks_filebase = 'data/' + output_file + ".walks"                       # where read/write the sampled path
     sampling_path = prop.getboolean('MY', 'sampling_path')                  # execute sampling of new walks
@@ -109,19 +100,12 @@ if __name__ == "__main__":
                   vocabulary_counts=vertex_counts,
                   downsampling=0)
 
-    # randomize the first iteration
-    model.context_embedding = np.random.uniform(low=-1, high=1, size=model.context_embedding.shape)
-    # comm_learner.train(model)
-    model.centroid = np.random.uniform(low=-0.5, high=0.5, size=model.centroid.shape)
-    for c_mat in model.covariance_mat:
-        np.fill_diagonal(c_mat, np.random.uniform(low=0.0001, high=1, size=(representation_size)))
-    model.inv_covariance_mat = np.linalg.inv(model.covariance_mat)
-    model.pi = np.random.uniform(low=0, high=1, size=model.pi.shape)
+    model.node_color = node_color
 
     context_total_path = G.number_of_nodes() * number_walks * walk_length
-    logger.debug("context_total_node: %d" % (context_total_path))
     edges = np.array(G.edges())
-
+    print("context_total_path: %d" % (context_total_path))
+    print('node total edges: %d' % G.number_of_edges())
 
     print('\n_______________________________________\n')
     print('using lambda 1:%.4f \t lambda 2:%.4f' % (lambda_1_val, lambda_2_val))
@@ -130,24 +114,27 @@ if __name__ == "__main__":
     ###########################
     #   EMBEDDING LEARNING    #
     ###########################
-    for it in range(10):
+    for it in range(num_iter):
         print('\n_______________________________________\n')
-        o1_loss = node_learner.loss(model, edges)
-        o2_loss = cont_learner.loss(model, graph_utils.combine_files_iter(walk_files), 1)
-        o3_loss = comm_learner.loss(model, 1)
-
-        print(o1_loss)
-        print(o2_loss)
-        print(o3_loss)
-
         start_time = timeit.default_timer()
+        if it == 0:
+            process_node(node_learner, model, edges, iter=int(context_total_path/G.number_of_edges()), lambda2=0)
+        else:
+            process_node(node_learner, model, edges, iter=int(context_total_path / G.number_of_edges()),
+                         lambda2=lambda_2_val)
 
-        process_node(node_learner, model, edges, iter=int(context_total_path/G.number_of_edges()), lambda2=lambda_2_val)
-        process_context(cont_learner, model, graph_utils.combine_files_iter(walk_files), _lambda1=lambda_1_val,
-                        _lambda2=0, total_nodes=context_total_path)
+        process_context(cont_learner, model, graph_utils.combine_files_iter(walk_files), total_nodes=context_total_path,
+                        _lambda1=lambda_1_val, _lambda2=0)
+
         comm_learner.train(model)
 
+        plot_utils.node_space_plot_2D_elipsoid(model.node_embedding, node_color, means=model.centroid,
+                                               covariances=model.covariance_mat)
 
-        plot_utils.node_space_plot_2D_elipsoid(model.node_embedding, node_color)
+        model.save(path='data', file_name=output_file + "_comEmb" +
+                                          "_l1-" + str(lambda_1_val) +
+                                          "_l2-" + str(lambda_2_val) +
+                                          "_ds-" + str(0) +
+                                          "_it-" + str(it))
 
         print('time: %.2fs' % (timeit.default_timer() - start_time))

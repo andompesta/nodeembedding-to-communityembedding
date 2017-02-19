@@ -127,7 +127,7 @@ class Context2Vec(object):
         # return loss[0]
 
 
-    def train(self, model, paths, _lambda1=1.0, _lambda2=0.0, total_words=None, word_count=0, chunksize=150):
+    def train(self, model, paths, total_words, _lambda1=1.0, _lambda2=0.0, word_count=0, chunksize=150):
         """
         Update the model's neural weights from a sequence of paths (can be a once-only generator stream).
         """
@@ -159,7 +159,7 @@ class Context2Vec(object):
                 py_work1_o3 = np.zeros(model.layer1_size, dtype=np.float32)
                 py_work2_o3 = np.zeros(model.layer1_size ** 2, dtype=np.float32)
                 # update the learning rate before every job
-                alpha = max(self.min_alpha, self.alpha * (1 - 1.0 * word_count[0] / total_words))
+                # alpha = max(self.min_alpha, self.alpha * (1 - 1.0 * word_count[0] / total_words))
                 # how many words did we train on? out-of-vocabulary (unknown) words do not count
 
                 if _lambda1 > 0:
@@ -172,7 +172,7 @@ class Context2Vec(object):
                     #     job_words += words_done
                     #     job_loss += loss_path
 
-                    job_words = sum(train_sg(model.node_embedding, model.context_embedding, path, alpha, self.negative, self.window_size, model.table,
+                    job_words = sum(train_sg(model.node_embedding, model.context_embedding, path, self.alpha, self.negative, self.window_size, model.table,
                                                   py_centroid=model.centroid, py_inv_covariance_mat=model.inv_covariance_mat, py_pi=model.pi, py_k=model.k, py_covariance_mat=model.covariance_mat,
                                                   py_lambda1=_lambda1, py_lambda2=_lambda2, py_size=model.layer1_size,
                                                   py_work=py_work, py_work_o3=py_work_o3, py_work1_o3=py_work1_o3, py_work2_o3=py_work2_o3, py_is_node_embedding=0) for path in job) #execute the sgd
@@ -184,7 +184,7 @@ class Context2Vec(object):
                     elapsed = time.time() - start
                     if elapsed >= next_report[0]:
                         print("PROGRESS: at %.2f%% words, alpha %.05f, %.0f words/s" %
-                                    (100.0 * word_count[0] / total_words, alpha, word_count[0] / elapsed if elapsed else 0.0))
+                                    (100.0 * word_count[0] / total_words, self.alpha, word_count[0] / elapsed if elapsed else 0.0))
                         next_report[0] = elapsed + 1.0  # don't flood the log, wait at least a second between progress reports
 
         workers = [threading.Thread(target=worker_train) for _ in range(self.workers)]

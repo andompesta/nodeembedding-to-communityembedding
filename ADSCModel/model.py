@@ -180,8 +180,10 @@ class Model(object):
         with open(path + '/' + file_name + '.bin', 'wb') as file:
             pickle.dump(self.__dict__, file)
 
-    def load_model(self, path='data', file_name=None):
+    @staticmethod
+    def load_model(path='data', file_name=None):
         with open(path + '/' + file_name + '.bin', 'rb') as file:
-            self.__dict__ = pickle.load(file)
-            print('model loaded , size: %d \t table_size: %d \t down_sampling: %.5f \t communities %d' % (self.layer1_size, self.table_size, self.downsampling, self.k))
-            return self
+            model = Model()
+            model.__dict__ = pickle.load(file)
+            print('model loaded , size: %d \t table_size: %d \t down_sampling: %.5f \t communities %d' % (model.layer1_size, model.table_size, model.downsampling, model.k))
+            return model

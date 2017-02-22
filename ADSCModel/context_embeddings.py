@@ -8,35 +8,25 @@ import numpy as np
 from utils.embedding import train_sg, chunkize_serial, prepare_sentences
 from scipy.special import expit as sigmoid
 
-try:
-    raise(ImportError)
-    from utils.loss_inner import o2_loss, FAST_VERSION
-    print('Fast version ' + str(FAST_VERSION))
-except ImportError as e:
-    print(e)
-    def o2_loss(node_embedding, py_negative_embedding, py_path, py_negative, py_window, py_table, py_lambda=1.0, py_size=None):
-        ret_loss = 0
-        for pos, node in enumerate(py_path):  # node = input vertex of the system
-            if node is None:
-                continue  # OOV node in the input path => skip
+def o2_loss(node_embedding, py_negative_embedding, py_path, py_negative, py_window, py_table, py_lambda=1.0, py_size=None):
+    ret_loss = 0
+    for pos, node in enumerate(py_path):  # node = input vertex of the system
+        if node is None:
+            continue  # OOV node in the input path => skip
+        labels = 1.0  # frist node come from the path, the other not
 
-            # labels = np.zeros(py_negative + 1)
-            labels = 1.0  # frist node come from the path, the other not (lable[1:]=0)
-
-            start = max(0, pos - py_window)
-            # now go over all words from the (reduced) window, predicting each one in turn
-            for pos2, node2 in enumerate(py_path[start: pos + py_window + 1],
-                                         start):  # node 2 are the output nodes predicted form node
-                # don't train on OOV words and on the `word` itself
-                if node2 and not (pos2 == pos):
-                    positive_node_embedding = node_embedding[node2.index]  # correct node embeddings
-                    negative_nodes_embedding = py_negative_embedding[node.index]
-                    fb = sigmoid(np.dot(negative_nodes_embedding, positive_node_embedding))  # propagate hidden -> output
-                    gb = (labels - fb)
-                    ret_loss -= np.log(gb)
-        return ret_loss * py_lambda
-
-logger = logging.getLogger()
+        start = max(0, pos - py_window)
+        # now go over all words from the (reduced) window, predicting each one in turn
+        for pos2, node2 in enumerate(py_path[start: pos + py_window + 1],
+                                     start):  # node 2 are the output nodes predicted form node
+            # don't train on OOV words and on the `word` itself
+            if node2 and not (pos2 == pos):
+                positive_node_embedding = node_embedding[node2.index]  # correct node embeddings
+                negative_nodes_embedding = py_negative_embedding[node.index]
+                fb = sigmoid(np.dot(negative_nodes_embedding, positive_node_embedding))  # propagate hidden -> output
+                gb = (labels - fb)
+                ret_loss -= np.log(gb)
+    return ret_loss * py_lambda
 
 class Context2Vec(object):
     '''
@@ -78,6 +68,9 @@ class Context2Vec(object):
             loss += job_loss
         return loss
 
+        # '''
+        # multi-thread version
+        # '''
         # jobs = Queue(
         #     maxsize=2 * self.workers)  # buffer ahead only a limited number of jobs.. this is the reason we can't simply use ThreadPool :(
         # lock = threading.Lock()  # for shared state (=number of words trained so far, log reports...)
@@ -163,15 +156,6 @@ class Context2Vec(object):
                 # how many words did we train on? out-of-vocabulary (unknown) words do not count
 
                 if _lambda1 > 0:
-                    # for path in job:
-                    #     words_done, loss_path = train_sg(model.node_embedding, model.context_embedding, path, alpha, self.negative, self.window_size, model.table,
-                    #              py_centroid=model.centroid, py_inv_covariance_mat=model.inv_covariance_mat, py_pi=model.pi, py_k=model.k, py_covariance_mat=model.covariance_mat,
-                    #              py_lambda1=_lambda1, py_lambda2=_lambda2, py_size=model.layer1_size,
-                    #              py_work=py_work, py_work_o3=py_work_o3, py_work1_o3=py_work1_o3, py_work2_o3=py_work2_o3, py_is_node_embedding=0)
-                    #
-                    #     job_words += words_done
-                    #     job_loss += loss_path
-
                     job_words = sum(train_sg(model.node_embedding, model.context_embedding, path, self.alpha, self.negative, self.window_size, model.table,
                                                   py_centroid=model.centroid, py_inv_covariance_mat=model.inv_covariance_mat, py_pi=model.pi, py_k=model.k, py_covariance_mat=model.covariance_mat,
                                                   py_lambda1=_lambda1, py_lambda2=_lambda2, py_size=model.layer1_size,

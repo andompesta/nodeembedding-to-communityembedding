@@ -51,11 +51,6 @@ class Node2Vec(object):
         jobs = Queue(maxsize=2*self.workers)  # buffer ahead only a limited number of jobs.. this is the reason we can't simply use ThreadPool :(
         lock = threading.Lock()
 
-        def batch_generator(iterable, batch_size=1):
-            args = [iterable] * batch_size
-            return zip_longest(*args, fillvalue=None)
-            #     yield chain([batchiter.next()], batchiter)
-
         # def learn_single(job, word_count):
         #     py_work = np.zeros(model.layer1_size)
         #     py_work_o3 = np.zeros(model.layer1_size)
@@ -132,8 +127,7 @@ class Node2Vec(object):
 
 
         # convert input strings to Vocab objects (eliding OOV/downsampled words), and start filling the jobs queue
-        for job_no, job in enumerate(batch_generator(prepare_sentences(model, edges), chunksize)):
-            # logger.debug("putting job #%i in the queue, qsize=%i" % (job_no, jobs.qsize()))
+        for job_no, job in enumerate(chunkize_serial(prepare_sentences(model, edges), chunksize)):
             jobs.put(job)
 
 

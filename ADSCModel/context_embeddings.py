@@ -8,26 +8,6 @@ import numpy as np
 from utils.embedding import train_sg, chunkize_serial, prepare_sentences
 from scipy.special import expit as sigmoid
 
-def o2_loss(node_embedding, py_negative_embedding, py_path, py_negative, py_window, py_table, py_lambda=1.0, py_size=None):
-    ret_loss = 0
-    for pos, node in enumerate(py_path):  # node = input vertex of the system
-        if node is None:
-            continue  # OOV node in the input path => skip
-        labels = 1.0  # frist node come from the path, the other not
-
-        start = max(0, pos - py_window)
-        # now go over all words from the (reduced) window, predicting each one in turn
-        for pos2, node2 in enumerate(py_path[start: pos + py_window + 1],
-                                     start):  # node 2 are the output nodes predicted form node
-            # don't train on OOV words and on the `word` itself
-            if node2 and not (pos2 == pos):
-                positive_node_embedding = node_embedding[node2.index]  # correct node embeddings
-                negative_nodes_embedding = py_negative_embedding[node.index]
-                fb = sigmoid(np.dot(negative_nodes_embedding, positive_node_embedding))  # propagate hidden -> output
-                gb = (labels - fb)
-                ret_loss -= np.log(gb)
-    return ret_loss * py_lambda
-
 class Context2Vec(object):
     '''
     Class that train the context embedding
@@ -47,77 +27,6 @@ class Context2Vec(object):
         self.min_alpha = min_alpha
         self.negative = negative
         self.window_size = int(window_size)
-
-    def loss(self, model, paths, total_paths, _lambda1=1.0):
-        start, next_report, num_paths, loss = time.time(), 5.0, 0.0, 0.0
-
-        def worker_loss(job, num_paths, next_report):
-            """Train the model, lifting lists of paths from the jobs queue."""
-            job_loss = sum([o2_loss(model.node_embedding, model.context_embedding, path, self.negative, self.window_size, model.table, _lambda1, model.layer1_size) for path in job]) #execute the sgd
-            num_paths += len(job)
-            elapsed = time.time() - start
-
-            if elapsed >= next_report:
-                print("PROGRESS: at %.2f%% path, %.0f paths/s" %(100.0 * num_paths/total_paths, num_paths / elapsed if elapsed else 0.0))
-                next_report = elapsed + 1.0  # don't flood the log, wait at least a second between progress reports
-
-            return job_loss, num_paths, next_report
-
-        for job_no, job in enumerate(chunkize_serial(prepare_sentences(model, paths), 250)):
-            job_loss, num_paths, next_report = worker_loss(job, num_paths, next_report)
-            loss += job_loss
-        return loss
-
-        # '''
-        # multi-thread version
-        # '''
-        # jobs = Queue(
-        #     maxsize=2 * self.workers)  # buffer ahead only a limited number of jobs.. this is the reason we can't simply use ThreadPool :(
-        # lock = threading.Lock()  # for shared state (=number of words trained so far, log reports...)
-        # start, next_report, num_paths, loss = time.time(), [5.0], [0.0], [0.0]
-
-
-        # def worker_loss():
-        #     """Train the model, lifting lists of paths from the jobs queue."""
-        #     while True:
-        #         job = jobs.get(block=True)
-        #         if job is None:  # data finished, exit
-        #             jobs.task_done()
-        #             logger.debug('thread %s break' % threading.current_thread().name)
-        #             break
-        #
-        #         job_loss = sum(o2_loss(model.node_embedding, model.context_embedding, path, self.negative, self.window_size, model.table, _lambda1, model.layer1_size) for path in job) #execute the sgd
-        #
-        #         jobs.task_done()
-        #         lock.acquire(timeout=30)
-        #         try:
-        #             loss[0] += job_loss
-        #             num_paths[0] += len(job)
-        #
-        #             elapsed = time.time() - start
-        #             if elapsed >= next_report[0]:
-        #                 print("PROGRESS: at %.2f%% path, %.0f paths/s" %
-        #                             (100.0 * num_paths[0]/total_paths, num_paths[0] / elapsed if elapsed else 0.0))
-        #                 next_report[0] = elapsed + 1.0  # don't flood the log, wait at least a second between progress reports
-        #         finally:
-        #             lock.release()
-        #
-        # workers = [threading.Thread(target=worker_loss, name='thread_loss_' + str(i)) for i in range(self.workers)]
-        # for thread in workers:
-        #     thread.daemon = True  # make interrupting the process with ctrl+c easier
-        #     thread.start()
-        #
-        # # convert input strings to Vocab objects (eliding OOV/downsampled words), and start filling the jobs queue
-        # for job_no, job in enumerate(chunkize_serial(prepare_sentences(model, paths), 250)):
-        #     # logger.debug("putting job #%i in the queue, qsize=%i" % (job_no, jobs.qsize()))
-        #     jobs.put(job)
-        #
-        # for _ in range(self.workers):
-        #     jobs.put(None)  # give the workers heads up that they can finish -- no more work!
-        #
-        # for thread in workers:
-        #     thread.join()
-        # return loss[0]
 
 
     def train(self, model, paths, total_words, _lambda1=1.0, _lambda2=0.0, word_count=0, chunksize=150):

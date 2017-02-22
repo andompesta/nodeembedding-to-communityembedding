@@ -4,7 +4,6 @@ import numpy as np
 import logging
 from scipy.stats import multivariate_normal
 
-logger = logging.getLogger("adsc")
 
 
 class Community2Vec(object):
@@ -25,14 +24,6 @@ class Community2Vec(object):
         self.is_debug = is_debug
         self.plot = plot
         self.save_predict_labels = save_predict_labels
-
-    def loss(self, model, lambda2):
-        ret_loss = 0
-        for com in range(model.k):
-            rd = multivariate_normal(model.centroid[com], model.covariance_mat[com])
-            ret_loss += rd.pdf(model.node_embedding) * model.pi[:, com]
-        ret_loss = sum(np.log(ret_loss))
-        return ret_loss * (-lambda2/model.k)
 
     def train(self, model):
         '''

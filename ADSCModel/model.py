@@ -1,5 +1,4 @@
 __author__ = 'ando'
-import logging
 import numpy as np
 import pickle
 from os.path import exists
@@ -7,8 +6,6 @@ from os import makedirs
 from utils.embedding import Vocab
 from utils.IO_utils import load_ground_true
 
-
-logger = logging.getLogger('adsc')
 
 class Model(object):
     '''
@@ -100,7 +97,7 @@ class Model(object):
                 v.index = len(self.vocab)
                 self.index2word.append(word)
                 self.vocab[word] = v
-        logger.debug("total %i node after removing those with count<%s" % (len(self.vocab), self.min_count))
+        print("total %i node after removing those with count<%s" % (len(self.vocab), self.min_count))
 
         # precalculate downsampling thresholds
         self.precalc_sampling()
@@ -122,8 +119,6 @@ class Model(object):
 
     def reset_weights(self):
         """Reset all projection weights to an initial (untrained) state, but keep the existing vocabulary."""
-        logger.debug("resetting layer weights")
-
         self.node_embedding = np.empty((len(self.vocab), self.layer1_size), dtype=np.float32)
 
         # randomize weights vector by vector, rather than materializing a huge random matrix in RAM at once
@@ -169,7 +164,7 @@ class Model(object):
                 d1 += self.vocab[self.index2word[widx]].count**power / train_words_pow
             if widx >= vocab_size:
                 widx = vocab_size - 1
-        logger.debug('max table %d' % max(self.table))
+        print('max table %d' % max(self.table))
 
 
 

@@ -22,11 +22,11 @@ prop.read('conf.ini')
 
 if __name__ == '__main__':
 
-    prefix = '_comEmb_'
     # prefix = 'my_'
     # prefix = 'line_'
     # prefix = 'node2vec'
     # prefix = '_GraRep'
+    prefix = '_autoencoder'
 
     seeds = {'BlogCatalog':[10, 78, 20, 30, 31, 74, 45, 50, 51, 79],
              'PPI': [13, 18, 22, 26, 29, 30, 34, 36, 43, 50],
@@ -36,8 +36,6 @@ if __name__ == '__main__':
              }
     # seeds = range(100)
 
-    values = [(0.1, 0.001), (0.1, 0.01), (0.1, 1)]
-    # values = [(0.1, 1)]
 
 
     C = [1]
@@ -48,54 +46,46 @@ if __name__ == '__main__':
     X = None
     y = None
     for c in C:
-        for ds in dwon_sampling:
-            for lambda_1_val, lambda_2_val in values:
-                for it in iterations:
-                    file_name = input_file + prefix + \
-                                'l1-' + str(lambda_1_val) + \
-                                '_l2-' + str(lambda_2_val) + \
-                                '_ds-' + str(ds) + \
-                                '_it-' +str(it)
+        file_name = input_file + prefix
+        print('%s\t%f' %(file_name, c))
 
-                    print('%s\t%f' %(file_name, c))
+        X = model_utils.load_embedding(path='data', file_name=file_name)
+        y = model_utils.load_ground_true(path='data', file_name=input_file + '/' + input_file, multilabel=True)[0]
 
-                    X = model_utils.load_embedding(path='data', file_name=file_name)
-                    y = model_utils.load_ground_true(path='data', file_name=input_file + '/' + input_file, multilabel=True)[0]
+        X = normalize(X)
+        lb = preprocessing.MultiLabelBinarizer()
+        y = lb.fit_transform(y)
 
-                    X = normalize(X)
-                    lb = preprocessing.MultiLabelBinarizer()
-                    y = lb.fit_transform(y)
+        # [print('node %d features %s' % (node_id, values)) for node_id, values in enumerate(X)]
+        # [print('node %d label %d' % (node_id, values)) for node_id, values in enumerate(y)]
+        clf = OneVsRestClassifier(LinearSVC(C=c, loss='squared_hinge', penalty='l2'))
 
-                    # [print('node %d features %s' % (node_id, values)) for node_id, values in enumerate(X)]
-                    # [print('node %d label %d' % (node_id, values)) for node_id, values in enumerate(y)]
-                    clf = OneVsRestClassifier(LinearSVC(C=c, loss='squared_hinge', penalty='l2'))
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
 
-                    with warnings.catch_warnings():
-                        warnings.simplefilter("ignore")
+            for ratio in np.arange(0.1, 1, 0.1):
+                avg_micro_f1 = []
+                avg_macro_f1 = []
+                for i, seed in enumerate(seeds[input_file]):
+                # for i, seed in enumerate(seeds):
 
-                        for ratio in np.arange(0.1, 1, 0.1):
-                            avg_micro_f1 = []
-                            avg_macro_f1 = []
-                            for i, seed in enumerate(seeds[input_file]):
-                            # for i, seed in enumerate(seeds):
+                    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=ratio, random_state=seed)
+                    clf.fit(X_train, y_train)
 
-                                X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=ratio, random_state=seed)
-                                clf.fit(X_train, y_train)
+                    y_pred = np.zeros(y_test.shape)
+                    y_pred_prob = clf.decision_function(X_test)
+                    for index in range(len(y_test)):
+                        Y_test_index = np.where(y_test[index] == 1)[0]
+                        row_pred = y_pred_prob[index].argpartition(-len(Y_test_index))[-len(Y_test_index):]
+                        y_pred[index, row_pred] = 1
 
-                                y_pred = np.zeros(y_test.shape)
-                                y_pred_prob = clf.decision_function(X_test)
-                                for index in range(len(y_test)):
-                                    Y_test_index = np.where(y_test[index] == 1)[0]
-                                    row_pred = y_pred_prob[index].argpartition(-len(Y_test_index))[-len(Y_test_index):]
-                                    y_pred[index, row_pred] = 1
+                    # y_pred = clf.predict(X_test)
 
-                                # y_pred = clf.predict(X_test)
+                    micro_f1 = f1_score(y_test, y_pred, average='micro')
+                    macro_f1 = f1_score(y_test, y_pred, average='macro')
+                    avg_micro_f1.append(micro_f1)
+                    avg_macro_f1.append(macro_f1)
+                    print('%d\t%f\t%f\t%f' % (i, 1-ratio, micro_f1, macro_f1))
 
-                                micro_f1 = f1_score(y_test, y_pred, average='micro')
-                                macro_f1 = f1_score(y_test, y_pred, average='macro')
-                                avg_micro_f1.append(micro_f1)
-                                avg_macro_f1.append(macro_f1)
-                                print('%d\t%f\t%f\t%f' % (i, 1-ratio, micro_f1, macro_f1))
-
-                            print('%f\t%f\t%f' % (1-ratio, np.mean(avg_micro_f1), np.mean(avg_macro_f1)) )
+                print('%f\t%f\t%f' % (1-ratio, np.mean(avg_micro_f1), np.mean(avg_macro_f1)) )
 

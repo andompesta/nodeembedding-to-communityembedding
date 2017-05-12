@@ -3,8 +3,11 @@ import configparser
 import os
 import random
 from multiprocessing import cpu_count
+
+
 import numpy as np
 import psutil
+
 from ADSCModel.model import Model
 from ADSCModel.context_embeddings import Context2Vec
 from ADSCModel.node_embeddings import Node2Vec
@@ -12,10 +15,8 @@ from ADSCModel.community_embeddings import Community2Vec
 
 import utils.IO_utils as io_utils
 import utils.graph_utils as graph_utils
-import utils.plot_utils as plot_utils
-
 import timeit
-
+import logging
 
 
 p = psutil.Process(os.getpid())
@@ -27,18 +28,25 @@ except AttributeError:
     except AttributeError:
         pass
 
+#Setting the logger parameters
+FORMAT = "%(levelname)s %(filename)s: %(lineno)s\t|\t%(message)s"
+level = logging.DEBUG
+logger = logging.getLogger('adsc')
+logger.setLevel(level)
+
+
 prop = configparser.ConfigParser()
 prop.read('conf.ini')
 
 
 
 def process_context(context_learner, model, walks, total_nodes, _lambda1=1.0, _lambda2=0.1):
-    print("Training context...")
+    logger.info("Training context...")
     return context_learner.train(model=model, paths=walks, total_words=total_nodes, _lambda1=_lambda1, _lambda2=(_lambda2/(model.k * cont_learner.window_size)))
 
 
 def process_node(node_learner, model, edges, iter=1, lambda2=0.0):
-    print("Training node embedding...")
+    logger.info("Training node embedding...")
     return node_learner.train(model, edges=edges, iter=iter, _lambda2=(lambda2/model.k))
 
 if __name__ == "__main__":
@@ -68,7 +76,7 @@ if __name__ == "__main__":
 
     values = [(1, 0.1), (0.1, 0.001), (0.1, 0.01), (0.1, 1),
               (0.1, 0.1), (0.01, 0.1), (0.001, 0.1)]
-
+    alpha = 0.02
     walks_filebase = 'data/' + output_file + ".walks"                       # where read/write the sampled path
     sampling_path = prop.getboolean('MY', 'sampling_path')                  # execute sampling of new walks
     pretraining = prop.getboolean('MY', 'pretraining')                      # execute pretraining
@@ -82,7 +90,7 @@ if __name__ == "__main__":
     # Sampling the random walks for context
     walk_files = None
     if sampling_path:
-        print("sampling the paths")
+        logger.info("sampling the paths")
         walk_files = graph_utils.write_walks_to_disk(G, walks_filebase,
                                                      num_paths=number_walks,
                                                      path_length=walk_length,
@@ -95,8 +103,8 @@ if __name__ == "__main__":
 
 
     #Learning algorithm
-    node_learner = Node2Vec(workers=num_workers, negative=negative)
-    cont_learner = Context2Vec(window_size=window_size, workers=num_workers, negative=negative)
+    node_learner = Node2Vec(workers=num_workers, negative=negative, alpha=alpha)
+    cont_learner = Context2Vec(window_size=window_size, workers=num_workers, negative=negative, alpha=alpha)
     comm_learner = Community2Vec(reg_covar=reg_covar)
 
 
@@ -115,34 +123,39 @@ if __name__ == "__main__":
                       vocabulary_counts=vertex_counts,
                       downsampling=down_sample)
 
-
-        context_total_path = G.number_of_nodes() * number_walks * walk_length
-        logger.debug("context_total_node: %d" % (context_total_path))
         edges = np.array(G.edges())
+        context_total_path = G.number_of_nodes() * number_walks * walk_length
+        node_total_path = len(edges)
+
+        logger.debug("context_total_path: %d" % (context_total_path))
+        logger.debug("node_total_path: %d" % (node_total_path))
+
 
 
         if pretraining:
-            print("Pre-train the model")
-            process_node(node_learner, model,  edges, iter=int(context_total_path/G.number_of_edges()), lambda2=0.0)
-            process_context(cont_learner, model, graph_utils.combine_files_iter(walk_files), _lambda1=1.0, _lambda2=0.0, total_nodes=context_total_path)
+            logger.info("Pre-train the model")
+            process_node(node_learner, model,  edges, iter=int(context_total_path/node_total_path), lambda2=0.0)
+            process_context(cont_learner, model, graph_utils.combine_files_iter(walk_files), total_nodes=context_total_path,
+                            _lambda1=1.0, _lambda2=0.0)
+
             model.save(file_name=output_file+'_comEmb')
 
         for lambda_1_val, lambda_2_val in values:
-            print('\n_______________________________________\n')
-            print('using down_sample: %.5f lambda 1:%.4f \t lambda 2:%.4f' % (down_sample, lambda_1_val, lambda_2_val))
+            logger.info('\n_______________________________________\n')
+            logger.info('using down_sample: %.5f lambda 1:%.4f \t lambda 2:%.4f' % (down_sample, lambda_1_val, lambda_2_val))
             model = model.load_model(path='data', file_name=output_file+'_comEmb')
-            print('Number of community: %d' % model.k)
+            logger.info('Number of community: %d' % model.k)
 
             ###########################
             #   EMBEDDING LEARNING    #
             ###########################
             for it in range(2):
-                print('\n_______________________________________\n')
+                logger.info('\n_______________________________________\n')
                 start_time = timeit.default_timer()
                 comm_learner.train(model)
                 process_node(node_learner, model, edges, iter=int(context_total_path/G.number_of_edges()), lambda2=lambda_2_val)
-                process_context(cont_learner, model, graph_utils.combine_files_iter(walk_files), _lambda1=lambda_1_val,
-                                _lambda2=0, total_nodes=context_total_path)
+                process_context(cont_learner, model, graph_utils.combine_files_iter(walk_files), total_nodes=context_total_path,
+                                _lambda1=lambda_1_val, _lambda2=0)
 
 
 
@@ -150,13 +163,15 @@ if __name__ == "__main__":
                                                                         "_l1-"+str(lambda_1_val) +
                                                                         "_l2-"+str(lambda_2_val) +
                                                                         "_ds-"+str(down_sample) +
-                                                                        "_it-"+str(it)
+                                                                        "_it-"+str(it) +
+                                                                        '_alpha_'+str(alpha)
                                         )
 
                 model.save(path='data', file_name=output_file + persentage + "_comEmb" +
                                                   "_l1-"+str(lambda_1_val) +
                                                   "_l2-"+str(lambda_2_val) +
                                                   "_ds-"+str(down_sample) +
-                                                  "_it-"+str(it)
+                                                  "_it-"+str(it) +
+                                                  '_alpha_'+str(alpha)
                            )
-                print('time: %.2fs' % (timeit.default_timer() - start_time))
+                logger.info('time: %.2fs' % (timeit.default_timer() - start_time))

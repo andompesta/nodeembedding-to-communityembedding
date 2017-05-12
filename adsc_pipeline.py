@@ -44,8 +44,9 @@ prop.read('conf.ini')
 
 
 def process_context(context_learner, model, walks, total_nodes, _lambda1=1.0, _lambda2=0.1):
-    print("Training context...")
+    logger.info("Training context...")
     return context_learner.train(model=model, paths=walks, total_words=total_nodes, _lambda1=_lambda1, _lambda2=(_lambda2/(model.k * cont_learner.window_size)))
+
 
 
 def process_node(node_learner, model, edges, iter=1, lambda2=0.0):

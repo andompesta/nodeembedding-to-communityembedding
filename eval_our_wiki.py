@@ -28,14 +28,18 @@ if __name__ == '__main__':
              'PPI': [13, 18, 22, 26, 29, 30, 34, 36, 43, 50],
              # 'Wikipedia': [14,8,16,73,79,96,98, 53, 43, 64]
              # 'Wikipedia': [6, 7, 47, 56, 59, 99, 83, 20, 13, 66]
-             'Wikipedia': [7, 22, 31, 53, 72, 98, 79]
+             # 'Wikipedia': [7, 22, 31, 53, 72, 98, 79],
+             'Wikipedia': [7, 31, 34, 49, 60, 69, 73, 98]
              }
     # seeds = range(100)
 
-    values = [(1, 0.1), (0.1, 0.001), (0.1, 0.01), (0.1, 1),
-              (0.001, 0.1), (0.01, 0.1), (0.1, 0.1)]
+    values = [(1, 0.1), (0.1, 0.001), (0.1, 0.01), (0.1, 1)]
+    #           (0.001, 0.1), (0.01, 0.1), (0.1, 0.1)]
 
-    C = [1]
+    # values = [(0.1, 0.01)]
+
+    C = [2.]
+    alpha = 0.1
 
     dwon_sampling = [0]
     iterations = [0, 1]
@@ -51,12 +55,15 @@ if __name__ == '__main__':
                                 'l1-' + str(lambda_1_val) + \
                                 '_l2-' + str(lambda_2_val) + \
                                 '_ds-' + str(ds) + \
-                                '_it-' +str(it)
+                                '_it-' +str(it) + \
+                                '_alpha_' + str(alpha)
+
 
                     print('%s\t%f' %(file_name, c))
 
                     X = model_utils.load_embedding(path='data', file_name=file_name)
                     y = model_utils.load_ground_true(path='data', file_name=input_file + '/' + input_file, multilabel=True)[0]
+
 
                     X = normalize(X)
                     lb = preprocessing.MultiLabelBinarizer()

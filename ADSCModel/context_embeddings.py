@@ -1,6 +1,5 @@
 __author__ = 'ando'
 
-import logging
 import time
 import threading
 from queue import Queue
@@ -9,7 +8,7 @@ from utils.embedding import train_sg, chunkize_serial, prepare_sentences
 from scipy.special import expit as sigmoid
 
 try:
-    raise(ImportError)
+    raise ImportError
     from utils.loss_inner import o2_loss, FAST_VERSION
     print('Fast version ' + str(FAST_VERSION))
 except ImportError as e:
@@ -36,7 +35,6 @@ except ImportError as e:
                     ret_loss -= np.log(gb)
         return ret_loss * py_lambda
 
-logger = logging.getLogger()
 
 class Context2Vec(object):
     '''

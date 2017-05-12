@@ -12,10 +12,11 @@ from sklearn.model_selection import train_test_split
 
 if __name__ == '__main__':
 
-    prefix = '_comEmb_pipeline'
+    # prefix = '_comEmb_pipeline'
     # prefix = 'line_'
     # prefix = 'node2vec'
     # prefix = '_deepWalk'
+    prefix = '_autoencode'
 
     seeds = {'BlogCatalog': [10, 78, 20, 30, 31, 74, 45, 50, 51, 79],
              'PPI': [13, 18, 22, 26, 29, 30, 34, 36, 43, 50],
@@ -26,7 +27,7 @@ if __name__ == '__main__':
              }
     C = [1]
 
-    input_file = 'Flickr'
+    input_file = 'Wikipedia'
 
     X = None
     y = None

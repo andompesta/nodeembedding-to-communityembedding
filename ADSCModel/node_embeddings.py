@@ -1,6 +1,5 @@
 __author__ = 'ando'
 
-import logging
 import time
 import threading
 from queue import Queue
@@ -8,14 +7,12 @@ import numpy as np
 from utils.embedding import chunkize_serial, RepeatCorpusNTimes, train_sg, prepare_sentences
 from itertools import islice, chain, zip_longest
 from scipy.special import expit as sigmoid
-level = logging.DEBUG
-logger = logging.getLogger('adsc')
-logger.setLevel(level)
+
 
 
 
 class Node2Vec(object):
-    def __init__(self, workers=1, alpha=0.1, min_alpha=0.0001, negative=0, ):
+    def __init__(self, alpha=0.1, workers=1, min_alpha=0.0001, negative=0 ):
 
         self.workers = workers
         self.alpha = float(alpha)
@@ -26,12 +23,13 @@ class Node2Vec(object):
     def loss(self, model, edges):
         ret_loss = 0
         for edge in prepare_sentences(model, edges):
-            ret_loss -= np.log(sigmoid(np.dot(model.node_embedding[edge[1].index], model.node_embedding[edge[0].index].T)))
+            if len(edge) == 2:
+                ret_loss -= np.log(sigmoid(np.dot(model.node_embedding[edge[1].index], model.node_embedding[edge[0].index].T)))
         return ret_loss
 
 
 
-    def train(self, model, edges, _lambda1=1.0, _lambda2=0.0, total_node=None, chunksize=150, iter = 1):
+    def train(self, model, edges, _lambda1=1.0, _lambda2=0.0, chunksize=150, iter = 1):
         """
         Update the model's neural weights from a sequence of paths (can be a once-only generator stream).
         """
@@ -92,7 +90,7 @@ class Node2Vec(object):
                 job = jobs.get(block=True)
                 if job is None:  # data finished, exit
                     jobs.task_done()
-                    logger.debug('thread %s break' % threading.current_thread().name)
+                    # print('thread %s break' % threading.current_thread().name)
                     break
 
 

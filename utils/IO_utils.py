@@ -109,8 +109,3 @@ def load_membership(file_name, path='data'):
 def save(node_embedding, file_name, path='data'):
     with open(path + '/' + file_name + '.embedding', 'wb') as file:
         pickle.dump(node_embedding, file)
-
-def load_model(file_name, path='data'):
-    with open(path + '/' + file_name + '.bin', 'rb') as file:
-        model = pickle.load(file)
-        return model

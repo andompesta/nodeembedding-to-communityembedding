@@ -125,14 +125,33 @@ def chunkize_serial(iterable, chunksize, as_numpy=False):
         yield wrapped_chunk.pop()
 
 def prepare_sentences(model, paths):
+    '''
+    :param model: current model containing the vocabulary and the index
+    :param paths: list of the random walks. we have to translate the node to the appropriate index and apply the dropout
+    :return: generator of the paths according to the dropout probability and the correct index
+    '''
     for path in paths:
         # avoid calling random_sample() where prob >= 1, to speed things up a little:
         sampled = [model.vocab[word] for word in path
                    if word in model.vocab and (model.vocab[word].sample_probability >= 1.0 or model.vocab[word].sample_probability >= np.random.random_sample())]
         yield sampled
 
+def batch_generator(iterable, batch_size=1):
+    '''
+    same as chunkize_serial, but without the usage of an infinite while
+    :param iterable: list that we want to convert in batches
+    :param batch_size: batch size
+    '''
+    args = [iterable] * batch_size
+    return itertools.zip_longest(*args, fillvalue=None)
+
 class RepeatCorpusNTimes():
     def __init__(self, corpus, n):
+        '''
+        Class used to repeat n-times the same corpus of paths
+        :param corpus: list of paths that we want to repeat
+        :param n: number of times we want to repeat our corpus
+        '''
         self.corpus = corpus
         self.n = n
         self.total_node = self.corpus.shape[0] * self.corpus.shape[1] * self.n

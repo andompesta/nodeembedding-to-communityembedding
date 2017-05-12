@@ -7,44 +7,90 @@ from os.path import exists
 from os import makedirs
 import numpy as np
 import itertools
-import math
+import pickle
 
 # plt.rc('xtick', labelsize=20)
 # plt.rc('ytick', labelsize=20)
 
-STARTING_NODE = 16
-def graph_plot(G, path="graph", graph_name='graph', nodes_color=None,save=True, show=True):
-    spring_pos = nx.spring_layout(G)
+STARTING_NODE = 1
+
+def _pos_coloring(G, norm_pos):
+    nodes_order = []
+    for index, value in enumerate(norm_pos):
+        nodes_order.append((index+1, value))
+
+    nodes_order = sorted(nodes_order, key=lambda x: x[1])
+
+
+    color_map = list(plt.cm.jet(np.linspace(0.0, 1, G.number_of_nodes())))
+    # order_edges = list(nx.bfs_edges(G, G.nodes()[STARTING_NODE]))
+    nodes_color = np.zeros((G.number_of_nodes(), 4))
+    # nodes_color = color_map
+
+    # nodes_color[STARTING_NODE - 1] = color_map[0]
+    for color_index, (node_id, norm_value) in enumerate(nodes_order):
+        nodes_color[node_id - 1] = color_map[color_index]
+
+
+    return nodes_color
+
+def _community_based_color(G, num_communities=4):
+    color_map = list(plt.cm.jet(np.linspace(0.0, 1, num_communities)))
+    nodes_color = np.zeros((G.number_of_nodes(), 4))
+
+    for index, e in enumerate(G.nodes()):
+        nodes_color[e[1] - 1] = color_map[index + 1]
+
+    nodes_color[0] = color_map[0]
+    return nodes_color
+
+def graph_plot(G,
+               path="graph",
+               graph_name='graph',
+               nodes_color_fn=_pos_coloring,
+               node_position_file_name=None,
+               save=True,
+               show=True):
+    if node_position_file_name:
+        spring_pos = pickle.load(open('./data/' + graph_name + '/node_pos.bin', "rb"))
+    else:
+        spring_pos = nx.spring_layout(G)
+        pickle.dump(spring_pos, open('./data/' + graph_name + '/node_pos.bin', "wb"))
+
+    spring_pos_values = np.array(list(spring_pos.values()))
+    norm_pos = np.linalg.norm(spring_pos_values, axis=1)
+    nodes_color = nodes_color_fn(G, norm_pos)
 
     plt.figure(figsize=(5, 5))
     plt.axis("off")
+    nx.draw_networkx(G, node_color=nodes_color, pos=spring_pos)
 
-    if nodes_color == None:
-        color_map = list(plt.cm.rainbow(np.linspace(0.1, 0.9, G.number_of_nodes())))
-        order_edges = nx.bfs_edges(G, G.nodes()[STARTING_NODE])
-        nodes_color = np.zeros((G.number_of_nodes(), 4))
+    # if nodes_color == None:
+    #     color_map = list(plt.cm.rainbow(np.linspace(0.1, 0.9, G.number_of_nodes())))
+    #     order_edges = nx.bfs_edges(G, G.nodes()[STARTING_NODE])
+    #     nodes_color = np.zeros((G.number_of_nodes(), 4))
+    #
+    #     for index, d in enumerate(order_edges):
+    #         nodes_color[d[1]-1] = color_map[index+1]
+    #
+    #     nodes_color[STARTING_NODE] = color_map[0]
+    #     nx.draw_networkx(G, node_color=nodes_color, pos=spring_pos)
 
-        for index, d in enumerate(order_edges):
-            nodes_color[d[1]-1] = color_map[index+1]
-
-        nodes_color[STARTING_NODE] = color_map[0]
-        nx.draw_networkx(G, node_color=nodes_color, pos=spring_pos)
-
-    else:
-        color_map = {0:'lightcoral', 1:'yellow', 2:'limegreen', 3:'cyan'}
-        for community in range(4):
-            nodes_in_community = np.where(nodes_color == community + 1)[0] + 1
-            nx.draw_networkx_nodes(G, spring_pos,
-                                   nodelist=nodes_in_community.tolist(),
-                                   node_color=color_map[community],
-                                   node_size=400,
-                                   alpha=0.9)
-
-        nx.draw_networkx_edges(G, spring_pos, width=1.0, alpha=0.5)
-        labels = {}
-        for node in G.nodes():
-            labels[node] = node
-        nx.draw_networkx_labels(G,spring_pos, labels,font_size=14)
+    # else:
+    #     color_map = {0:'lightcoral', 1:'yellow', 2:'limegreen', 3:'cyan'}
+    #     for community in range(4):
+    #         nodes_in_community = np.where(nodes_color == community + 1)[0] + 1
+    #         nx.draw_networkx_nodes(G, spring_pos,
+    #                                nodelist=nodes_in_community.tolist(),
+    #                                node_color=color_map[community],
+    #                                node_size=400,
+    #                                alpha=0.9)
+    #
+    #     nx.draw_networkx_edges(G, spring_pos, width=1.0, alpha=0.5)
+    #     labels = {}
+    #     for node in G.nodes():
+    #         labels[node] = node
+    #     nx.draw_networkx_labels(G,spring_pos, labels,font_size=14)
 
     if save:
         if not exists(path):

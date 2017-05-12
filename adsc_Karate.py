@@ -45,9 +45,9 @@ def process_node(node_learner, model, edges, iter=1, lambda2=0.0):
 if __name__ == "__main__":
 
     #Reading the input parameters form the configuration files
-    number_walks = 10                      # number of walks for each node
+    number_walks = 20                      # number of walks for each node
     walk_length = 10                        # length of each walk
-    window_size = 3                        # windows size used to compute the context embedding
+    window_size = 2                        # windows size used to compute the context embedding
     negative = 3                              # number of negative sample
     representation_size = 2        # size of the embedding
     num_workers = 4                        # number of thread
@@ -66,7 +66,12 @@ if __name__ == "__main__":
 
     #CONSTRUCT THE GRAPH
     G = graph_utils.load_adjacencylist('data/' + input_file + '/' + input_file + '.adjlist', True)
-    node_color = plot_utils.graph_plot(G=G, save=False, show=False)
+    node_color = plot_utils.graph_plot(G=G,
+                                       save=False,
+                                       show=True,
+                                       graph_name="karate",
+                                       node_position_file_name="node_position")
+
 
     # Sampling the random walks for context
     walk_files = None

@@ -15,7 +15,6 @@ from ADSCModel.context_embeddings import Context2Vec
 from ADSCModel.node_embeddings import Node2Vec
 import ADSCModel.community_embeddings as Com2Vec
 
-import utils.IO_utils as io_utils
 import utils.graph_utils as graph_utils
 import utils.plot_utils as plot_utils
 
@@ -115,8 +114,9 @@ if __name__ == "__main__":
                       downsampling=down_sample)
 
         #Learning algorithm
-        node_learner = Node2Vec(workers=num_workers, negative=negative)
-        cont_learner = Context2Vec(window=window_size, workers=num_workers, negative=negative)
+        node_learner = Node2Vec(workers=num_workers, negative=negative, alpha=alpha)
+        cont_learner = Context2Vec(window_size=window_size, workers=num_workers, negative=negative, alpha=alpha)
+        comm_learner = Community2Vec(reg_covar=reg_covar)
 
 
         context_total_path = G.number_of_nodes() * number_walks * walk_length

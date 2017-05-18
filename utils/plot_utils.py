@@ -3,7 +3,9 @@ __author__ = 'ando'
 import networkx as nx
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-from os.path import exists
+import matplotlib.cm as cm
+
+from os.path import exists, join as path_join
 from os import makedirs
 import numpy as np
 import itertools
@@ -12,50 +14,63 @@ import pickle
 # plt.rc('xtick', labelsize=20)
 # plt.rc('ytick', labelsize=20)
 
-STARTING_NODE = 1
+CAMP = 'viridis'
+
 
 def _pos_coloring(G, norm_pos):
+    '''
+    Coloring function based on the position of the nodes
+    :param G: Graph
+    :param norm_pos: diict -> node_id: 2d node position
+    :return: Color for each node
+    '''
     nodes_order = []
-    for index, value in enumerate(norm_pos):
-        nodes_order.append((index+1, value))
+    for node_id, value in zip(G.nodes(), norm_pos):
+        nodes_order.append((node_id, value))
 
     nodes_order = sorted(nodes_order, key=lambda x: x[1])
 
 
-    color_map = list(plt.cm.jet(np.linspace(0.0, 1, G.number_of_nodes())))
-    # order_edges = list(nx.bfs_edges(G, G.nodes()[STARTING_NODE]))
+    color_map = list(plt.get_cmap(CAMP)(np.linspace(0.0, 1, G.number_of_nodes())))
     nodes_color = np.zeros((G.number_of_nodes(), 4))
-    # nodes_color = color_map
 
-    # nodes_color[STARTING_NODE - 1] = color_map[0]
     for color_index, (node_id, norm_value) in enumerate(nodes_order):
         nodes_color[node_id - 1] = color_map[color_index]
-
-
     return nodes_color
 
-def _community_based_color(G, num_communities=4):
-    color_map = list(plt.cm.jet(np.linspace(0.0, 1, num_communities)))
+def _binary_commonity(G, label):
+    '''
+    Coloring function based on the label
+    NB. label have to be binary
+    :param G: Graph
+    :param label: list of nodes length. for each node represent its label
+    :return: list of the color for each node
+    '''
+    color_map = list(plt.get_cmap(CAMP)(np.linspace(0.0, 1, 4)))
     nodes_color = np.zeros((G.number_of_nodes(), 4))
 
-    for index, e in enumerate(G.nodes()):
-        nodes_color[e[1] - 1] = color_map[index + 1]
-
-    nodes_color[0] = color_map[0]
+    for index, node_id in enumerate(sorted(list(G.nodes()))):
+        if label[index] == 1:
+            nodes_color[index] = color_map[0]
+        elif label[index] == 2:
+            nodes_color[index] = color_map[-1]
+        else:
+            ValueError("Label is not binary")
     return nodes_color
 
+
 def graph_plot(G,
-               path="graph",
-               graph_name='graph',
+               graph_name,
                nodes_color_fn=_pos_coloring,
-               node_position_file_name=None,
-               save=True,
+               node_position_path="./data",
+               node_position_file=True,
                show=True):
-    if node_position_file_name:
-        spring_pos = pickle.load(open('./data/' + graph_name + '/node_pos.bin', "rb"))
+
+    if node_position_file:
+        spring_pos = pickle.load(open(path_join(node_position_path, graph_name, 'node_pos.bin'), "rb"))
     else:
         spring_pos = nx.spring_layout(G)
-        pickle.dump(spring_pos, open('./data/' + graph_name + '/node_pos.bin', "wb"))
+        pickle.dump(spring_pos, open(path_join(node_position_path, graph_name, 'node_pos.bin'), "wb"))
 
     spring_pos_values = np.array(list(spring_pos.values()))
     norm_pos = np.linalg.norm(spring_pos_values, axis=1)
@@ -63,7 +78,7 @@ def graph_plot(G,
 
     plt.figure(figsize=(5, 5))
     plt.axis("off")
-    nx.draw_networkx(G, node_color=nodes_color, pos=spring_pos)
+    nx.draw_networkx(G, node_color=nodes_color, pos=spring_pos, camp=plt.get_cmap(CAMP), nodelist=sorted(G.nodes()))
 
     # if nodes_color == None:
     #     color_map = list(plt.cm.rainbow(np.linspace(0.1, 0.9, G.number_of_nodes())))
@@ -92,13 +107,7 @@ def graph_plot(G,
     #         labels[node] = node
     #     nx.draw_networkx_labels(G,spring_pos, labels,font_size=14)
 
-    if save:
-        if not exists(path):
-            makedirs(path)
-        plt.savefig(path + '/' + graph_name +'.png')
-        plt.close()
-
-    elif show:
+    if show:
         plt.show()
     else:
         plt.clf()
@@ -106,63 +115,24 @@ def graph_plot(G,
 
     return nodes_color
 
+def node_space_plot_2D(embedding, color_values,
+                       path="graph", graph_name='graph',
+                       save=True,
+                       grid=False):
 
-def node_space_plot_3D(embedding, path="graph", graph_name='graph', save=True, color_values=[]):
-    fig = plt.figure(figsize=(14,7))
-    ax = fig.add_subplot(111, projection='3d')
-
-
-    ax.scatter(embedding[:,0], embedding[:,1], embedding[:,2], c=color_values, cmap=cm.Spectral, marker='o', s=70)
-    for node in range(len(embedding)):
-
-        ax.text(embedding[node][0], embedding[node][1], embedding[node][2],  '%s' % (str(node)), size=10)
-
-
-    if save:
-        if not exists(path):
-            makedirs(path)
-        plt.savefig(path + '/' + graph_name + '_prj_3d' + '.png')
-        plt.close()
-    else:
-        plt.show()
-
-def node_space_plot_2D(embedding, path="graph", graph_name='graph', save=True, color_values=[], centroid=None, title=None, grid=False):
-    color_map = {0:'lightcoral', 1:'yellow', 2:'limegreen', 3:'cyan'}
     fig = plt.figure(figsize=(5, 5))
     ax = fig.add_subplot(111)
+    nodes_id = np.array(list(range(1, len(embedding) + 1)))
+    data = np.concatenate((embedding, np.expand_dims(nodes_id, axis=1),), axis=1)
 
-    nodes_id = np.array(list(range(1, len(embedding)+1)))
-    data = np.concatenate((embedding, nodes_id.reshape(len(nodes_id), 1), color_values.reshape(len(color_values), 1)), axis=1)
-
-    # data = sorted(data, key=lambda row: row[2])
-
-    # color_nodes = {}
-    # for node_id, node_color in enumerate(color_values):
-    #     if node_color in color_nodes:
-    #         color_nodes[node_color].append(node_id)
-    #     else:
-    #         color_nodes[node_color] = [node_id]
-    #
-    # order_embedding = np.zeros((embedding.shape[0], embedding.shape[1] + 1))
-    #
-    # i = 0
-    # for color in [1, 2, 3, 4]:
-    #     for node in color_nodes[color]:
-    #         order_embedding[i, :2] = embedding[node]
-    #         order_embedding[i, -1] = color
-    #         i += 1
-    # ax.scatter(order_embedding[:,0], order_embedding[:,1], c=order_embedding[:, 2], cmap=cm.Spectral, marker='o', s=100)
+    plt.scatter(data[:, 0], data[:, 1], color=color_values, marker='o', cmap=CAMP)
 
     for node in data:
-        ax.scatter(node[0], node[1], c=color_map[node[3]-1], marker='o', s=100, alpha=0.8)
-        ax.text(node[0], node[1],  '%s' % (str(int(node[2]))), size=10)
-
-    if centroid is not None:
-        ax.scatter(centroid[:,0], centroid[:,1], marker='x', c='r')
+        ax.text(node[0], node[1], '%s' % (str(int(node[2]))), size=10)
 
     if grid:
-        x_max, x_min = -0.5, -4.0
-        y_max, y_min = 3.2, -3
+        x_max, x_min = -2, -4.5
+        y_max, y_min = 1.5, -1.5
 
         x_step = (x_max - x_min) / 4.0
         y_step = (y_max - y_min) / 4.0
@@ -193,23 +163,27 @@ def node_space_plot_2D(embedding, path="graph", graph_name='graph', save=True, c
         plt.show()
 
 
-def node_space_plot_2D_elipsoid(embedding, color_values, means=None, covariances=None, grid=False, path=None, color_iter=None):
+
+def node_space_plot_2D_elipsoid(embedding, color_values,
+                                means=None,
+                                covariances=None,
+                                grid=False,
+                                path='./graph',
+                                plot_name=None,
+                                show=False):
     fig = plt.figure(figsize=(5, 5))
     ax = fig.add_subplot(111)
-    if color_iter == None:
-        color_iter = itertools.cycle(['red', 'cyan', 'purple', 'lightgreen'])
-
-    # color_iter = ['lightgreen', 'cyan', 'purple', 'red']
-    # color_iter = ['red', 'cyan', 'purple', 'lightgreen']
-    # color_iter = itertools.cycle(['lightgreen', 'purple', 'cyan', 'red'])
-    # color_iter = itertools.cycle(['cyan', 'red', 'purple', 'lightgreen'])
-
     nodes_id = np.array(list(range(1, len(embedding)+1)))
-    data = np.concatenate((embedding, nodes_id.reshape(len(nodes_id), 1)), axis=1)
+    data = np.concatenate((embedding, np.expand_dims(nodes_id, axis=1), ), axis=1)
+
+    plt.scatter(data[:,0], data[:,1], color=color_values, marker='o', cmap=CAMP)
+
+    for node in data:
+        ax.text(node[0], node[1],  '%s' % (str(int(node[2]))), size=10)
 
 
     if (means is not None) and (covariances is not None):
-        for i, (mean, covar, color) in enumerate(zip(means, covariances, color_iter)):
+        for i, (mean, covar) in enumerate(zip(means, covariances)):
             v, w = np.linalg.eigh(3.5*covar)
             v = 2. * np.sqrt(2.) * np.sqrt(v)
             u = w[0] / np.linalg.norm(w[0])
@@ -223,24 +197,17 @@ def node_space_plot_2D_elipsoid(embedding, color_values, means=None, covariances
             # Plot an ellipse to show the Gaussian component
             angle = np.arctan(u[1] / u[0])
             angle = 180. * angle / np.pi  # convert to degrees
-            # ell = mpl.patches.Ellipse(mean, v[0], v[1], 180. + angle, color=color)
             ell = mpl.patches.Ellipse(mean, v[0], v[1], 180. + angle, fill=False, linewidth=2.)
             ell.set_clip_box(ax.bbox)
             ell.set_alpha(transparency)
             ax.add_artist(ell)
 
 
-    for node in data:
-        ax.scatter(node[0], node[1], c=color_values[int(node[2]-1)], marker='o', s=100)
-        ax.text(node[0], node[1],  '%s' % (str(int(node[2]))), size=10)
-
-
-
 
 
     if grid:
-        x_max, x_min = 3., -1
-        y_max, y_min = 3.5, -0.5
+        x_max, x_min = 0.5, -1
+        y_max, y_min = 2, -2
 
         x_step = (x_max - x_min) / 4.0
         y_step = (y_max - y_min) / 4.0
@@ -262,9 +229,13 @@ def node_space_plot_2D_elipsoid(embedding, color_values, means=None, covariances
 
         ax.grid(which='both')
 
-    if path:
-        plt.savefig(path + '.png')
-        plt.close()
-    else:
+    if plot_name:
+        if not exists(path):
+            makedirs(path)
+        plt.savefig(path_join(path, plot_name+'.png'))
+
+    if show:
         plt.show()
-        plt.close()
+
+    plt.clf()
+    plt.close()

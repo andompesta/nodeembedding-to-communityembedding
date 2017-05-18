@@ -40,14 +40,21 @@ prop.read('conf.ini')
 
 
 
-def process_context(context_learner, model, walks, total_nodes, _lambda1=1.0, _lambda2=0.1):
+def process_context(context_learner, model, walks, total_nodes, lambda1=1.0, lambda2=0.1):
     logger.info("Training context...")
-    return context_learner.train(model=model, paths=walks, total_words=total_nodes, _lambda1=_lambda1, _lambda2=(_lambda2/(model.k * cont_learner.window_size)))
+    return context_learner.train(model=model,
+                                 paths=walks,
+                                 total_words=total_nodes,
+                                 _lambda1=lambda1,
+                                 _lambda2=(lambda2/(model.k * cont_learner.window_size)))
 
 
 def process_node(node_learner, model, edges, iter=1, lambda2=0.0):
     logger.info("Training node embedding...")
-    return node_learner.train(model, edges=edges, iter=iter, _lambda2=(lambda2/model.k))
+    return node_learner.train(model,
+                              edges=edges,
+                              iter=iter,
+                              _lambda2=(lambda2/model.k))
 
 if __name__ == "__main__":
 
@@ -69,13 +76,15 @@ if __name__ == "__main__":
     # lambda_1_vals = [1]
     # lambda_2_vals = [0.1]
 
-    down_samples = [0]
+    down_samples = [0, 0.001, 0.0001]
     persentage = prop.get('MY', 'persentage')
 
     # values = [(1, 1)]
 
-    values = [(1, 0.1), (0.1, 0.001), (0.1, 0.01), (0.1, 1),
-              (0.1, 0.1), (0.01, 0.1), (0.001, 0.1)]
+    values = [(0.1, 1), (0.1, 0.01), (0.1, 0.001),
+              (1, 0.1), (0.01, 0.1), (0.001, 0.1),
+              (0.1, 0.1)]
+
     alpha = 0.02
     walks_filebase = 'data/' + output_file + ".walks"                       # where read/write the sampled path
     sampling_path = prop.getboolean('MY', 'sampling_path')                  # execute sampling of new walks
@@ -135,8 +144,10 @@ if __name__ == "__main__":
         if pretraining:
             logger.info("Pre-train the model")
             process_node(node_learner, model,  edges, iter=int(context_total_path/node_total_path), lambda2=0.0)
-            process_context(cont_learner, model, graph_utils.combine_files_iter(walk_files), total_nodes=context_total_path,
-                            _lambda1=1.0, _lambda2=0.0)
+            process_context(cont_learner, model, graph_utils.combine_files_iter(walk_files),
+                            total_nodes=context_total_path,
+                            lambda1=1.0,
+                            lambda2=0.0)
 
             model.save(file_name=output_file+'_comEmb')
 
@@ -153,9 +164,14 @@ if __name__ == "__main__":
                 logger.info('\n_______________________________________\n')
                 start_time = timeit.default_timer()
                 comm_learner.train(model)
-                process_node(node_learner, model, edges, iter=int(context_total_path/G.number_of_edges()), lambda2=lambda_2_val)
-                process_context(cont_learner, model, graph_utils.combine_files_iter(walk_files), total_nodes=context_total_path,
-                                _lambda1=lambda_1_val, _lambda2=0)
+
+                process_node(node_learner, model, edges,
+                             iter=int(context_total_path/G.number_of_edges()),
+                             lambda2=lambda_2_val)
+                process_context(cont_learner, model, graph_utils.combine_files_iter(walk_files),
+                                total_nodes=context_total_path,
+                                lambda1=lambda_1_val,
+                                lambda2=0)
 
 
 

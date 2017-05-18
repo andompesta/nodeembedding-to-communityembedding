@@ -33,22 +33,29 @@ prop.read('conf.ini')
 
 
 
-def process_context(context_learner, model, walks, total_nodes, _lambda1=1.0, _lambda2=0.1):
+def process_context(context_learner, model, walks, total_nodes, lambda1=1.0, lambda2=0.1):
     print("Training context...")
-    return context_learner.train(model=model, paths=walks, total_words=total_nodes, _lambda1=_lambda1, _lambda2=(_lambda2/(model.k * cont_learner.window_size)))
+    return context_learner.train(model=model,
+                                 paths=walks,
+                                 total_words=total_nodes,
+                                 _lambda1=lambda1,
+                                 _lambda2=(lambda2/(model.k * cont_learner.window_size)),
+                                 chunksize=5)
 
 
 def process_node(node_learner, model, edges, iter=1, lambda2=0.0):
     print("Training node embedding...")
-    return node_learner.train(model, edges=edges, iter=iter, _lambda2=(lambda2/model.k))
+    return node_learner.train(model,
+                              edges=edges,
+                              iter=iter,
+                              _lambda2=(lambda2/model.k),
+                              chunksize=5)
 
 if __name__ == "__main__":
 
     #Reading the input parameters form the configuration files
-    number_walks = 20                      # number of walks for each node
-    walk_length = 10                        # length of each walk
-    window_size = 2                        # windows size used to compute the context embedding
-    negative = 3                              # number of negative sample
+    number_walks = 10                      # number of walks for each node
+    walk_length = 20                        # length of each walk
     representation_size = 2        # size of the embedding
     num_workers = 4                        # number of thread
     num_iter = 5                              # number of iteration
@@ -56,21 +63,22 @@ if __name__ == "__main__":
     input_file = 'karate'                          # name of the input file
     output_file = 'karate'                         # name of the output file
 
-    lambda_1_val = 1
-    lambda_2_val = 0.0005
+    window_size = 3  # windows size used to compute the context embedding
+    negative = 4  # number of negative sample
+    lambda_1_val = 1.
+    lambda_2_val = 0.00
 
-    walks_filebase = 'data/' + output_file + ".walks"                       # where read/write the sampled path
-    sampling_path = prop.getboolean('MY', 'sampling_path')                  # execute sampling of new walks
+    walks_filebase = os.path.join('data', output_file, output_file + ".walks")            # where read/write the sampled path
+    sampling_path = False
 
 
 
     #CONSTRUCT THE GRAPH
-    G = graph_utils.load_adjacencylist('data/' + input_file + '/' + input_file + '.adjlist', True)
+    G = graph_utils.load_adjacencylist(os.path.join('./data', input_file, input_file + '.adjlist'), True)
     node_color = plot_utils.graph_plot(G=G,
-                                       save=False,
                                        show=True,
                                        graph_name="karate",
-                                       node_position_file_name="node_position")
+                                       node_position_file=True)
 
 
     # Sampling the random walks for context
@@ -84,7 +92,7 @@ if __name__ == "__main__":
                                                      rand=random.Random(9999999999),
                                                      num_workers=num_workers)
     else:
-        walk_files = [walks_filebase + '.' + str(i) for i in range(number_walks)]
+        walk_files = [walks_filebase + '.' + str(i) for i in range(number_walks) if os.path.isfile(walks_filebase + '.' + str(i))]
 
 
 
@@ -101,10 +109,9 @@ if __name__ == "__main__":
                   size=representation_size,
                   min_count=0,
                   table_size=5000000,
-                  input_file=input_file + '/' + input_file,
+                  input_file=os.path.join(input_file, input_file + "_{}".format("zachary")),
                   vocabulary_counts=vertex_counts,
                   downsampling=0)
-
     model.node_color = node_color
 
     context_total_path = G.number_of_nodes() * number_walks * walk_length
@@ -123,23 +130,38 @@ if __name__ == "__main__":
         print('\n_______________________________________\n')
         start_time = timeit.default_timer()
         if it == 0:
-            process_node(node_learner, model, edges, iter=int(context_total_path/G.number_of_edges()), lambda2=0)
+            process_node(node_learner, model, edges,
+                         iter=int(context_total_path/G.number_of_edges()),
+                         lambda2=0)
         else:
-            process_node(node_learner, model, edges, iter=int(context_total_path / G.number_of_edges()),
+            process_node(node_learner, model, edges,
+                         iter=int(context_total_path / G.number_of_edges()),
                          lambda2=lambda_2_val)
 
-        process_context(cont_learner, model, graph_utils.combine_files_iter(walk_files), total_nodes=context_total_path,
-                        _lambda1=lambda_1_val, _lambda2=0)
+        process_context(cont_learner, model, graph_utils.combine_files_iter(walk_files),
+                        total_nodes=context_total_path,
+                        lambda1=lambda_1_val,
+                        lambda2=0)
 
         comm_learner.train(model)
 
-        plot_utils.node_space_plot_2D_elipsoid(model.node_embedding, node_color, means=model.centroid,
-                                               covariances=model.covariance_mat)
+        plot_utils.node_space_plot_2D_elipsoid(model.node_embedding, node_color,
+                                               means=model.centroid,
+                                               covariances=model.covariance_mat,
+                                               plot_name="{}_comEmb_l1-{}_l2-{}_ds-{}_it-{}".format(output_file,
+                                                                                                    lambda_1_val,
+                                                                                                    lambda_2_val,
+                                                                                                    0,
+                                                                                                    it),
+                                               show=True)
 
-        model.save(path='data', file_name=output_file + "_comEmb" +
-                                          "_l1-" + str(lambda_1_val) +
-                                          "_l2-" + str(lambda_2_val) +
-                                          "_ds-" + str(0) +
-                                          "_it-" + str(it))
+        model.save(path='data', file_name="{}_comEmb_l1-{}_l2-{}_ds-{}_it-{}_ws-{}_ns-{}".format(output_file,
+                                                                                           lambda_1_val,
+                                                                                           lambda_2_val,
+                                                                                           0,
+                                                                                           it,
+                                                                                           window_size,
+                                                                                                 negative)
+                   )
 
         print('time: %.2fs' % (timeit.default_timer() - start_time))

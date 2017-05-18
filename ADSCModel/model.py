@@ -1,7 +1,7 @@
 __author__ = 'ando'
 import numpy as np
 import pickle
-from os.path import exists
+from os.path import exists, join as path_join
 from os import makedirs
 from utils.embedding import Vocab
 from utils.IO_utils import load_ground_true
@@ -172,13 +172,14 @@ class Model(object):
         if not exists(path):
             makedirs(path)
 
-        with open(path + '/' + file_name + '.bin', 'wb') as file:
+        with open(path_join(path, file_name + '.bin'), 'wb') as file:
             pickle.dump(self.__dict__, file)
 
     @staticmethod
     def load_model(path='data', file_name=None):
-        with open(path + '/' + file_name + '.bin', 'rb') as file:
+        with open(path_join(path, file_name + '.bin'), 'rb') as file:
             model = Model()
             model.__dict__ = pickle.load(file)
-            print('model loaded , size: %d \t table_size: %d \t down_sampling: %.5f \t communities %d' % (model.layer1_size, model.table_size, model.downsampling, model.k))
+            print('model loaded , size: %d \t table_size: %d \t down_sampling: %.5f \t communities %d' %
+                  (model.layer1_size, model.table_size, model.downsampling, model.k))
             return model

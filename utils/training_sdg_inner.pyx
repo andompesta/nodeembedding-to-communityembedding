@@ -127,11 +127,11 @@ cdef unsigned long long fast_context0_sg_neg (
             continue
         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]
         g = (label - f) * alpha
-        gl = g * _lambda
+        # gl = g * _lambda
 
         saxpy(&size, &g, &negative_embedding[row2], &ONE, work, &ONE) # work += g * negative_embeddings
         if is_node_embedding == 0:
-            saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE) # negative_embeddings += g * node_embedding
+            saxpy(&size, &g, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE) # negative_embeddings += g * node_embedding
 
     saxpy(&size, &_lambda, work, &ONE, &node_embedding[row1], &ONE)  #node_embedding += _lambda * work
 
@@ -187,11 +187,11 @@ cdef unsigned long long fast_context1_sg_neg(
             continue
         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]
         g = (label - f) * alpha
-        gl = g * _lambda
+        # gl = g * _lambda
 
         saxpy(&size, &g, &negative_embedding[row2], &ONE, work, &ONE)
         if is_node_embedding == 0:
-            saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)
+            saxpy(&size, &g, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)
 
     saxpy(&size, &_lambda, work, &ONE, &node_embedding[row1], &ONE)
     return next_random

@@ -33,6 +33,12 @@ class Node2Vec(object):
         """
         Update the model's neural weights from a sequence of paths (can be a once-only generator stream).
         """
+        assert model.node_embedding.dtype == np.float32
+        assert model.context_embedding.dtype == np.float32
+        assert model.pi.dtype == np.float32
+        assert model.inv_covariance_mat.dtype == np.float32
+        assert model.centroid.dtype == np.float32
+
         print("training model with %i workers on %i vocabulary and %i features and 'negative sampling'=%s" %
                     (self.workers, len(model.vocab), model.layer1_size, self.negative))
 

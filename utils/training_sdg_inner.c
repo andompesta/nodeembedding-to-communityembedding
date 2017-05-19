@@ -1794,7 +1794,6 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_context0_s
   __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_v_f;
   __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_v_g;
   __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_v_label;
-  __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_v_gl;
   __pyx_t_5numpy_uint32_t __pyx_v_target_index;
   int __pyx_v_d;
   unsigned PY_LONG_LONG __pyx_r;
@@ -1996,7 +1995,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_context0_s
  *             continue
  *         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]             # <<<<<<<<<<<<<<
  *         g = (label - f) * alpha
- *         gl = g * _lambda
+ *         # gl = g * _lambda
  */
     __pyx_v_f = (__pyx_v_5utils_18training_sdg_inner_EXP_TABLE[((int)((__pyx_v_f + 6.0) * 83.0))]);
 
@@ -2004,26 +2003,17 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_context0_s
  *             continue
  *         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]
  *         g = (label - f) * alpha             # <<<<<<<<<<<<<<
- *         gl = g * _lambda
+ *         # gl = g * _lambda
  * 
  */
     __pyx_v_g = ((__pyx_v_label - __pyx_v_f) * __pyx_v_alpha);
 
-    /* "utils/training_sdg_inner.pyx":130
- *         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]
- *         g = (label - f) * alpha
- *         gl = g * _lambda             # <<<<<<<<<<<<<<
- * 
- *         saxpy(&size, &g, &negative_embedding[row2], &ONE, work, &ONE) # work += g * negative_embeddings
- */
-    __pyx_v_gl = (__pyx_v_g * __pyx_v__lambda);
-
     /* "utils/training_sdg_inner.pyx":132
- *         gl = g * _lambda
+ *         # gl = g * _lambda
  * 
  *         saxpy(&size, &g, &negative_embedding[row2], &ONE, work, &ONE) # work += g * negative_embeddings             # <<<<<<<<<<<<<<
  *         if is_node_embedding == 0:
- *             saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE) # negative_embeddings += g * node_embedding
+ *             saxpy(&size, &g, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE) # negative_embeddings += g * node_embedding
  */
     __pyx_v_5utils_18training_sdg_inner_saxpy((&__pyx_v_size), (&__pyx_v_g), (&(__pyx_v_negative_embedding[__pyx_v_row2])), (&__pyx_v_5utils_18training_sdg_inner_ONE), __pyx_v_work, (&__pyx_v_5utils_18training_sdg_inner_ONE));
 
@@ -2031,7 +2021,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_context0_s
  * 
  *         saxpy(&size, &g, &negative_embedding[row2], &ONE, work, &ONE) # work += g * negative_embeddings
  *         if is_node_embedding == 0:             # <<<<<<<<<<<<<<
- *             saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE) # negative_embeddings += g * node_embedding
+ *             saxpy(&size, &g, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE) # negative_embeddings += g * node_embedding
  * 
  */
     __pyx_t_3 = ((__pyx_v_is_node_embedding == 0) != 0);
@@ -2040,17 +2030,17 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_context0_s
       /* "utils/training_sdg_inner.pyx":134
  *         saxpy(&size, &g, &negative_embedding[row2], &ONE, work, &ONE) # work += g * negative_embeddings
  *         if is_node_embedding == 0:
- *             saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE) # negative_embeddings += g * node_embedding             # <<<<<<<<<<<<<<
+ *             saxpy(&size, &g, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE) # negative_embeddings += g * node_embedding             # <<<<<<<<<<<<<<
  * 
  *     saxpy(&size, &_lambda, work, &ONE, &node_embedding[row1], &ONE)  #node_embedding += _lambda * work
  */
-      __pyx_v_5utils_18training_sdg_inner_saxpy((&__pyx_v_size), (&__pyx_v_gl), (&(__pyx_v_node_embedding[__pyx_v_row1])), (&__pyx_v_5utils_18training_sdg_inner_ONE), (&(__pyx_v_negative_embedding[__pyx_v_row2])), (&__pyx_v_5utils_18training_sdg_inner_ONE));
+      __pyx_v_5utils_18training_sdg_inner_saxpy((&__pyx_v_size), (&__pyx_v_g), (&(__pyx_v_node_embedding[__pyx_v_row1])), (&__pyx_v_5utils_18training_sdg_inner_ONE), (&(__pyx_v_negative_embedding[__pyx_v_row2])), (&__pyx_v_5utils_18training_sdg_inner_ONE));
 
       /* "utils/training_sdg_inner.pyx":133
  * 
  *         saxpy(&size, &g, &negative_embedding[row2], &ONE, work, &ONE) # work += g * negative_embeddings
  *         if is_node_embedding == 0:             # <<<<<<<<<<<<<<
- *             saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE) # negative_embeddings += g * node_embedding
+ *             saxpy(&size, &g, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE) # negative_embeddings += g * node_embedding
  * 
  */
     }
@@ -2058,7 +2048,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_context0_s
   }
 
   /* "utils/training_sdg_inner.pyx":136
- *             saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE) # negative_embeddings += g * node_embedding
+ *             saxpy(&size, &g, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE) # negative_embeddings += g * node_embedding
  * 
  *     saxpy(&size, &_lambda, work, &ONE, &node_embedding[row1], &ONE)  #node_embedding += _lambda * work             # <<<<<<<<<<<<<<
  * 
@@ -2104,7 +2094,6 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_context1_s
   __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_v_f;
   __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_v_g;
   __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_v_label;
-  __pyx_t_5utils_18training_sdg_inner_REAL_t __pyx_v_gl;
   __pyx_t_5numpy_uint32_t __pyx_v_target_index;
   int __pyx_v_d;
   unsigned PY_LONG_LONG __pyx_r;
@@ -2306,7 +2295,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_context1_s
  *             continue
  *         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]             # <<<<<<<<<<<<<<
  *         g = (label - f) * alpha
- *         gl = g * _lambda
+ *         # gl = g * _lambda
  */
     __pyx_v_f = (__pyx_v_5utils_18training_sdg_inner_EXP_TABLE[((int)((__pyx_v_f + 6.0) * 83.0))]);
 
@@ -2314,26 +2303,17 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_context1_s
  *             continue
  *         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]
  *         g = (label - f) * alpha             # <<<<<<<<<<<<<<
- *         gl = g * _lambda
+ *         # gl = g * _lambda
  * 
  */
     __pyx_v_g = ((__pyx_v_label - __pyx_v_f) * __pyx_v_alpha);
 
-    /* "utils/training_sdg_inner.pyx":190
- *         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]
- *         g = (label - f) * alpha
- *         gl = g * _lambda             # <<<<<<<<<<<<<<
- * 
- *         saxpy(&size, &g, &negative_embedding[row2], &ONE, work, &ONE)
- */
-    __pyx_v_gl = (__pyx_v_g * __pyx_v__lambda);
-
     /* "utils/training_sdg_inner.pyx":192
- *         gl = g * _lambda
+ *         # gl = g * _lambda
  * 
  *         saxpy(&size, &g, &negative_embedding[row2], &ONE, work, &ONE)             # <<<<<<<<<<<<<<
  *         if is_node_embedding == 0:
- *             saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)
+ *             saxpy(&size, &g, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)
  */
     __pyx_v_5utils_18training_sdg_inner_saxpy((&__pyx_v_size), (&__pyx_v_g), (&(__pyx_v_negative_embedding[__pyx_v_row2])), (&__pyx_v_5utils_18training_sdg_inner_ONE), __pyx_v_work, (&__pyx_v_5utils_18training_sdg_inner_ONE));
 
@@ -2341,7 +2321,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_context1_s
  * 
  *         saxpy(&size, &g, &negative_embedding[row2], &ONE, work, &ONE)
  *         if is_node_embedding == 0:             # <<<<<<<<<<<<<<
- *             saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)
+ *             saxpy(&size, &g, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)
  * 
  */
     __pyx_t_3 = ((__pyx_v_is_node_embedding == 0) != 0);
@@ -2350,17 +2330,17 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_context1_s
       /* "utils/training_sdg_inner.pyx":194
  *         saxpy(&size, &g, &negative_embedding[row2], &ONE, work, &ONE)
  *         if is_node_embedding == 0:
- *             saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)             # <<<<<<<<<<<<<<
+ *             saxpy(&size, &g, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)             # <<<<<<<<<<<<<<
  * 
  *     saxpy(&size, &_lambda, work, &ONE, &node_embedding[row1], &ONE)
  */
-      __pyx_v_5utils_18training_sdg_inner_saxpy((&__pyx_v_size), (&__pyx_v_gl), (&(__pyx_v_node_embedding[__pyx_v_row1])), (&__pyx_v_5utils_18training_sdg_inner_ONE), (&(__pyx_v_negative_embedding[__pyx_v_row2])), (&__pyx_v_5utils_18training_sdg_inner_ONE));
+      __pyx_v_5utils_18training_sdg_inner_saxpy((&__pyx_v_size), (&__pyx_v_g), (&(__pyx_v_node_embedding[__pyx_v_row1])), (&__pyx_v_5utils_18training_sdg_inner_ONE), (&(__pyx_v_negative_embedding[__pyx_v_row2])), (&__pyx_v_5utils_18training_sdg_inner_ONE));
 
       /* "utils/training_sdg_inner.pyx":193
  * 
  *         saxpy(&size, &g, &negative_embedding[row2], &ONE, work, &ONE)
  *         if is_node_embedding == 0:             # <<<<<<<<<<<<<<
- *             saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)
+ *             saxpy(&size, &g, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)
  * 
  */
     }
@@ -2368,7 +2348,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast_context1_s
   }
 
   /* "utils/training_sdg_inner.pyx":196
- *             saxpy(&size, &gl, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)
+ *             saxpy(&size, &g, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)
  * 
  *     saxpy(&size, &_lambda, work, &ONE, &node_embedding[row1], &ONE)             # <<<<<<<<<<<<<<
  *     return next_random

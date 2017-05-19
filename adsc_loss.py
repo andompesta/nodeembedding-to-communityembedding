@@ -36,39 +36,46 @@ prop.read('conf.ini')
 
 
 
-def process_context(context_learner, model, walks, total_nodes, _lambda1=1.0, _lambda2=0.1):
+def process_context(context_learner, model, walks, total_nodes, lambda1=1.0, lambda2=0.1):
     print("Training context...")
-    return context_learner.train(model=model, paths=walks, total_words=total_nodes, _lambda1=_lambda1, _lambda2=(_lambda2/(model.k * cont_learner.window_size)))
+    return context_learner.train(model=model,
+                                 paths=walks,
+                                 total_words=total_nodes,
+                                 _lambda1=lambda1,
+                                 _lambda2=(lambda2/(model.k * cont_learner.window_size)))
 
 
 def process_node(node_learner, model, edges, iter=1, lambda2=0.0):
     print("Training node embedding...")
-    return node_learner.train(model, edges=edges, iter=iter, _lambda2=(lambda2/model.k))
+    return node_learner.train(model,
+                              edges=edges,
+                              iter=iter,
+                              _lambda2=(lambda2/model.k))
 
 if __name__ == "__main__":
 
     #Reading the input parameters form the configuration files
-    number_walks = prop.getint('MY', 'number_walks')  # number of walks for each node
-    walk_length = prop.getint('MY', 'walk_length')  # length of each walk
-    window_size = prop.getint('MY', 'window_size')  # windows size used to compute the context embedding
-    negative = prop.getint('MY', 'negative')  # number of negative sample
-    representation_size = prop.getint('MY', 'representation_size')  # size of the embedding
-    num_workers = prop.getint('MY', 'num_workers')  # number of thread
-    num_iter = prop.getint('MY', 'num_iter')  # number of iteration
-    reg_covar = prop.getfloat('MY', 'reg_covar')  # regularization coefficient to ensure positive covar
-    input_file = prop.get('MY', 'input_file_name')  # name of the input file
-    output_file = prop.get('MY', 'input_file_name')  # name of the output file
+    # number_walks = prop.getint('MY', 'number_walks')  # number of walks for each node
+    # walk_length = prop.getint('MY', 'walk_length')  # length of each walk
+    # window_size = prop.getint('MY', 'window_size')  # windows size used to compute the context embedding
+    # negative = prop.getint('MY', 'negative')  # number of negative sample
+    # representation_size = prop.getint('MY', 'representation_size')  # size of the embedding
+    # num_workers = prop.getint('MY', 'num_workers')  # number of thread
+    # num_iter = prop.getint('MY', 'num_iter')  # number of iteration
+    # reg_covar = prop.getfloat('MY', 'reg_covar')  # regularization coefficient to ensure positive covar
+    # input_file = prop.get('MY', 'input_file_name')  # name of the input file
+    # output_file = prop.get('MY', 'input_file_name')  # name of the output file
 
-    # number_walks = 10  # number of walks for each node
-    # walk_length = 10  # length of each walk
-    # window_size = 3  # windows size used to compute the context embedding
-    # negative = 3  # number of negative sample
-    # representation_size = 2  # size of the embedding
-    # num_workers = 4  # number of thread
-    # num_iter = 5  # number of iteration
-    # reg_covar = 0.00001  # regularization coefficient to ensure positive covar
-    # input_file = 'karate'  # name of the input file
-    # output_file = 'karate'  # name of the output file
+    number_walks = 10  # number of walks for each node
+    walk_length = 10  # length of each walk
+    window_size = 10  # windows size used to compute the context embedding
+    negative = 3  # number of negative sample
+    representation_size = 2  # size of the embedding
+    num_workers = 4  # number of thread
+    num_iter = 5  # number of iteration
+    reg_covar = 0.00001  # regularization coefficient to ensure positive covar
+    input_file = 'Dblp'  # name of the input file
+    output_file = 'Dblp'  # name of the output file
 
     lambda_1_val = 0.1
     lambda_2_val = 0.001
@@ -118,7 +125,7 @@ if __name__ == "__main__":
 
 
     # randomize the first iteration
-    model.context_embedding = (np.random.rand(len(model.vocab), model.layer1_size))
+    model.context_embedding = (5 * np.random.randn(len(model.vocab), model.layer1_size) + 5).astype(np.float32)
 
     comm_learner.train(model)
     print('\n_______________________________________\n')
@@ -137,17 +144,19 @@ if __name__ == "__main__":
     print('\n_______________________________________\n')
     print('using lambda 1:%.4f \t lambda 2:%.4f' % (lambda_1_val, lambda_2_val))
     print('Number of community: %d' % model.k)
-
+    model.context_embedding = np.zeros((len(model.vocab), model.layer1_size), dtype=np.float32)
     ###########################
     #   EMBEDDING LEARNING    #
     ###########################
     for it in range(9):
-        model = model.load_model(path='data', file_name=output_file + "_comEmb" +
-                                                  "_l1-"+str(lambda_1_val) +
-                                                  "_l2-"+str(lambda_2_val) +
-                                                  "_ds-"+str(down_sample) +
-                                                  "_it-"+str(it) + '_time-loss')
 
+        process_node(node_learner, model, edges,
+                     iter=int(context_total_path / G.number_of_edges()),
+                     lambda2=lambda_2_val)
+        process_context(cont_learner, model, graph_utils.combine_files_iter(walk_files),
+                        total_nodes=context_total_path,
+                        lambda1=lambda_1_val,
+                        lambda2=0)
         comm_learner.train(model)
 
         print('\n_______________________________________\n')

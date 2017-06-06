@@ -12,7 +12,7 @@ from scipy.special import expit as sigmoid
 
 
 class Node2Vec(object):
-    def __init__(self, alpha=0.1, workers=1, min_alpha=0.0001, negative=0 ):
+    def __init__(self, alpha=0.2, workers=1, min_alpha=0.0001, negative=0 ):
 
         self.workers = workers
         self.alpha = float(alpha)
@@ -95,10 +95,10 @@ class Node2Vec(object):
                     break
 
 
-                py_work = np.zeros(model.layer1_size)
-                py_work_o3 = np.zeros(model.layer1_size)
-                py_work1_o3 = np.zeros(model.layer1_size)
-                py_work2_o3 = np.zeros(model.layer1_size ** 2)
+                py_work = np.zeros(model.layer1_size, dtype=np.float32)
+                py_work_o3 = np.zeros(model.layer1_size, dtype=np.float32)
+                py_work1_o3 = np.zeros(model.layer1_size, dtype=np.float32)
+                py_work2_o3 = np.zeros(model.layer1_size ** 2, dtype=np.float32)
                 # update the learning rate before every job
                 # alpha = max(self.min_alpha, self.alpha * (1 - 1.0 * word_count[0] / total_node))
                 # how many words did we train on? out-of-vocabulary (unknown) words do not count

@@ -39,8 +39,7 @@ ctypedef unsigned long long (*fast_context_sg_neg_ptr) (
     const REAL_t alpha,
     const REAL_t _lambda,
     REAL_t *work,
-    unsigned long long next_random,
-    const int is_node_embedding
+    unsigned long long next_random
     ) nogil
 
 
@@ -86,7 +85,59 @@ cdef REAL_t DECF = <REAL_t>0.05
 cdef REAL_t NDECF = <REAL_t>-0.05
 
 
-cdef unsigned long long fast_context0_sg_neg (
+cdef unsigned long long fast0_o2_sg_neg (
+        const int negative,
+        np.uint32_t *table,
+        unsigned long long table_len,
+        REAL_t *node_embedding,
+        REAL_t *context_embedding,
+        const int size,
+        const np.uint32_t word_index,
+        const np.uint32_t word2_index,
+        const REAL_t alpha,
+        const REAL_t _lambda,
+        REAL_t *work,
+        unsigned long long next_random) nogil:
+
+    cdef long long a
+    cdef long long row1 = word2_index * size, row2
+    cdef unsigned long long modulo = 281474976710655ULL
+    cdef REAL_t f, g, label, gl, loss
+    cdef np.uint32_t target_index
+    cdef int d, i
+
+    memset(work, 0, size * cython.sizeof(REAL_t))
+
+    loss = <REAL_t>0.0
+    for d in range(negative+1):
+        if d == 0:
+            target_index = word_index
+            label = ONEF
+        else:
+            target_index = table[(next_random >> 16) % table_len]
+            next_random = (next_random * <unsigned long long>25214903917ULL + 11) & modulo
+            if target_index == word_index:
+                continue
+            label = <REAL_t>0.0
+
+        row2 = target_index * size
+        f = <REAL_t>dsdot(&size, &node_embedding[row1], &ONE, &context_embedding[row2], &ONE)
+        if f <= -MAX_EXP or f >= MAX_EXP:
+            continue
+        f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]
+        g = (label - f) * alpha * _lambda
+
+        loss += (np.log(f) * _lambda)
+
+        saxpy(&size, &g, &context_embedding[row2], &ONE, work, &ONE) # work += g * negative_embeddings
+        saxpy(&size, &g, &node_embedding[row1], &ONE, &context_embedding[row2], &ONE) # negative_embeddings += g * node_embedding
+
+    saxpy(&size, &ONEF, work, &ONE, &node_embedding[row1], &ONE)  #node_embedding += work
+
+    return [next_random, loss]
+
+
+cdef unsigned long long fast0_o1_sg_neg (
         const int negative,
         np.uint32_t *table,
         unsigned long long table_len,
@@ -98,16 +149,16 @@ cdef unsigned long long fast_context0_sg_neg (
         const REAL_t alpha,
         const REAL_t _lambda,
         REAL_t *work,
-        unsigned long long next_random,
-        const int is_node_embedding) nogil:
+        unsigned long long next_random) nogil:
 
     cdef long long a
     cdef long long row1 = word2_index * size, row2
     cdef unsigned long long modulo = 281474976710655ULL
-    cdef REAL_t f, g, label, gl
+    cdef REAL_t f, g, label, gl, loss
     cdef np.uint32_t target_index
     cdef int d, i
 
+    loss = <REAL_t>0.0
     memset(work, 0, size * cython.sizeof(REAL_t))
 
     for d in range(negative+1):
@@ -126,14 +177,13 @@ cdef unsigned long long fast_context0_sg_neg (
         if f <= -MAX_EXP or f >= MAX_EXP:
             continue
         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]
-        g = (label - f) * alpha
-        # gl = g * _lambda
+        g = (label - f) * alpha * _lambda # compute gradient
+
+        loss += (np.log(f) * _lambda) # compute loss
 
         saxpy(&size, &g, &negative_embedding[row2], &ONE, work, &ONE) # work += g * negative_embeddings
-        if is_node_embedding == 0:
-            saxpy(&size, &g, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE) # negative_embeddings += g * node_embedding
 
-    saxpy(&size, &_lambda, work, &ONE, &node_embedding[row1], &ONE)  #node_embedding += _lambda * work
+    saxpy(&size, &ONEF, work, &ONE, &node_embedding[row1], &ONE)  #node_embedding += _lambda * work
 
 
     # with gil:
@@ -142,7 +192,7 @@ cdef unsigned long long fast_context0_sg_neg (
     #     print("node_embedding: " + " ".join([str(node_embedding[row1 + i]) for i in range(size)]) )
     #     print("neg_node_embedding: " + " ".join([str(negative_embedding[row2 + i]) for i in range(size)]) )
 
-    return next_random
+    return [next_random, loss]
 
 
 cdef unsigned long long fast_context1_sg_neg(

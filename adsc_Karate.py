@@ -66,7 +66,7 @@ if __name__ == "__main__":
     window_size = 3  # windows size used to compute the context embedding
     negative = 4  # number of negative sample
     lambda_1_val = 1.
-    lambda_2_val = 0.00
+    lambda_2_val = 0.001
 
     walks_filebase = os.path.join('data', output_file, output_file + ".walks")            # where read/write the sampled path
     sampling_path = False
@@ -76,7 +76,7 @@ if __name__ == "__main__":
     #CONSTRUCT THE GRAPH
     G = graph_utils.load_adjacencylist(os.path.join('./data', input_file, input_file + '.adjlist'), True)
     node_color = plot_utils.graph_plot(G=G,
-                                       show=True,
+                                       show=False,
                                        graph_name="karate",
                                        node_position_file=True)
 

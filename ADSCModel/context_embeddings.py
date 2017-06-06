@@ -40,7 +40,7 @@ class Context2Vec(object):
     '''
     Class that train the context embedding
     '''
-    def __init__(self, alpha=0.1, window_size=5, workers=1, min_alpha=0.0001, negative=5):
+    def __init__(self, alpha=0.2, window_size=5, workers=1, min_alpha=0.0001, negative=5):
         '''
         :param alpha: learning rate
         :param window: windows size used to compute the context embeddings

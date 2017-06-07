@@ -2,7 +2,7 @@ __author__ = 'ando'
 
 import numpy as np
 from time import time
-import logging
+import logging as log
 import random
 
 import networkx as nx
@@ -14,7 +14,7 @@ from os import path
 from collections import Counter
 import os.path
 
-logger = logging.getLogger('adsc')
+log.basicConfig(format='%(asctime).19s %(levelname)s %(filename)s: %(lineno)s %(message)s', level=log.INFO)
 
 
 def __random_walk__(G, path_length, alpha=0, rand=random.Random(), start=None):
@@ -95,13 +95,13 @@ def load_adjacencylist(file_, undirected=False, chunksize=10000):
     t1 = time()
     adjlist = np.asarray(adjlist)
 
-    print('Parsed {} edges with {} chunks in {}s'.format(total, idx, t1-t0))
+    log.info('Parsed {} edges with {} chunks in {}s'.format(total, idx, t1-t0))
 
     t0 = time()
     G = convert_func(adjlist)
     t1 = time()
 
-    print('Converted edges to graph in {}s'.format(t1-t0))
+    log.debug('Converted edges to graph in {}s'.format(t1-t0))
 
     if undirected:
         G = G.to_undirected()
@@ -116,7 +116,7 @@ def _write_walks_to_disk(args):
     with open(f, 'w') as fout:
         for walk in build_deepwalk_corpus_iter(G=G, num_paths=num_paths, path_length=path_length, alpha=alpha, rand=rand):
             fout.write(u"{}\n".format(u" ".join(__vertex2str[v] for v in walk)))
-    logger.debug("Generated new file {}, it took {} seconds".format(f, time() - t_0))
+    log.debug("Generated new file {}, it took {} seconds".format(f, time() - t_0))
     return f
 
 def write_walks_to_disk(G, filebase, num_paths, path_length, alpha=0, rand=random.Random(0), num_workers=cpu_count()):

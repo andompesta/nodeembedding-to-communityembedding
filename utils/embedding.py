@@ -1,18 +1,17 @@
 __author__ = 'ando'
 import itertools
-import logging
+import logging as log
 
 import numpy as np
 from scipy.special import expit as sigmoid
-from scipy.stats import multivariate_normal
 
-logger = logging.getLogger('adsc')
+log.basicConfig(format='%(asctime).19s %(levelname)s %(filename)s: %(lineno)s %(message)s', level=log.INFO)
 
 try:
     from utils.training_sdg_inner import train_sg, FAST_VERSION
-    print('Fast version ' + str(FAST_VERSION))
+    log.info('Fast version ' + str(FAST_VERSION))
 except ImportError as e:
-    print(e)
+    log.error(e)
     def train_sg(py_node_embedding, py_context_embedding, py_path, py_alpha, py_negative, py_window, py_table,
                           py_centroid, py_inv_covariance_mat, py_pi, py_k, py_covariance_mat,
                           py_lambda1=1.0, py_lambda2=0.0, py_size=None, py_work=None, py_work_o3=None, py_work1_o3=None, py_work2_o3=None,
@@ -132,8 +131,8 @@ def prepare_sentences(model, paths):
     '''
     for path in paths:
         # avoid calling random_sample() where prob >= 1, to speed things up a little:
-        sampled = [model.vocab[word] for word in path
-                   if word in model.vocab and (model.vocab[word].sample_probability >= 1.0 or model.vocab[word].sample_probability >= np.random.random_sample())]
+        sampled = [model.vocab[node] for node in path
+                   if node in model.vocab and (model.vocab[node].sample_probability >= 1.0 or model.vocab[node].sample_probability >= np.random.random_sample())]
         yield sampled
 
 def batch_generator(iterable, batch_size=1):
@@ -154,8 +153,6 @@ class RepeatCorpusNTimes():
         '''
         self.corpus = corpus
         self.n = n
-        self.total_node = self.corpus.shape[0] * self.corpus.shape[1] * self.n
-        self.total_examples = len(self.corpus) * self.n
 
     def __iter__(self):
         for _ in range(self.n):

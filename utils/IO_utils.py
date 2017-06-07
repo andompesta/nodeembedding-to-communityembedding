@@ -61,22 +61,22 @@ def save_embedding(embeddings, file_name, path='data'):
         for node_id, embed in enumerate(embeddings):
             file.write(str(node_id+1) + '\t' + " ".join([str(val) for val in embed]) + '\n')
 
-def load_embedding(file_name, path='data'):
-    '''
-    Load an node embedding form a txt file
-     file structure = <node_id>\t<feautre_1>\s<feautre_2>...
-    :param file_name: file name to load
-    :param path: directory where the file is saved
-    :return: node_embedding as numpy matrix
-    '''
-    full_path = path_join(path, file_name + '.txt')
+def load_embedding(file_name, path='data', ext=".txt"):
+    """
+    Load the embedding saved in a .txt file
+    :param file_name: name of the file to load
+    :param path: location of the file
+    :param ext: extension of the file to load
+    :return:
+    """
     ret = []
-    with open(full_path, 'r') as file:
+    with open(path_join(path, file_name + ext), 'r') as file:
         for line in file:
             tokens = line.strip().split('\t')
             node_values = [float(val) for val in tokens[1].strip().split(' ')]
             ret.append(node_values)
-    return np.array(ret)
+    ret = np.array(ret, dtype=np.float32)
+    return ret
 
 
 def save(data, file_name, path='data'):

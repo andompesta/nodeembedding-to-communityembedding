@@ -80,33 +80,6 @@ def graph_plot(G,
     plt.axis("off")
     nx.draw_networkx(G, node_color=nodes_color, pos=spring_pos, camp=plt.get_cmap(CAMP), nodelist=sorted(G.nodes()))
 
-    # if nodes_color == None:
-    #     color_map = list(plt.cm.rainbow(np.linspace(0.1, 0.9, G.number_of_nodes())))
-    #     order_edges = nx.bfs_edges(G, G.nodes()[STARTING_NODE])
-    #     nodes_color = np.zeros((G.number_of_nodes(), 4))
-    #
-    #     for index, d in enumerate(order_edges):
-    #         nodes_color[d[1]-1] = color_map[index+1]
-    #
-    #     nodes_color[STARTING_NODE] = color_map[0]
-    #     nx.draw_networkx(G, node_color=nodes_color, pos=spring_pos)
-
-    # else:
-    #     color_map = {0:'lightcoral', 1:'yellow', 2:'limegreen', 3:'cyan'}
-    #     for community in range(4):
-    #         nodes_in_community = np.where(nodes_color == community + 1)[0] + 1
-    #         nx.draw_networkx_nodes(G, spring_pos,
-    #                                nodelist=nodes_in_community.tolist(),
-    #                                node_color=color_map[community],
-    #                                node_size=400,
-    #                                alpha=0.9)
-    #
-    #     nx.draw_networkx_edges(G, spring_pos, width=1.0, alpha=0.5)
-    #     labels = {}
-    #     for node in G.nodes():
-    #         labels[node] = node
-    #     nx.draw_networkx_labels(G,spring_pos, labels,font_size=14)
-
     if show:
         plt.show()
     else:
@@ -184,7 +157,7 @@ def node_space_plot_2D_elipsoid(embedding, color_values,
 
     if (means is not None) and (covariances is not None):
         for i, (mean, covar) in enumerate(zip(means, covariances)):
-            v, w = np.linalg.eigh(3.5*covar)
+            v, w = np.linalg.eigh(2.5*covar)
             v = 2. * np.sqrt(2.) * np.sqrt(v)
             u = w[0] / np.linalg.norm(w[0])
             # as the DP will not use every component it has access to

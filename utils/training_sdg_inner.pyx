@@ -4,7 +4,7 @@ cimport numpy as np
 from cpython cimport PyCapsule_GetPointer
 import sys
 
-from libc.math cimport exp, isnan
+from libc.math cimport exp, isnan,log
 from libc.string cimport memset
 import scipy.linalg.blas as fblas
 
@@ -26,8 +26,7 @@ ctypedef void (*sscal_ptr) (const int *N, const float *alpha, const float *X, co
 ctypedef void (*sgemm_ptr) (char *transA, char *transB, int *m, int *n, int *k, float *alpha, float *a, int *lda, float *b, int *ldb, float *beta, float *c, int *ldc) nogil
 ctypedef void (*dgemm_ptr) (char *transA, char *transB, int *m, int *n, int *k, float *alpha, double *a, int *lda, double *b, int *ldb, float *beta, double *c, int *ldc) nogil
 
-
-ctypedef unsigned long long (*fast_context_sg_neg_ptr) (
+ctypedef unsigned long long (*fast_o1_ptr) (
     const int negative,
     np.uint32_t *table,
     unsigned long long table_len,
@@ -36,7 +35,24 @@ ctypedef unsigned long long (*fast_context_sg_neg_ptr) (
     const int size,
     const np.uint32_t word_index,
     const np.uint32_t word2_index,
-    const REAL_t alpha,
+    const REAL_t lr,
+    REAL_t *work,
+    unsigned long long next_random
+    ) nogil
+
+
+
+
+ctypedef unsigned long long (*fast_context_sg_neg_ptr) (
+    const int negative,
+    np.uint32_t *table,
+    unsigned long long table_len,
+    REAL_t *node_embedding,
+    REAL_t *context_embedding,
+    const int size,
+    const np.uint32_t word_index,
+    const np.uint32_t word2_index,
+    const REAL_t lr,
     const REAL_t _lambda,
     REAL_t *work,
     unsigned long long next_random
@@ -69,7 +85,8 @@ cdef sscal_ptr sscal=<sscal_ptr>PyCObject_AsVoidPtr(fblas.sscal._cpointer) # x =
 cdef sgemm_ptr sgemm=<sgemm_ptr>PyCObject_AsVoidPtr(fblas.sgemm._cpointer) # float x = alpha * (A B) + beta * (x)
 cdef dgemm_ptr dgemm=<dgemm_ptr>PyCObject_AsVoidPtr(fblas.sgemm._cpointer) # double x = alpha * (A B) + beta * (x)
 
-cdef fast_context_sg_neg_ptr fast_context_sg_neg
+cdef fast_o1_ptr fast_o1
+cdef fast_context_sg_neg_ptr fast_o2
 cdef fast_community_sdg_ptr fast_community_sdg
 
 DEF EXP_TABLE_SIZE = 1000
@@ -81,34 +98,33 @@ cdef int ONE = 1
 cdef REAL_t ONEF = <REAL_t>1.0
 cdef REAL_t NONEF = <REAL_t>-1.0
 
-cdef REAL_t DECF = <REAL_t>0.05
-cdef REAL_t NDECF = <REAL_t>-0.05
+cdef REAL_t DECF = <REAL_t>0.5
+cdef REAL_t NDECF = <REAL_t>-0.5
 
 
-cdef unsigned long long fast0_o2_sg_neg (
-        const int negative,
-        np.uint32_t *table,
-        unsigned long long table_len,
-        REAL_t *node_embedding,
-        REAL_t *context_embedding,
-        const int size,
-        const np.uint32_t word_index,
-        const np.uint32_t word2_index,
-        const REAL_t alpha,
-        const REAL_t _lambda,
-        REAL_t *work,
-        unsigned long long next_random) nogil:
+cdef unsigned long long fast0_o2 (
+    const int negative,
+    np.uint32_t *table,
+    unsigned long long table_len,
+    REAL_t *node_embedding,
+    REAL_t *context_embedding,
+    const int size,
+    const np.uint32_t word_index,
+    const np.uint32_t word2_index,
+    const REAL_t lr,
+    const REAL_t _lambda,
+    REAL_t *work,
+    unsigned long long next_random) nogil:
 
     cdef long long a
     cdef long long row1 = word2_index * size, row2
     cdef unsigned long long modulo = 281474976710655ULL
-    cdef REAL_t f, g, label, gl, loss
+    cdef REAL_t f, g, label, gl
     cdef np.uint32_t target_index
     cdef int d, i
 
     memset(work, 0, size * cython.sizeof(REAL_t))
 
-    loss = <REAL_t>0.0
     for d in range(negative+1):
         if d == 0:
             target_index = word_index
@@ -125,40 +141,87 @@ cdef unsigned long long fast0_o2_sg_neg (
         if f <= -MAX_EXP or f >= MAX_EXP:
             continue
         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]
-        g = (label - f) * alpha * _lambda
-
-        loss += (np.log(f) * _lambda)
+        g = (label - f) * lr * _lambda
 
         saxpy(&size, &g, &context_embedding[row2], &ONE, work, &ONE) # work += g * negative_embeddings
         saxpy(&size, &g, &node_embedding[row1], &ONE, &context_embedding[row2], &ONE) # negative_embeddings += g * node_embedding
 
     saxpy(&size, &ONEF, work, &ONE, &node_embedding[row1], &ONE)  #node_embedding += work
 
-    return [next_random, loss]
+    return next_random
 
 
-cdef unsigned long long fast0_o1_sg_neg (
-        const int negative,
-        np.uint32_t *table,
-        unsigned long long table_len,
-        REAL_t *node_embedding,
-        REAL_t *negative_embedding,
-        const int size,
-        const np.uint32_t word_index,
-        const np.uint32_t word2_index,
-        const REAL_t alpha,
-        const REAL_t _lambda,
-        REAL_t *work,
-        unsigned long long next_random) nogil:
+
+cdef unsigned long long fast1_o2 (
+    const int negative,
+    np.uint32_t *table,
+    unsigned long long table_len,
+    REAL_t *node_embedding,
+    REAL_t *context_embedding,
+    const int size,
+    const np.uint32_t word_index,
+    const np.uint32_t word2_index,
+    const REAL_t lr,
+    const REAL_t _lambda,
+    REAL_t *work,
+    unsigned long long next_random) nogil:
 
     cdef long long a
     cdef long long row1 = word2_index * size, row2
     cdef unsigned long long modulo = 281474976710655ULL
-    cdef REAL_t f, g, label, gl, loss
+    cdef REAL_t f, g, label, gl
     cdef np.uint32_t target_index
     cdef int d, i
 
-    loss = <REAL_t>0.0
+    memset(work, 0, size * cython.sizeof(REAL_t))
+
+    for d in range(negative+1):
+        if d == 0:
+            target_index = word_index
+            label = ONEF
+        else:
+            target_index = table[(next_random >> 16) % table_len]
+            next_random = (next_random * <unsigned long long>25214903917ULL + 11) & modulo
+            if target_index == word_index:
+                continue
+            label = <REAL_t>0.0
+
+        row2 = target_index * size
+        f = <REAL_t>sdot(&size, &node_embedding[row1], &ONE, &context_embedding[row2], &ONE)
+        if f <= -MAX_EXP or f >= MAX_EXP:
+            continue
+        f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]
+        g = (label - f) * lr * _lambda
+
+        saxpy(&size, &g, &context_embedding[row2], &ONE, work, &ONE) # work += g * negative_embeddings
+        saxpy(&size, &g, &node_embedding[row1], &ONE, &context_embedding[row2], &ONE) # negative_embeddings += g * node_embedding
+
+    saxpy(&size, &ONEF, work, &ONE, &node_embedding[row1], &ONE)  #node_embedding += work
+
+    return next_random
+
+
+
+cdef unsigned long long fast0_o1 (
+    const int negative,
+    np.uint32_t *table,
+    unsigned long long table_len,
+    REAL_t *node_embedding,
+    REAL_t *negative_embedding,
+    const int size,
+    const np.uint32_t word_index,
+    const np.uint32_t word2_index,
+    const REAL_t lr,
+    REAL_t *work,
+    unsigned long long next_random) nogil:
+
+    cdef long long a
+    cdef long long row1 = word2_index * size, row2
+    cdef unsigned long long modulo = 281474976710655ULL
+    cdef REAL_t f, g, label, gl
+    cdef np.uint32_t target_index
+    cdef int d, i
+
     memset(work, 0, size * cython.sizeof(REAL_t))
 
     for d in range(negative+1):
@@ -177,50 +240,38 @@ cdef unsigned long long fast0_o1_sg_neg (
         if f <= -MAX_EXP or f >= MAX_EXP:
             continue
         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]
-        g = (label - f) * alpha * _lambda # compute gradient
-
-        loss += (np.log(f) * _lambda) # compute loss
+        g = (label - f) * lr # compute gradient
 
         saxpy(&size, &g, &negative_embedding[row2], &ONE, work, &ONE) # work += g * negative_embeddings
 
     saxpy(&size, &ONEF, work, &ONE, &node_embedding[row1], &ONE)  #node_embedding += _lambda * work
 
-
-    # with gil:
-    #     print("node: %d" % word2_index)
-    #     print("neg node: %d" % word_index)
-    #     print("node_embedding: " + " ".join([str(node_embedding[row1 + i]) for i in range(size)]) )
-    #     print("neg_node_embedding: " + " ".join([str(negative_embedding[row2 + i]) for i in range(size)]) )
-
-    return [next_random, loss]
+    return next_random
 
 
-cdef unsigned long long fast_context1_sg_neg(
-        const int negative,
-        np.uint32_t *table,
-        unsigned long long table_len,
-        REAL_t *node_embedding,
-        REAL_t *negative_embedding,
-        const int size,
-        const np.uint32_t word_index,
-        const np.uint32_t word2_index,
-        const REAL_t alpha,
-        const REAL_t _lambda,
-        REAL_t *work,
-        unsigned long long next_random,
-        const int is_node_embedding) nogil:
+cdef unsigned long long fast1_o1 (
+    const int negative,
+    np.uint32_t *table,
+    unsigned long long table_len,
+    REAL_t *node_embedding,
+    REAL_t *negative_embedding,
+    const int size,
+    const np.uint32_t word_index,
+    const np.uint32_t word2_index,
+    const REAL_t lr,
+    REAL_t *work,
+    unsigned long long next_random) nogil:
 
     cdef long long a
     cdef long long row1 = word2_index * size, row2
     cdef unsigned long long modulo = 281474976710655ULL
     cdef REAL_t f, g, label, gl
     cdef np.uint32_t target_index
-    cdef int d
+    cdef int d, i
 
     memset(work, 0, size * cython.sizeof(REAL_t))
 
     for d in range(negative+1):
-
         if d == 0:
             target_index = word_index
             label = ONEF
@@ -236,15 +287,14 @@ cdef unsigned long long fast_context1_sg_neg(
         if f <= -MAX_EXP or f >= MAX_EXP:
             continue
         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]
-        g = (label - f) * alpha
-        # gl = g * _lambda
+        g = (label - f) * lr # compute gradient
 
-        saxpy(&size, &g, &negative_embedding[row2], &ONE, work, &ONE)
-        if is_node_embedding == 0:
-            saxpy(&size, &g, &node_embedding[row1], &ONE, &negative_embedding[row2], &ONE)
+        saxpy(&size, &g, &negative_embedding[row2], &ONE, work, &ONE) # work += g * negative_embeddings
 
-    saxpy(&size, &_lambda, work, &ONE, &node_embedding[row1], &ONE)
+    saxpy(&size, &ONEF, work, &ONE, &node_embedding[row1], &ONE)  #node_embedding += _lambda * work
+
     return next_random
+
 
 cdef inline REAL_t f_max(REAL_t a, REAL_t b) nogil: return a if a >= b else b
 cdef inline REAL_t f_min(REAL_t a, REAL_t b) nogil: return a if a <= b else b
@@ -300,7 +350,7 @@ cdef void fast_community_sdg_0(
         # Due to the inverse matrix, the gradient can explode making the learning unstable.
         # For this reason we put a saturation on the gradient, making the system robust to outlayers
         for i in range(size):
-            work[i] = clamp3(work[i], (_alpha*-1), _alpha)
+            work[i] = clamp3(work[i], NDECF, DECF)
 
 
 cdef void fast_community_sdg_1(
@@ -320,7 +370,7 @@ cdef void fast_community_sdg_1(
     cdef long long row = word2_index * size, row_pi = word2_index * k, row_inv_covariance, row_centroid
     cdef int size_inv_covariance = size **2
     cdef int com_index, i, j
-    cdef REAL_t _alpha = alpha * 0.1
+    cdef REAL_t _alpha = alpha * lambda2
     cdef REAL_t _lambda2 = lambda2
 
     memset(work, 0, size * cython.sizeof(REAL_t))
@@ -346,35 +396,21 @@ cdef void fast_community_sdg_1(
             )   # work1 += pi_{ik} * inv_cov_k * (node_embedding_i - centroid_k)
 
     memset(work, 0, size * cython.sizeof(REAL_t))
-    saxpy(&size, &_lambda2, work1, &ONE, work, &ONE ) # work = lambda2 * work1
+    saxpy(&size, &_alpha, work1, &ONE, work, &ONE ) # work = lambda2 * work1
 
     # Due to the inverse matrix, the gradient can explode making the learning unstable.
     # For this reason we put a saturation on the gradient, making the system robust to outlayers
     for i in range(size):
         work[i] = clamp3(work[i], (_alpha*-1), _alpha)
 
-def train_sg(py_node_embedding, py_negative_embedding, py_path, py_alpha, py_negative, py_window, py_table,
-             py_centroid, py_inv_covariance_mat, py_pi, py_k, py_covariance_mat,
-             py_lambda1=1.0, py_lambda2=0.0, py_size=None, py_work=None, py_work_o3=None, py_work1_o3=None, py_work2_o3=None,
-             py_is_node_embedding=1):
+
+def train_o1(py_node_embedding, py_edge, py_lr, py_negative, py_table,
+             py_size=None, py_work=None):
 
     cdef REAL_t *node_embedding = <REAL_t *>(np.PyArray_DATA(py_node_embedding))
-    cdef REAL_t *negative_embedding = <REAL_t *>(np.PyArray_DATA(py_negative_embedding))
-    cdef REAL_t *work
-    cdef REAL_t *work_o3
-    cdef REAL_t *work1_o3
-    cdef REAL_t *work2_o3
+    cdef REAL_t *work = <REAL_t *>(np.PyArray_DATA(py_work))
 
-
-    cdef REAL_t *centroid = <REAL_t *>(np.PyArray_DATA(py_centroid))
-    cdef REAL_t *inv_covariance_mat = <REAL_t *>(np.PyArray_DATA(py_inv_covariance_mat))
-    cdef REAL_t *pi = <REAL_t *>(np.PyArray_DATA(py_pi))
-    cdef int _k = py_k
-    cdef int is_node_embedding = py_is_node_embedding
-
-    cdef REAL_t _alpha = py_alpha
-    cdef REAL_t _lambda1 = py_lambda1
-    cdef REAL_t _lambda2 = -py_lambda2
+    cdef REAL_t _lr = py_lr
 
     cdef int size = py_size
 
@@ -382,8 +418,6 @@ def train_sg(py_node_embedding, py_negative_embedding, py_path, py_alpha, py_neg
     cdef np.uint32_t indexes[MAX_SENTENCE_LEN]
     cdef int path_len
     cdef int negative
-    cdef int window = py_window
-    cdef np.uint32_t reduced_windows[MAX_SENTENCE_LEN]
     cdef int i, j, k
     cdef long result = 0
 
@@ -393,12 +427,55 @@ def train_sg(py_node_embedding, py_negative_embedding, py_path, py_alpha, py_neg
     cdef unsigned long long next_random = (2**24) * np.random.randint(0, 2**24) + np.random.randint(0, 2**24)
 
 
+    path_len = <int>min(MAX_SENTENCE_LEN, len(py_edge))
+    negative = <int>py_negative
 
-    # convert Python structures to primitive types, so we can release the GIL
-    work = <REAL_t *>(np.PyArray_DATA(py_work))
-    work_o3 = <REAL_t *>(np.PyArray_DATA(py_work_o3))
-    work1_o3 = <REAL_t *>(np.PyArray_DATA(py_work1_o3))
-    work2_o3 = <REAL_t *>(np.PyArray_DATA(py_work2_o3))
+    for i in range(path_len):
+        word = py_edge[i]
+        if word is None:
+            codelens[i] = 0
+        else:
+            indexes[i] = word.index
+            codelens[i] = 1
+            result += 1
+
+    # release GIL & train on the sentence
+    with nogil:
+        next_random = fast_o1(negative, table, table_len, node_embedding, node_embedding,
+                              size, indexes[1], indexes[0], _lr,  work, next_random)
+
+        next_random = fast_o1(negative, table, table_len, node_embedding, node_embedding,
+                              size, indexes[0], indexes[1], _lr,  work, next_random)
+
+    return result
+
+
+
+def train_o2(py_node_embedding, py_context_embedding, py_path, py_lr, py_negative, py_window, py_table,
+             py_alpha=1.0, py_size=None, py_work=None):
+
+    cdef REAL_t *node_embedding = <REAL_t *>(np.PyArray_DATA(py_node_embedding))
+    cdef REAL_t *context_embedding = <REAL_t *>(np.PyArray_DATA(py_context_embedding))
+    cdef REAL_t *work = <REAL_t *>(np.PyArray_DATA(py_work))
+
+    cdef REAL_t _lr = py_lr
+    cdef REAL_t _alpha = py_alpha
+
+    cdef int size = py_size
+
+    cdef int codelens[MAX_SENTENCE_LEN]
+    cdef np.uint32_t indexes[MAX_SENTENCE_LEN]
+    cdef int path_len
+    cdef int negative
+    cdef int window = py_window
+    cdef int i, j, k
+    cdef long result = 0
+
+    # For negative sampling
+    cdef np.uint32_t *table = <np.uint32_t *>(np.PyArray_DATA(py_table))
+    cdef unsigned long long table_len = len(py_table)
+    cdef unsigned long long next_random = (2**24) * np.random.randint(0, 2**24) + np.random.randint(0, 2**24)
+
 
     path_len = <int>min(MAX_SENTENCE_LEN, len(py_path))
     negative = <int>py_negative
@@ -408,10 +485,6 @@ def train_sg(py_node_embedding, py_negative_embedding, py_path, py_alpha, py_neg
         if word is None:
             codelens[i] = 0
         else:
-            if window > 1:
-                reduced_windows[i] = np.random.randint(window)
-            else:
-                reduced_windows[i] = 0
             indexes[i] = word.index
             codelens[i] = 1
             result += 1
@@ -421,25 +494,18 @@ def train_sg(py_node_embedding, py_negative_embedding, py_path, py_alpha, py_neg
         for i in range(path_len):
             if codelens[i] == 0:
                 continue
-            j = i - window + reduced_windows[i]
+            j = i - window
             if j < 0:
                 j = 0
-            k = i + window + 1 - reduced_windows[i]
+            k = i + window + 1
             if k > path_len:
                 k = path_len
             for j in range(j, k):
                 if j == i or codelens[j] == 0:
                     continue
                 else:
-                    #gradient O3
-                    fast_community_sdg(node_embedding, centroid, inv_covariance_mat, pi, _k, _alpha, _lambda2, size,
-                                         indexes[j], work_o3, work1_o3, work2_o3)
-                    #gradient O2/01
-                    next_random = fast_context_sg_neg(negative, table, table_len, node_embedding, negative_embedding,
-                                                       size, indexes[i], indexes[j], _alpha, _lambda1,  work, next_random,
-                                                       is_node_embedding)
-
-                    saxpy(&size, &ONEF, work_o3, &ONE, &node_embedding[indexes[j] * size], &ONE)
+                    next_random = fast_o2(negative, table, table_len, node_embedding, context_embedding,
+                                        size, indexes[i], indexes[j], _lr, _alpha,  work, next_random)
     return result
 
 
@@ -449,7 +515,8 @@ def init():
     into table EXP_TABLE.
 
     """
-    global fast_context_sg_neg
+    global fast_o1
+    global fast_o2
     global fast_community_sdg
 
     cdef int i
@@ -469,11 +536,13 @@ def init():
     d_res = dsdot(&size, x, &ONE, y, &ONE)
     p_res = <float *>&d_res
     if (abs(d_res - expected) < 0.0001):
-        fast_context_sg_neg = fast_context0_sg_neg
+        fast_o1 = fast0_o1
+        fast_o2 = fast0_o2
         fast_community_sdg = fast_community_sdg_1
         return 0  # double
     elif (abs(p_res[0] - expected) < 0.0001):
-        fast_context_sg_neg = fast_context1_sg_neg
+        fast_o1 = fast1_o1
+        fast_o2 = fast1_o2
         fast_community_sdg = fast_community_sdg_1
         return 1  # float
 

@@ -19,16 +19,17 @@ author    = {Vincent W. Zheng and
   year      = {2016}
 }
 
-ComEmbed learn a continuous graph representation taking in consideration first and second order proximity as well as the communities in the graph. 
+ComEmb learn a continuous graph representation taking in consideration first and second order proximity as well as the communities in the graph. 
 
 
-All the code is implemented for python 3.4 whereas for speed up the computation, the core algorithm is implemented in cython (or python if you are not abel to compile the cython code).
+All the code is implemented for python 3.6 whereas for speed up the computation, the core algorithm is implemented in cython (or python if you are not abel to compile the cython code).
 To correctly execute the project you need the following packages:
  - sklearn 0.18.1
- - numpy 1.11.1
+ - scipy 0.19.0
+ - numpy 1.12.1
  - psutil
  - networkx 1.11
- - cython 0.24.1
+ - cython 0.25.2
  
  
 # Compiling cython code

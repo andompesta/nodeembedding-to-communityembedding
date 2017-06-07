@@ -1,4 +1,4 @@
-# ComEmbed
+# ComEmb
 This repository contain the code of the following paper:
 
 "From Node Embedding To Community Embedding".  

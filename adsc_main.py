@@ -116,7 +116,7 @@ if __name__ == "__main__":
                        alpha=1.0,
                        chunksize=batch_size)
 
-    io_utils.save_embedding(model.node_embedding, "{}_pre-training".format(output_file))
+    model.save("{}_pre-training".format(output_file))
 
     ###########################
     #   EMBEDDING LEARNING    #
@@ -126,7 +126,7 @@ if __name__ == "__main__":
             for alpha, beta in alpha_betas:
                 log.info('\n_______________________________________\n')
                 log.info('\t\tITER-{}\n'.format(it))
-
+                model = model.load_model("{}_pre-training".format(output_file))
                 log.info('using alpha:{} \t beta:{} \t iter_com:{} \t iter_node: {}'.format(alpha, beta, iter_com, iter_node))
                 log.debug('Number of community: %d' % model.k)
 

@@ -40,8 +40,8 @@ if __name__ == "__main__":
     num_workers = 10                        # number of thread
     num_iter = 1                            # number of overall iteration
     reg_covar = 0.00001                          # regularization coefficient to ensure positive covar
-    input_file = 'Flickr'                          # name of the input file
-    output_file = 'Flickr'                         # name of the output file
+    input_file = 'BlogCatalog'                          # name of the input file
+    output_file = 'BlogCatalog'                         # name of the output file
     batch_size = 400
     window_size = 10    # windows size used to compute the context embedding
     negative = 5        # number of negative sample
@@ -71,7 +71,7 @@ if __name__ == "__main__":
     G = graph_utils.load_adjacencylist(os.path.join('./data', input_file, input_file + '.adjlist'), True)
     model = Model(G.degree(),
                   size=representation_size,
-                  table_size=5000000,
+                  table_size=8000000,
                   input_file=os.path.join(input_file, input_file),
                   path_labels="./data")
 

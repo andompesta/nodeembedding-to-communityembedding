@@ -71,7 +71,7 @@ if __name__ == "__main__":
     G = graph_utils.load_adjacencylist(os.path.join('./data', input_file, input_file + '.adjlist'), True)
     model = Model(G.degree(),
                   size=representation_size,
-                  table_size=5000000,
+                  table_size=8000000,
                   input_file=os.path.join(input_file, input_file),
                   path_labels="./data")
 

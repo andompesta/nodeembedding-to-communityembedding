@@ -88,8 +88,8 @@ class Context2Vec(object):
 
                     elapsed = time.time() - start
                     if elapsed >= next_report[0]:
-                        print("PROGRESS: at %.2f%% nodes, alpha %.05f, %.0f nodes/s" %
-                                    (100.0 * node_count[0] / total_nodes, self.alpha, node_count[0] / elapsed if elapsed else 0.0))
+                        log.info("PROGRESS: at %.2f%% nodes, lr %.05f, %.0f nodes/s" %
+                                    (100.0 * node_count[0] / total_nodes, self.lr, node_count[0] / elapsed if elapsed else 0.0))
                         next_report[0] = elapsed + 1.0  # don't flood the log, wait at least a second between progress reports
 
         workers = [threading.Thread(target=worker_train) for _ in range(self.workers)]

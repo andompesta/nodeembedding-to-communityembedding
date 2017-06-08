@@ -40,9 +40,9 @@ if __name__ == "__main__":
     num_workers = 10                        # number of thread
     num_iter = 1                            # number of overall iteration
     reg_covar = 0.00001                          # regularization coefficient to ensure positive covar
-    input_file = 'Flickr'                          # name of the input file
-    output_file = 'Flickr'                         # name of the output file
-    batch_size = 400
+    input_file = 'BlogCatalog'                          # name of the input file
+    output_file = 'BlogCatalog'                         # name of the output file
+    batch_size = 100
     window_size = 10    # windows size used to compute the context embedding
     negative = 5        # number of negative sample
     lr = 0.1            # learning rate

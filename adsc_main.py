@@ -42,7 +42,7 @@ if __name__ == "__main__":
     reg_covar = 0.00001                          # regularization coefficient to ensure positive covar
     input_file = 'BlogCatalog'                          # name of the input file
     output_file = 'BlogCatalog'                         # name of the output file
-    batch_size = 400
+    batch_size = 100
     window_size = 10    # windows size used to compute the context embedding
     negative = 5        # number of negative sample
     lr = 0.1            # learning rate
@@ -127,7 +127,7 @@ if __name__ == "__main__":
                 log.info('\n_______________________________________\n')
                 log.info('\t\tITER-{}\n'.format(it))
 
-                log.info('using alpha:{0:0>4} \t beta:{0:0>4} \t iter_com:{} \t iter_node: {}'.format(alpha, beta, iter_com, iter_node))
+                log.info('using alpha:{} \t beta:{} \t iter_com:{} \t iter_node: {}'.format(alpha, beta, iter_com, iter_node))
                 log.debug('Number of community: %d' % model.k)
 
                 start_time = timeit.default_timer()

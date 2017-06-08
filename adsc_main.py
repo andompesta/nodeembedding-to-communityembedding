@@ -147,7 +147,7 @@ if __name__ == "__main__":
                 com_learner.train(G.nodes(), model, beta, chunksize=batch_size, iter=iter_com)
                 log.info('time: %.2fs' % (timeit.default_timer() - start_time))
                 # log.info(model.centroid)
-                io_utils.save(model.node_embedding, "{}_alpha-{}_beta-{}_ws-{}_neg-{}_lr-{}_wc-{}_icom-{}_ind-{}"
+                io_utils.save_embedding(model.node_embedding, "{}_alpha-{}_beta-{}_ws-{}_neg-{}_lr-{}_wc-{}_icom-{}_ind-{}"
                               .format(output_file,
                                       alpha,
                                       beta,

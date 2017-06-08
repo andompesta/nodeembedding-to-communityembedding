@@ -42,7 +42,7 @@ if __name__ == "__main__":
     reg_covar = 0.00001                          # regularization coefficient to ensure positive covar
     input_file = 'BlogCatalog'                          # name of the input file
     output_file = 'BlogCatalog'                         # name of the output file
-
+    batch_size = 400
     window_size = 10    # windows size used to compute the context embedding
     negative = 5        # number of negative sample
     lr = 0.1            # learning rate
@@ -117,13 +117,13 @@ if __name__ == "__main__":
     node_learner.train(model,
                        edges=edges,
                        iter=1,
-                       chunksize=20)
+                       chunksize=batch_size)
 
     cont_learner.train(model,
                        paths=graph_utils.combine_files_iter(walk_files),
                        total_nodes=context_total_path,
                        alpha=1.0,
-                       chunksize=20)
+                       chunksize=batch_size)
 
     io_utils.save_embedding(model.node_embedding, "{}_pre-training".format(output_file))
 
@@ -144,16 +144,16 @@ if __name__ == "__main__":
                 node_learner.train(model,
                                    edges=edges,
                                    iter=iter_node,
-                                   chunksize=20)
+                                   chunksize=batch_size)
 
                 cont_learner.train(model,
                                    paths=graph_utils.combine_files_iter(walk_files),
                                    total_nodes=context_total_path,
                                    alpha=alpha,
-                                   chunksize=20)
+                                   chunksize=batch_size)
 
                 com_learner.fit(model)
-                com_learner.train(G.nodes(), model, beta, chunksize=20, iter=iter_com)
+                com_learner.train(G.nodes(), model, beta, chunksize=batch_size, iter=iter_com)
                 log.info('time: %.2fs' % (timeit.default_timer() - start_time))
                 log.info(model.centroid)
                 io_utils.save("{}_alpha-{0:0>4}_beta-{0:0>4}_ws-{}_neg-{}_lr-{}_wc-{}_icom-{}_ind-{}"

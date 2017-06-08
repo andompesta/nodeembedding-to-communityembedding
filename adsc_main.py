@@ -127,7 +127,7 @@ if __name__ == "__main__":
                 log.info('\n_______________________________________\n')
                 log.info('\t\tITER-{}\n'.format(it))
 
-                log.info('using alpha:{0:0>4} \t beta:{0:0>4} \t iter_com:{} \t iter_node: {}'.format(alpha, beta, iter_com, iter_node))
+                log.info('using alpha:{} \t beta:{} \t iter_com:{} \t iter_node: {}'.format(alpha, beta, iter_com, iter_node))
                 log.debug('Number of community: %d' % model.k)
 
                 start_time = timeit.default_timer()

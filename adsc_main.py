@@ -72,7 +72,7 @@ if __name__ == "__main__":
     model = Model(G.degree(),
                   size=representation_size,
                   table_size=5000000,
-                  input_file=os.path.join(input_file, input_file + "_zachary"),
+                  input_file=os.path.join(input_file, input_file),
                   path_labels="./data")
 
     # Sampling the random walks for context

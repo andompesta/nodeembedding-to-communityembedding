@@ -40,9 +40,9 @@ if __name__ == "__main__":
     num_workers = 10                        # number of thread
     num_iter = 1                            # number of overall iteration
     reg_covar = 0.00001                          # regularization coefficient to ensure positive covar
-    input_file = 'BlogCatalog'                          # name of the input file
-    output_file = 'BlogCatalog'                         # name of the output file
-    batch_size = 100
+    input_file = 'Flickr'                          # name of the input file
+    output_file = 'Flickr'                         # name of the output file
+    batch_size = 150
     window_size = 10    # windows size used to compute the context embedding
     negative = 5        # number of negative sample
     lr = 0.1            # learning rate
@@ -92,7 +92,7 @@ if __name__ == "__main__":
     #Learning algorithm
     node_learner = Node2Vec(workers=num_workers, negative=negative, lr=lr)
     cont_learner = Context2Vec(window_size=window_size, workers=num_workers, negative=negative, lr=lr)
-    com_learner = Community2Vec(model, reg_covar=reg_covar, lr=lr, wc_prior=weight_concentration_prior)
+    com_learner = Community2Vec(model, reg_covar=reg_covar, lr=lr, wc_prior=weight_concentration_prior, n_init=5)
 
 
     context_total_path = G.number_of_nodes() * number_walks * walk_length

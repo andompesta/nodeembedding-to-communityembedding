@@ -13,13 +13,13 @@ class Community2Vec(object):
     '''
     Class that train the community embedding
     '''
-    def __init__(self, model, lr, reg_covar=0, wc_prior=100):
+    def __init__(self, model, lr, reg_covar=0, wc_prior=100, n_init=10):
         self.lr = lr
 
         self.g_mixture = mixture.BayesianGaussianMixture(n_components=model.k,
                                                          reg_covar=reg_covar,
                                                          covariance_type='full',
-                                                         n_init=10,
+                                                         n_init=n_init,
                                                          weight_concentration_prior=wc_prior,
                                                          weight_concentration_prior_type='dirichlet_process')
     def fit(self, model):

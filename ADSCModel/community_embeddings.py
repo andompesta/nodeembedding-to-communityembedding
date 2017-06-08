@@ -13,10 +13,15 @@ class Community2Vec(object):
     '''
     Class that train the community embedding
     '''
-    def __init__(self, model, lr, reg_covar=0):
+    def __init__(self, model, lr, reg_covar=0, wc_prior=100):
         self.lr = lr
-        self.g_mixture = mixture.GaussianMixture(n_components=model.k, reg_covar=reg_covar, covariance_type='full', n_init=10)
 
+        self.g_mixture = mixture.BayesianGaussianMixture(n_components=model.k,
+                                                         reg_covar=reg_covar,
+                                                         covariance_type='full',
+                                                         n_init=10,
+                                                         weight_concentration_prior=wc_prior,
+                                                         weight_concentration_prior_type='dirichlet_process')
     def fit(self, model):
         '''
         Fit the GMM model with the current node embedding and save the result in the model
@@ -33,9 +38,11 @@ class Community2Vec(object):
 
         model.centroid = self.g_mixture.means_.astype(np.float32)
         model.covariance_mat = self.g_mixture.covariances_.astype(np.float32)
-        model.inv_covariance_mat = np.linalg.inv(model.covariance_mat).astype(np.float32)
+        model.inv_covariance_mat = self.g_mixture.precisions_.astype(np.float32)
         model.pi = self.g_mixture.predict_proba(model.node_embedding).astype(np.float32)
 
+        # model.c = self.g_mixture.degrees_of_freedom_.astype(np.float32)
+        # model.B = self.g_mixture.covariance_prior_.astype(np.float32)
 
     def loss(self, nodes, model, beta, chunksize=150):
         """
@@ -67,7 +74,7 @@ class Community2Vec(object):
 
                 for com in range(model.k):
                     diff = np.expand_dims(input - model.centroid[com], axis=-1)
-                    m = model.pi[node_index, com].reshape(len(node_index), 1, 1) * model.inv_covariance_mat[com]
+                    m = model.pi[node_index, com].reshape(len(node_index), 1, 1) * (model.inv_covariance_mat[com])
 
                     batch_grad_input += np.squeeze(np.matmul(m, diff), axis=-1)
                 grad_input[node_index] += batch_grad_input

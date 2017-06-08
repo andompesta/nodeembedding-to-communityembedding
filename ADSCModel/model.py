@@ -15,7 +15,7 @@ class Model(object):
     class that keep track of all the parameters used during the learning of the embedding.
     '''
 
-    def __init__(self, nodes_degree,
+    def __init__(self, nodes_degree=None,
                  size=2,
                  down_sampling=0,
                  seed=1,
@@ -37,7 +37,7 @@ class Model(object):
         self.seed = seed
         self.table_size = table_size
         if size % 4 != 0:
-            log.warn("consider setting layer size to a multiple of 4 for greater performance")
+            log.warning("consider setting layer size to a multiple of 4 for greater performance")
         self.layer1_size = int(size)
 
         if nodes_degree is not None:
@@ -47,7 +47,7 @@ class Model(object):
             self.reset_weights()
             self.make_table()
         else:
-            raise Exception("Model not initialized, need the nodes degree")
+            log.warning("Model not initialized, need the nodes degree")
 
     def build_vocab_(self, vocab):
         """
@@ -123,7 +123,7 @@ class Model(object):
 
 
 
-    def save(self, path='data', file_name=None):
+    def save(self, file_name, path='data'):
         if not exists(path):
             makedirs(path)
 
@@ -131,10 +131,10 @@ class Model(object):
             pickle.dump(self.__dict__, file)
 
     @staticmethod
-    def load_model(path='data', file_name=None):
+    def load_model(file_name, path='data'):
         with open(path_join(path, file_name + '.bin'), 'rb') as file:
             model = Model()
             model.__dict__ = pickle.load(file)
             log.info('model loaded , size: %d \t table_size: %d \t down_sampling: %.5f \t communities %d' %
-                  (model.layer1_size, model.table_size, model.downsampling, model.k))
+                  (model.layer1_size, model.table_size, model.down_sampling, model.k))
             return model

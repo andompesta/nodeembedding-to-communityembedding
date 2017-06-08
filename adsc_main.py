@@ -34,20 +34,34 @@ except AttributeError:
 if __name__ == "__main__":
 
     #Reading the input parameters form the configuration files
-    number_walks = 10                      # number of walks for each node
-    walk_length = 20                        # length of each walk
-    representation_size = 2        # size of the embedding
-    num_workers = 1                        # number of thread
-    num_iter = 5                              # number of iteration
+    number_walks = 10                       # number of walks for each node
+    walk_length = 80                        # length of each walk
+    representation_size = 128               # size of the embedding
+    num_workers = 10                        # number of thread
+    num_iter = 1                            # number of overall iteration
     reg_covar = 0.00001                          # regularization coefficient to ensure positive covar
-    input_file = 'karate'                          # name of the input file
-    output_file = 'karate'                         # name of the output file
+    input_file = 'BlogCatalog'                          # name of the input file
+    output_file = 'BlogCatalog'                         # name of the output file
 
-    window_size = 3  # windows size used to compute the context embedding
-    negative = 4  # number of negative sample
+    window_size = 10    # windows size used to compute the context embedding
+    negative = 5        # number of negative sample
+    lr = 0.1            # learning rate
+
+    """
     alpha = 1.0
     beta = 0.01
-    lr = 0.1
+    num_iter_com = 1  # number of iteration for community embedding
+    num_iter_node = 1  # number of iteration for node embedding
+    """
+
+    alpha_betas = [(1.0, 0.1), (0.01, 0.1), (0.001, 0.1),
+                   (0.1, 1.0), (0.1, 0.01), (0.1, 0.001),
+                   (0.1, 0.1)]
+
+    iter_com_node = [(5, 1), (10, 1), (50, 1),
+                     (1, 5), (1, 10), (1, 50),
+                     (1, 1)]
+
     weight_concentration_prior = 100
     walks_filebase = os.path.join('data', output_file, output_file + ".walks")            # where read/write the sampled path
     sampling_path = True
@@ -95,14 +109,11 @@ if __name__ == "__main__":
     log.debug("context_total_path: %d" % (context_total_path))
     log.debug('node total edges: %d' % G.number_of_edges())
 
-    log.info('\n_______________________________________\n')
-    log.info('using alpha 1:%.4f \t beta 2:%.4f' % (alpha, beta))
-    log.debug('Number of community: %d' % model.k)
-
+    log.info('\n_______________________________________')
+    log.info('\t\tPRE-TRAINING\n')
     ###########################
     #   PRE-TRAINING          #
     ###########################
-    log.info("pre-train the model")
     node_learner.train(model,
                        edges=edges,
                        iter=1,
@@ -111,7 +122,7 @@ if __name__ == "__main__":
     cont_learner.train(model,
                        paths=graph_utils.combine_files_iter(walk_files),
                        total_nodes=context_total_path,
-                       alpha=alpha,
+                       alpha=1.0,
                        chunksize=20)
 
     io_utils.save_embedding(model.node_embedding, "{}_pre-training".format(output_file))
@@ -119,39 +130,40 @@ if __name__ == "__main__":
     ###########################
     #   EMBEDDING LEARNING    #
     ###########################
-    for it in range(1):
-        log.info('\n_______________________________________\n')
-        start_time = timeit.default_timer()
+    for it in range(num_iter):
+        for iter_com, iter_node in iter_com_node:
+            for alpha, beta in alpha_betas:
+                log.info('\n_______________________________________\n')
+                log.info('\t\tITER-{}\n'.format(it))
 
-        node_learner.train(model,
-                           edges=edges,
-                           iter=1,
-                           chunksize=20)
+                log.info('using alpha:{0:0>4} \t beta:{0:0>4} \t iter_com:{} \t iter_node: {}'.format(alpha, beta, iter_com, iter_node))
+                log.debug('Number of community: %d' % model.k)
 
-        cont_learner.train(model,
-                           paths=graph_utils.combine_files_iter(walk_files),
-                           total_nodes=context_total_path,
-                           alpha=alpha,
-                           chunksize=20)
+                start_time = timeit.default_timer()
 
-        com_learner.fit(model)
-        com_learner.train(G.nodes(), model, beta, chunksize=20, iter=7)
-        log.info('time: %.2fs' % (timeit.default_timer() - start_time))
-        log.info(model.centroid)
+                node_learner.train(model,
+                                   edges=edges,
+                                   iter=iter_node,
+                                   chunksize=20)
 
-        model.save("{}_alpha-{}_beta-{}_ws-{}_neg-{}_ds-{}_lr-{}_wc-{}".format(output_file,
-                                                                               alpha,
-                                                                               beta,
-                                                                               window_size,
-                                                                               negative,
-                                                                               0,
-                                                                               lr,
-                                                                               weight_concentration_prior))
+                cont_learner.train(model,
+                                   paths=graph_utils.combine_files_iter(walk_files),
+                                   total_nodes=context_total_path,
+                                   alpha=alpha,
+                                   chunksize=20)
 
-        com_learner.fit(model)
-        plot_utils.node_space_plot_2D_elipsoid(model.node_embedding,
-                                               means=model.centroid,
-                                               covariances=model.covariance_mat,
-                                               color_values=node_color,
-                                               grid=False,
-                                               show=True)
+                com_learner.fit(model)
+                com_learner.train(G.nodes(), model, beta, chunksize=20, iter=iter_com)
+                log.info('time: %.2fs' % (timeit.default_timer() - start_time))
+                log.info(model.centroid)
+                io_utils.save("{}_alpha-{0:0>4}_beta-{0:0>4}_ws-{}_neg-{}_lr-{}_wc-{}_icom-{}_ind-{}"
+                              .format(output_file,
+                                      alpha,
+                                      beta,
+                                      window_size,
+                                      negative,
+                                      lr,
+                                      weight_concentration_prior,
+                                      iter_com,
+                                      iter_node))
+

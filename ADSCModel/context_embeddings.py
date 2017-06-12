@@ -71,16 +71,14 @@ class Context2Vec(object):
 
         def worker_train():
             """Train the model, lifting lists of paths from the jobs queue."""
+            py_work = np.zeros(model.layer1_size, dtype=np.float32)
+
             while True:
                 job = jobs.get()
                 if job is None:  # data finished, exit
                     break
 
-                job_nodes = 0
-                py_work = np.zeros(model.layer1_size, dtype=np.float32)
-
-                if alpha > 0.:
-                    job_nodes = sum(train_o2(model.node_embedding, model.context_embedding, path, self.lr, self.negative, self.window_size, model.table,
+                job_nodes = sum(train_o2(model.node_embedding, model.context_embedding, path, self.lr, self.negative, self.window_size, model.table,
                                              py_alpha=alpha, py_size=model.layer1_size, py_work=py_work) for path in job) #execute the sgd
 
                 with lock:

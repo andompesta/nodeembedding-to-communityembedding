@@ -7,6 +7,8 @@ import random
 
 import networkx as nx
 from itertools import zip_longest
+from scipy.io import loadmat
+from scipy.sparse import issparse
 
 from concurrent.futures import ProcessPoolExecutor
 from multiprocessing import cpu_count
@@ -17,7 +19,7 @@ import os.path
 log.basicConfig(format='%(asctime).19s %(levelname)s %(filename)s: %(lineno)s %(message)s', level=log.INFO)
 
 
-def __random_walk__(G, path_length, alpha=0, rand=random.Random(), start=None):
+def __random_walk__(G, path_length, start, alpha=0, rand=random.Random()):
     '''
     Returns a truncated random walk.
     :param G: networkx graph
@@ -28,11 +30,8 @@ def __random_walk__(G, path_length, alpha=0, rand=random.Random(), start=None):
     :return:
     '''
 
-    if start:
-        path = [start]
-    else:
-        # Sampling is uniform w.r.t V, and not w.r.t E
-        path = [rand.choice(G.nodes)]
+    path = [start]
+
 
     while len(path) < path_length:
         cur = path[-1]
@@ -217,6 +216,32 @@ def count_words(file):
             words = [int(word) for word in l.strip().split()]
             c.update(words)
     return c
+
+def load_matfile(file_, variable_name="network", undirected=True):
+  mat_varables = loadmat(file_)
+  mat_matrix = mat_varables[variable_name]
+
+  return from_numpy(mat_matrix, undirected)
+
+def from_numpy(x, undirected=True):
+    """
+    Load graph form adjmatrix
+    :param x: numpy adj matrix
+    :param undirected: 
+    :return: 
+    """
+    G = nx.Graph()
+
+    if issparse(x):
+        cx = x.tocoo()
+        for i,j,v in zip(cx.row, cx.col, cx.data):
+            G.add_edge(i, j)
+    else:
+      raise Exception("Dense matrices not yet supported.")
+
+    if undirected:
+        G = G.to_undirected()
+    return G
 
 
 def grouper(n, iterable, padvalue=None):

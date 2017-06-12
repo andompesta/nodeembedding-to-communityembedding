@@ -40,12 +40,12 @@ if __name__ == "__main__":
     num_workers = 10                        # number of thread
     num_iter = 1                            # number of overall iteration
     reg_covar = 0.00001                          # regularization coefficient to ensure positive covar
-    input_file = 'Flickr'                          # name of the input file
-    output_file = 'Flickr'                         # name of the output file
-    batch_size = 150
+    input_file = 'BlogCatalog'                          # name of the input file
+    output_file = 'BlogCatalog'                         # name of the output file
+    batch_size = 60
     window_size = 10    # windows size used to compute the context embedding
     negative = 5        # number of negative sample
-    lr = 0.1            # learning rate
+    lr = 0.02            # learning rate
 
     """
     alpha = 1.0
@@ -55,7 +55,7 @@ if __name__ == "__main__":
     """
 
     alpha_betas = [(1.0, 0.1), (0.01, 0.1), (0.001, 0.1),
-                   (0.1, 1.0), (0.1, 0.01), (0.1, 0.001),
+                   # (0.1, 1.0), (0.1, 0.01), (0.1, 0.001),
                    (0.1, 0.1)]
     iter_com_node = [(5, 1), (10, 1), (50, 1),
                      (1, 5), (1, 10), (1, 50),
@@ -105,17 +105,17 @@ if __name__ == "__main__":
     ###########################
     #   PRE-TRAINING          #
     ###########################
-    node_learner.train(model,
-                       edges=edges,
-                       iter=1,
-                       chunksize=batch_size)
-
-    cont_learner.train(model,
-                       paths=graph_utils.combine_files_iter(walk_files),
-                       total_nodes=context_total_path,
-                       alpha=1.0,
-                       chunksize=batch_size)
-
+    # node_learner.train(model,
+    #                    edges=edges,
+    #                    iter=1,
+    #                    chunksize=batch_size)
+    #
+    # cont_learner.train(model,
+    #                    paths=graph_utils.combine_files_iter(walk_files),
+    #                    total_nodes=context_total_path,
+    #                    alpha=1.0,
+    #                    chunksize=batch_size)
+    #
     model.save("{}_pre-training".format(output_file))
 
     ###########################
@@ -132,10 +132,10 @@ if __name__ == "__main__":
 
                 start_time = timeit.default_timer()
 
-                node_learner.train(model,
-                                   edges=edges,
-                                   iter=iter_node,
-                                   chunksize=batch_size)
+                # node_learner.train(model,
+                #                    edges=edges,
+                #                    iter=iter_node,
+                #                    chunksize=batch_size)
 
                 cont_learner.train(model,
                                    paths=graph_utils.combine_files_iter(walk_files),
@@ -143,8 +143,8 @@ if __name__ == "__main__":
                                    alpha=alpha,
                                    chunksize=batch_size)
 
-                com_learner.fit(model)
-                com_learner.train(G.nodes(), model, beta, chunksize=batch_size, iter=iter_com)
+                # com_learner.fit(model)
+                # com_learner.train(G.nodes(), model, beta, chunksize=batch_size, iter=iter_com)
                 log.info('time: %.2fs' % (timeit.default_timer() - start_time))
                 # log.info(model.centroid)
                 io_utils.save_embedding(model.node_embedding, "{}_alpha-{}_beta-{}_ws-{}_neg-{}_lr-{}_wc-{}_icom-{}_ind-{}"

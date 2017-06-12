@@ -37,7 +37,7 @@ if __name__ == "__main__":
     number_walks = 10                      # number of walks for each node
     walk_length = 20                        # length of each walk
     representation_size = 2        # size of the embedding
-    num_workers = 10                        # number of thread
+    num_workers = 1                        # number of thread
     num_iter = 5                              # number of iteration
     reg_covar = 0.00001                          # regularization coefficient to ensure positive covar
     input_file = 'karate'                          # name of the input file
@@ -85,13 +85,10 @@ if __name__ == "__main__":
 
 
     #Learning algorithm
-    node_learner = Node2Vec(workers=num_workers, negative=negative, lr=lr)
     cont_learner = Context2Vec(window_size=window_size, workers=num_workers, negative=negative, lr=lr)
-    com_learner = Community2Vec(model, reg_covar=reg_covar, lr=lr, wc_prior=weight_concentration_prior)
 
 
     context_total_path = G.number_of_nodes() * number_walks * walk_length
-    edges = np.array(G.edges())
     log.debug("context_total_path: %d" % (context_total_path))
     log.debug('node total edges: %d' % G.number_of_edges())
 
@@ -99,14 +96,9 @@ if __name__ == "__main__":
     log.info('using alpha 1:%.4f \t beta 2:%.4f' % (alpha, beta))
     log.debug('Number of community: %d' % model.k)
 
-    ###########################
-    #   PRE-TRAINING          #
-    ###########################
-    log.info("pre-train the model")
-    node_learner.train(model,
-                       edges=edges,
-                       iter=1,
-                       chunksize=20)
+
+    log.info('\n_______________________________________\n')
+    start_time = timeit.default_timer()
 
     cont_learner.train(model,
                        paths=graph_utils.combine_files_iter(walk_files),
@@ -114,44 +106,20 @@ if __name__ == "__main__":
                        alpha=alpha,
                        chunksize=20)
 
-    io_utils.save_embedding(model.node_embedding, "{}_pre-training".format(output_file))
+    plot_utils.node_space_plot_2D_elipsoid(model.node_embedding,
+                                           means=model.centroid,
+                                           covariances=model.covariance_mat,
+                                           color_values=node_color,
+                                           grid=False,
+                                           show=True)
 
-    ###########################
-    #   EMBEDDING LEARNING    #
-    ###########################
-    for it in range(1):
-        log.info('\n_______________________________________\n')
-        start_time = timeit.default_timer()
 
-        node_learner.train(model,
-                           edges=edges,
-                           iter=1,
-                           chunksize=20)
 
-        cont_learner.train(model,
-                           paths=graph_utils.combine_files_iter(walk_files),
-                           total_nodes=context_total_path,
-                           alpha=alpha,
-                           chunksize=20)
+    io_utils.save_embedding(model.node_embedding, output_file + "_my_deepwalk")
 
-        # com_learner.fit(model)
-        # com_learner.train(G.nodes(), model, beta, chunksize=20, iter=7)
-        # log.info('time: %.2fs' % (timeit.default_timer() - start_time))
-        # log.info(model.centroid)
-
-        # model.save("{}_alpha-{}_beta-{}_ws-{}_neg-{}_ds-{}_lr-{}_wc-{}".format(output_file,
-        #                                                                        alpha,
-        #                                                                        beta,
-        #                                                                        window_size,
-        #                                                                        negative,
-        #                                                                        0,
-        #                                                                        lr,
-        #                                                                        weight_concentration_prior))
-
-        # com_learner.fit(model)
-        plot_utils.node_space_plot_2D_elipsoid(model.node_embedding,
-                                               means=model.centroid,
-                                               covariances=model.covariance_mat,
-                                               color_values=node_color,
-                                               grid=False,
-                                               show=True)
+    plot_utils.node_space_plot_2D_elipsoid(io_utils.load_embedding(output_file + "_my_deepwalk"),
+                                           means=model.centroid,
+                                           covariances=model.covariance_mat,
+                                           color_values=node_color,
+                                           grid=False,
+                                           show=True)

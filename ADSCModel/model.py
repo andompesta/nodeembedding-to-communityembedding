@@ -18,7 +18,7 @@ class Model(object):
     def __init__(self, nodes_degree=None,
                  size=2,
                  down_sampling=0,
-                 seed=1,
+                 seed=0,
                  table_size=100000000,
                  path_labels='data/',
                  input_file=None):
@@ -63,7 +63,7 @@ class Model(object):
             v.index = node_idx
             # self.index2node.append(node)
             self.vocab[node] = v
-        assert min(self.vocab.keys()) == 1
+        assert min(self.vocab.keys()) == 0, "min {} max {}".format(min(self.vocab.keys()), max(self.vocab.keys()))
         self.precalc_sampling()
 
     def precalc_sampling(self):
@@ -82,8 +82,9 @@ class Model(object):
 
     def reset_weights(self):
         """Reset all projection weights to an initial (untrained) state, but keep the existing vocabulary."""
+        np.random.seed(self.seed)
         self.vocab_size = len(self.vocab)
-        self.node_embedding = np.random.uniform(low=-1, high=1, size=(self.vocab_size, self.layer1_size)).astype(np.float32)
+        self.node_embedding = np.random.uniform(low=-0.5, high=0.5, size=(self.vocab_size, self.layer1_size)).astype(np.float32)
         self.context_embedding = np.zeros((self.vocab_size, self.layer1_size)).astype(np.float32)
 
         self.centroid = np.zeros((self.k, self.layer1_size), dtype=np.float32)
@@ -119,7 +120,7 @@ class Model(object):
                 d1 += self.vocab[widx].count**power / train_words_pow
             if widx >= self.vocab_size:
                 widx = self.vocab_size - 1
-        log.debug('Max value in the negative sampling table: {}'.format(max(self.table)))
+        log.info('Max value in the negative sampling table: {}'.format(max(self.table)))
 
 
 

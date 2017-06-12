@@ -43,7 +43,7 @@ ctypedef unsigned long long (*fast_o1_ptr) (
 
 
 
-ctypedef unsigned long long (*fast_context_sg_neg_ptr) (
+ctypedef unsigned long long (*fast_o2_ptr) (
     const int negative,
     np.uint32_t *table,
     unsigned long long table_len,
@@ -86,7 +86,7 @@ cdef sgemm_ptr sgemm=<sgemm_ptr>PyCObject_AsVoidPtr(fblas.sgemm._cpointer) # flo
 cdef dgemm_ptr dgemm=<dgemm_ptr>PyCObject_AsVoidPtr(fblas.sgemm._cpointer) # double x = alpha * (A B) + beta * (x)
 
 cdef fast_o1_ptr fast_o1
-cdef fast_context_sg_neg_ptr fast_o2
+cdef fast_o2_ptr fast_o2
 cdef fast_community_sdg_ptr fast_community_sdg
 
 DEF EXP_TABLE_SIZE = 1000
@@ -119,9 +119,9 @@ cdef unsigned long long fast0_o2 (
     cdef long long a
     cdef long long row1 = word2_index * size, row2
     cdef unsigned long long modulo = 281474976710655ULL
-    cdef REAL_t f, g, label, gl
+    cdef REAL_t f, g, label
     cdef np.uint32_t target_index
-    cdef int d, i
+    cdef int d
 
     memset(work, 0, size * cython.sizeof(REAL_t))
 
@@ -141,7 +141,7 @@ cdef unsigned long long fast0_o2 (
         if f <= -MAX_EXP or f >= MAX_EXP:
             continue
         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]
-        g = (label - f) * lr * _lambda
+        g = (label - f) * (lr * _lambda)
 
         saxpy(&size, &g, &context_embedding[row2], &ONE, work, &ONE) # work += g * negative_embeddings
         saxpy(&size, &g, &node_embedding[row1], &ONE, &context_embedding[row2], &ONE) # negative_embeddings += g * node_embedding
@@ -169,13 +169,14 @@ cdef unsigned long long fast1_o2 (
     cdef long long a
     cdef long long row1 = word2_index * size, row2
     cdef unsigned long long modulo = 281474976710655ULL
-    cdef REAL_t f, g, label, gl
+    cdef REAL_t f, g, label
     cdef np.uint32_t target_index
-    cdef int d, i
+    cdef int d
 
     memset(work, 0, size * cython.sizeof(REAL_t))
 
     for d in range(negative+1):
+
         if d == 0:
             target_index = word_index
             label = ONEF
@@ -191,12 +192,11 @@ cdef unsigned long long fast1_o2 (
         if f <= -MAX_EXP or f >= MAX_EXP:
             continue
         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]
-        g = (label - f) * lr * _lambda
+        g = (label - f) * lr
+        saxpy(&size, &g, &context_embedding[row2], &ONE, work, &ONE)
+        saxpy(&size, &g, &node_embedding[row1], &ONE, &context_embedding[row2], &ONE)
 
-        saxpy(&size, &g, &context_embedding[row2], &ONE, work, &ONE) # work += g * negative_embeddings
-        saxpy(&size, &g, &node_embedding[row1], &ONE, &context_embedding[row2], &ONE) # negative_embeddings += g * node_embedding
-
-    saxpy(&size, &ONEF, work, &ONE, &node_embedding[row1], &ONE)  #node_embedding += work
+    saxpy(&size, &ONEF, work, &ONE, &node_embedding[row1], &ONE)
 
     return next_random
 
@@ -465,8 +465,11 @@ def train_o2(py_node_embedding, py_context_embedding, py_path, py_lr, py_negativ
 
     cdef int codelens[MAX_SENTENCE_LEN]
     cdef np.uint32_t indexes[MAX_SENTENCE_LEN]
+
+    cdef np.uint32_t reduced_windows[MAX_SENTENCE_LEN]
+
     cdef int path_len
-    cdef int negative
+    cdef int negative = py_negative
     cdef int window = py_window
     cdef int i, j, k
     cdef long result = 0
@@ -478,14 +481,14 @@ def train_o2(py_node_embedding, py_context_embedding, py_path, py_lr, py_negativ
 
 
     path_len = <int>min(MAX_SENTENCE_LEN, len(py_path))
-    negative = <int>py_negative
 
     for i in range(path_len):
-        word = py_path[i]
-        if word is None:
+        node = py_path[i]
+        if node is None:
             codelens[i] = 0
         else:
-            indexes[i] = word.index
+            indexes[i] = node.index
+            reduced_windows[i] = np.random.randint(window)
             codelens[i] = 1
             result += 1
 
@@ -494,19 +497,47 @@ def train_o2(py_node_embedding, py_context_embedding, py_path, py_lr, py_negativ
         for i in range(path_len):
             if codelens[i] == 0:
                 continue
-            j = i - window
+            j = i - window + reduced_windows[i]
             if j < 0:
                 j = 0
-            k = i + window + 1
+            k = i + window + 1 - reduced_windows[i]
             if k > path_len:
                 k = path_len
             for j in range(j, k):
                 if j == i or codelens[j] == 0:
                     continue
-                else:
-                    next_random = fast_o2(negative, table, table_len, node_embedding, context_embedding,
-                                        size, indexes[i], indexes[j], _lr, _alpha,  work, next_random)
+                next_random = fast_o2(negative, table, table_len, node_embedding, context_embedding,
+                                      size, indexes[i], indexes[j], _lr, _alpha, work, next_random)
+
     return result
+
+    # for i in range(path_len):
+    #     word = py_path[i]
+    #     if word is None:
+    #         codelens[i] = 0
+    #     else:
+    #         indexes[i] = word.index
+    #         codelens[i] = 1
+    #         result += 1
+    #
+    # # release GIL & train on the sentence
+    # with nogil:
+    #     for i in range(path_len):
+    #         if codelens[i] == 0:
+    #             continue
+    #         j = i - window
+    #         if j < 0:
+    #             j = 0
+    #         k = i + window + 1
+    #         if k > path_len:
+    #             k = path_len
+    #         for j in range(j, k):
+    #             if j == i or codelens[j] == 0:
+    #                 continue
+    #             else:
+    #                 next_random = fast_o2(negative, table, table_len, node_embedding, context_embedding,
+    #                                     size, indexes[i], indexes[j], _lr, _alpha,  work, next_random)
+    # return result
 
 
 def init():

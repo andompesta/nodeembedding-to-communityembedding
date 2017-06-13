@@ -7,7 +7,7 @@ import logging as log
 
 import numpy as np
 import psutil
-
+from math import floor
 from ADSCModel.model import Model
 from ADSCModel.context_embeddings import Context2Vec
 from ADSCModel.node_embeddings import Node2Vec
@@ -45,7 +45,7 @@ if __name__ == "__main__":
     batch_size = 60
     window_size = 10    # windows size used to compute the context embedding
     negative = 5        # number of negative sample
-    lr = 0.02            # learning rate
+    lr = 0.025            # learning rate
 
     """
     alpha = 1.0
@@ -55,8 +55,9 @@ if __name__ == "__main__":
     """
 
     alpha_betas = [(1.0, 0.1), (0.01, 0.1), (0.001, 0.1),
-                   # (0.1, 1.0), (0.1, 0.01), (0.1, 0.001),
+                   (0.1, 1.0), (0.1, 0.01), (0.1, 0.001),
                    (0.1, 0.1)]
+
     iter_com_node = [(5, 1), (10, 1), (50, 1),
                      (1, 5), (1, 10), (1, 50),
                      (1, 1)]
@@ -68,13 +69,7 @@ if __name__ == "__main__":
 
 
     #CONSTRUCT THE GRAPH
-    G = graph_utils.load_adjacencylist(os.path.join('./data', input_file, input_file + '.adjlist'), True)
-    model = Model(G.degree(),
-                  size=representation_size,
-                  table_size=8000000,
-                  input_file=os.path.join(input_file, input_file),
-                  path_labels="./data")
-
+    G = graph_utils.load_matfile(os.path.join('./data', input_file, input_file + '.mat'), undirected=True)
     # Sampling the random walks for context
     if sampling_path:
         log.info("sampling the paths")
@@ -82,11 +77,17 @@ if __name__ == "__main__":
                                                      num_paths=number_walks,
                                                      path_length=walk_length,
                                                      alpha=0,
-                                                     rand=random.Random(9999999999),
+                                                     rand=random.Random(0),
                                                      num_workers=num_workers)
     else:
         walk_files = [walks_filebase + '.' + str(i) for i in range(number_walks) if os.path.isfile(walks_filebase + '.' + str(i))]
 
+    vertex_counts = graph_utils.count_textfiles(walk_files, num_workers)
+    model = Model(vertex_counts,
+                  size=representation_size,
+                  table_size=100000000,
+                  input_file=os.path.join(input_file, input_file),
+                  path_labels="./data")
 
 
     #Learning algorithm
@@ -105,56 +106,57 @@ if __name__ == "__main__":
     ###########################
     #   PRE-TRAINING          #
     ###########################
-    # node_learner.train(model,
-    #                    edges=edges,
-    #                    iter=1,
-    #                    chunksize=batch_size)
-    #
-    # cont_learner.train(model,
-    #                    paths=graph_utils.combine_files_iter(walk_files),
-    #                    total_nodes=context_total_path,
-    #                    alpha=1.0,
-    #                    chunksize=batch_size)
+    node_learner.train(model,
+                       edges=edges,
+                       iter=1,
+                       chunksize=batch_size)
+
+    cont_learner.train(model,
+                       paths=graph_utils.combine_files_iter(walk_files),
+                       total_nodes=context_total_path,
+                       alpha=1.0,
+                       chunksize=batch_size)
     #
     model.save("{}_pre-training".format(output_file))
 
     ###########################
     #   EMBEDDING LEARNING    #
     ###########################
+    iter_node = floor(context_total_path/G.number_of_edges())
+    iter_com = 1
     for it in range(num_iter):
-        for iter_com, iter_node in iter_com_node:
-            for alpha, beta in alpha_betas:
-                log.info('\n_______________________________________\n')
-                log.info('\t\tITER-{}\n'.format(it))
-                model = model.load_model("{}_pre-training".format(output_file))
-                log.info('using alpha:{} \t beta:{} \t iter_com:{} \t iter_node: {}'.format(alpha, beta, iter_com, iter_node))
-                log.debug('Number of community: %d' % model.k)
+        for alpha, beta in alpha_betas:
+            log.info('\n_______________________________________\n')
+            log.info('\t\tITER-{}\n'.format(it))
+            model = model.load_model("{}_pre-training".format(output_file))
+            log.info('using alpha:{} \t beta:{} \t iter_com:{} \t iter_node: {}'.format(alpha, beta, iter_com, iter_node))
+            log.debug('Number of community: %d' % model.k)
 
-                start_time = timeit.default_timer()
+            start_time = timeit.default_timer()
 
-                # node_learner.train(model,
-                #                    edges=edges,
-                #                    iter=iter_node,
-                #                    chunksize=batch_size)
+            node_learner.train(model,
+                               edges=edges,
+                               iter=iter_node,
+                               chunksize=batch_size)
 
-                cont_learner.train(model,
-                                   paths=graph_utils.combine_files_iter(walk_files),
-                                   total_nodes=context_total_path,
-                                   alpha=alpha,
-                                   chunksize=batch_size)
+            com_learner.fit(model)
+            com_learner.train(G.nodes(), model, beta, chunksize=batch_size, iter=iter_com)
 
-                # com_learner.fit(model)
-                # com_learner.train(G.nodes(), model, beta, chunksize=batch_size, iter=iter_com)
-                log.info('time: %.2fs' % (timeit.default_timer() - start_time))
-                # log.info(model.centroid)
-                io_utils.save_embedding(model.node_embedding, "{}_alpha-{}_beta-{}_ws-{}_neg-{}_lr-{}_wc-{}_icom-{}_ind-{}"
-                              .format(output_file,
-                                      alpha,
-                                      beta,
-                                      window_size,
-                                      negative,
-                                      lr,
-                                      weight_concentration_prior,
-                                      iter_com,
-                                      iter_node))
+            cont_learner.train(model,
+                               paths=graph_utils.combine_files_iter(walk_files),
+                               total_nodes=context_total_path,
+                               alpha=alpha,
+                               chunksize=batch_size)
+            log.info('time: %.2fs' % (timeit.default_timer() - start_time))
+            # log.info(model.centroid)
+            io_utils.save_embedding(model.node_embedding, model.vocab,
+                                    file_name="{}_alpha-{}_beta-{}_ws-{}_neg-{}_lr-{}_wc-{}_icom-{}_ind-{}".format(output_file,
+                                                                                                                   alpha,
+                                                                                                                   beta,
+                                                                                                                   window_size,
+                                                                                                                   negative,
+                                                                                                                   lr,
+                                                                                                                   weight_concentration_prior,
+                                                                                                                   iter_com,
+                                                                                                                   iter_node))
 

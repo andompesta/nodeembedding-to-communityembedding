@@ -18,7 +18,7 @@ class Model(object):
     def __init__(self, nodes_degree=None,
                  size=2,
                  down_sampling=0,
-                 seed=0,
+                 seed=1,
                  table_size=100000000,
                  path_labels='data/',
                  input_file=None):
@@ -44,27 +44,27 @@ class Model(object):
             self.build_vocab_(nodes_degree)
             self.ground_true, self.k = load_ground_true(path=path_labels, file_name=input_file)
             # inizialize node and context embeddings
-            self.reset_weights()
             self.make_table()
+            self.precalc_sampling()
+            self.reset_weights()
         else:
             log.warning("Model not initialized, need the nodes degree")
 
-    def build_vocab_(self, vocab):
+    def build_vocab_(self, nodes_degree):
         """
         Build vocabulary from a sequence of paths (can be a once-only generator stream).
         Sorted by node id
         """
-        # assign a unique index to each node
+        # assign a unique index to each word
         self.vocab = {}
 
-        for node_idx, (node, count) in enumerate(sorted(vocab.items(), key=lambda itm: itm[0])):
+        for node_idx, (node, count) in enumerate(sorted(nodes_degree.items(), key=lambda x: x[0])):
             v = Vocab()
             v.count = count
             v.index = node_idx
-            # self.index2node.append(node)
             self.vocab[node] = v
-        assert min(self.vocab.keys()) == 0, "min {} max {}".format(min(self.vocab.keys()), max(self.vocab.keys()))
-        self.precalc_sampling()
+        self.vocab_size = len(self.vocab)
+        log.info("total {} nodes".format(self.vocab_size))
 
     def precalc_sampling(self):
         '''
@@ -83,7 +83,6 @@ class Model(object):
     def reset_weights(self):
         """Reset all projection weights to an initial (untrained) state, but keep the existing vocabulary."""
         np.random.seed(self.seed)
-        self.vocab_size = len(self.vocab)
         self.node_embedding = np.random.uniform(low=-0.5, high=0.5, size=(self.vocab_size, self.layer1_size)).astype(np.float32)
         self.context_embedding = np.zeros((self.vocab_size, self.layer1_size)).astype(np.float32)
 
@@ -103,7 +102,7 @@ class Model(object):
         Called internally from `build_vocab()`.
 
         """
-        log.info("constructing a table with noise distribution from %i words" % self.vocab_size)
+        log.info("constructing a table with noise distribution from {} words of size {}".format(self.vocab_size, self.table_size))
         # table (= list of words) of noise distribution for negative sampling
         self.table = np.zeros(self.table_size, dtype=np.uint32)
 

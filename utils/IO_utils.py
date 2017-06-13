@@ -46,7 +46,7 @@ def load_ground_true(path='data/', file_name=None, multilabel=False):
             ret.append(labels[key][0])
     return ret, max
 
-def save_embedding(embeddings, file_name, path='data'):
+def save_embedding(embeddings, vocab, file_name, path='data'):
     '''
     save the final embedding as a txt file
     file structure = <node_id>\t<feautre_1>\s<feautre_2>...
@@ -58,8 +58,8 @@ def save_embedding(embeddings, file_name, path='data'):
     makedirs(dirname(full_path), exist_ok=True)
 
     with open(full_path, 'w') as file:
-        for node_id, embed in enumerate(embeddings):
-            file.write(str(node_id+1) + '\t' + " ".join([str(val) for val in embed]) + '\n')
+        for node_id in sorted(vocab):
+            file.write("{}\t{}\n".format(node_id, " ".join([str(val) for val in embeddings[node_id]])))
 
 def load_embedding(file_name, path='data', ext=".txt"):
     """

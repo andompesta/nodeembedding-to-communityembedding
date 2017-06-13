@@ -192,7 +192,7 @@ cdef unsigned long long fast1_o2 (
         if f <= -MAX_EXP or f >= MAX_EXP:
             continue
         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]
-        g = (label - f) * lr
+        g = (label - f) * (lr * _lambda)
         saxpy(&size, &g, &context_embedding[row2], &ONE, work, &ONE)
         saxpy(&size, &g, &node_embedding[row1], &ONE, &context_embedding[row2], &ONE)
 
@@ -218,9 +218,9 @@ cdef unsigned long long fast0_o1 (
     cdef long long a
     cdef long long row1 = word2_index * size, row2
     cdef unsigned long long modulo = 281474976710655ULL
-    cdef REAL_t f, g, label, gl
+    cdef REAL_t f, g, label
     cdef np.uint32_t target_index
-    cdef int d, i
+    cdef int d
 
     memset(work, 0, size * cython.sizeof(REAL_t))
 
@@ -265,9 +265,9 @@ cdef unsigned long long fast1_o1 (
     cdef long long a
     cdef long long row1 = word2_index * size, row2
     cdef unsigned long long modulo = 281474976710655ULL
-    cdef REAL_t f, g, label, gl
+    cdef REAL_t f, g, label
     cdef np.uint32_t target_index
-    cdef int d, i
+    cdef int d
 
     memset(work, 0, size * cython.sizeof(REAL_t))
 

@@ -52,12 +52,7 @@ if __name__ == "__main__":
 
     #CONSTRUCT THE GRAPH
     G = graph_utils.load_matfile(os.path.join('./data', input_file, input_file + '.mat'), undirected=True)
-    model = Model(G.degree(),
-                  size=representation_size,
-                  input_file=os.path.join(input_file, input_file),
-                  path_labels="./data",
-                  table_size=100000000)
-
+    # G = graph_utils.load_adjacencylist(os.path.join('./data', input_file, input_file + '.adjlist'), undirected=True)
     # Sampling the random walks for context
     if sampling_path:
         log.info("sampling the paths")
@@ -65,12 +60,17 @@ if __name__ == "__main__":
                                                      num_paths=number_walks,
                                                      path_length=walk_length,
                                                      alpha=0,
-                                                     rand=random.Random(9999999999),
+                                                     rand=random.Random(0),
                                                      num_workers=num_workers)
     else:
         walk_files = [walks_filebase + '.' + str(i) for i in range(number_walks) if os.path.isfile(walks_filebase + '.' + str(i))]
 
-
+    vertex_counts = graph_utils.count_textfiles(walk_files, num_workers)
+    model = Model(vertex_counts,
+                  size=representation_size,
+                  input_file=os.path.join(input_file, input_file),
+                  path_labels="./data",
+                  table_size=100000000)
 
     #Learning algorithm
     cont_learner = Context2Vec(window_size=window_size, workers=num_workers, negative=negative, lr=lr)
@@ -93,4 +93,4 @@ if __name__ == "__main__":
                            total_nodes=context_total_path,
                            alpha=1.0,
                            chunksize=batch_size)
-        io_utils.save_embedding(model.node_embedding, file_name=output_file+"_lr-{}".format(lr))
+        io_utils.save_embedding(model.node_embedding, model.vocab, file_name=output_file+"_lr-{}".format(lr))

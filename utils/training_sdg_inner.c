@@ -2052,7 +2052,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast0_o2(int co
  *     np.uint32_t *table,
  */
 
-static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast1_o2(int const __pyx_v_negative, __pyx_t_5numpy_uint32_t *__pyx_v_table, unsigned PY_LONG_LONG __pyx_v_table_len, __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_node_embedding, __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_context_embedding, int const __pyx_v_size, __pyx_t_5numpy_uint32_t const __pyx_v_word_index, __pyx_t_5numpy_uint32_t const __pyx_v_word2_index, __pyx_t_5utils_18training_sdg_inner_REAL_t const __pyx_v_lr, CYTHON_UNUSED __pyx_t_5utils_18training_sdg_inner_REAL_t const __pyx_v__lambda, __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_work, unsigned PY_LONG_LONG __pyx_v_next_random) {
+static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast1_o2(int const __pyx_v_negative, __pyx_t_5numpy_uint32_t *__pyx_v_table, unsigned PY_LONG_LONG __pyx_v_table_len, __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_node_embedding, __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_context_embedding, int const __pyx_v_size, __pyx_t_5numpy_uint32_t const __pyx_v_word_index, __pyx_t_5numpy_uint32_t const __pyx_v_word2_index, __pyx_t_5utils_18training_sdg_inner_REAL_t const __pyx_v_lr, __pyx_t_5utils_18training_sdg_inner_REAL_t const __pyx_v__lambda, __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_work, unsigned PY_LONG_LONG __pyx_v_next_random) {
   PY_LONG_LONG __pyx_v_row1;
   PY_LONG_LONG __pyx_v_row2;
   unsigned PY_LONG_LONG __pyx_v_modulo;
@@ -2242,7 +2242,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast1_o2(int co
  *         if f <= -MAX_EXP or f >= MAX_EXP:
  *             continue             # <<<<<<<<<<<<<<
  *         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]
- *         g = (label - f) * lr
+ *         g = (label - f) * (lr * _lambda)
  */
       goto __pyx_L3_continue;
 
@@ -2259,7 +2259,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast1_o2(int co
  *         if f <= -MAX_EXP or f >= MAX_EXP:
  *             continue
  *         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]             # <<<<<<<<<<<<<<
- *         g = (label - f) * lr
+ *         g = (label - f) * (lr * _lambda)
  *         saxpy(&size, &g, &context_embedding[row2], &ONE, work, &ONE)
  */
     __pyx_v_f = (__pyx_v_5utils_18training_sdg_inner_EXP_TABLE[((int)((__pyx_v_f + 6.0) * 83.0))]);
@@ -2267,15 +2267,15 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast1_o2(int co
     /* "utils/training_sdg_inner.pyx":195
  *             continue
  *         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]
- *         g = (label - f) * lr             # <<<<<<<<<<<<<<
+ *         g = (label - f) * (lr * _lambda)             # <<<<<<<<<<<<<<
  *         saxpy(&size, &g, &context_embedding[row2], &ONE, work, &ONE)
  *         saxpy(&size, &g, &node_embedding[row1], &ONE, &context_embedding[row2], &ONE)
  */
-    __pyx_v_g = ((__pyx_v_label - __pyx_v_f) * __pyx_v_lr);
+    __pyx_v_g = ((__pyx_v_label - __pyx_v_f) * (__pyx_v_lr * __pyx_v__lambda));
 
     /* "utils/training_sdg_inner.pyx":196
  *         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]
- *         g = (label - f) * lr
+ *         g = (label - f) * (lr * _lambda)
  *         saxpy(&size, &g, &context_embedding[row2], &ONE, work, &ONE)             # <<<<<<<<<<<<<<
  *         saxpy(&size, &g, &node_embedding[row1], &ONE, &context_embedding[row2], &ONE)
  * 
@@ -2283,7 +2283,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast1_o2(int co
     __pyx_v_5utils_18training_sdg_inner_saxpy((&__pyx_v_size), (&__pyx_v_g), (&(__pyx_v_context_embedding[__pyx_v_row2])), (&__pyx_v_5utils_18training_sdg_inner_ONE), __pyx_v_work, (&__pyx_v_5utils_18training_sdg_inner_ONE));
 
     /* "utils/training_sdg_inner.pyx":197
- *         g = (label - f) * lr
+ *         g = (label - f) * (lr * _lambda)
  *         saxpy(&size, &g, &context_embedding[row2], &ONE, work, &ONE)
  *         saxpy(&size, &g, &node_embedding[row1], &ONE, &context_embedding[row2], &ONE)             # <<<<<<<<<<<<<<
  * 
@@ -2353,7 +2353,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast0_o1(int co
  *     cdef long long a
  *     cdef long long row1 = word2_index * size, row2             # <<<<<<<<<<<<<<
  *     cdef unsigned long long modulo = 281474976710655ULL
- *     cdef REAL_t f, g, label, gl
+ *     cdef REAL_t f, g, label
  */
   __pyx_v_row1 = (__pyx_v_word2_index * __pyx_v_size);
 
@@ -2361,13 +2361,13 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast0_o1(int co
  *     cdef long long a
  *     cdef long long row1 = word2_index * size, row2
  *     cdef unsigned long long modulo = 281474976710655ULL             # <<<<<<<<<<<<<<
- *     cdef REAL_t f, g, label, gl
+ *     cdef REAL_t f, g, label
  *     cdef np.uint32_t target_index
  */
   __pyx_v_modulo = 281474976710655ULL;
 
   /* "utils/training_sdg_inner.pyx":225
- *     cdef int d, i
+ *     cdef int d
  * 
  *     memset(work, 0, size * cython.sizeof(REAL_t))             # <<<<<<<<<<<<<<
  * 
@@ -2625,7 +2625,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast1_o1(int co
  *     cdef long long a
  *     cdef long long row1 = word2_index * size, row2             # <<<<<<<<<<<<<<
  *     cdef unsigned long long modulo = 281474976710655ULL
- *     cdef REAL_t f, g, label, gl
+ *     cdef REAL_t f, g, label
  */
   __pyx_v_row1 = (__pyx_v_word2_index * __pyx_v_size);
 
@@ -2633,13 +2633,13 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast1_o1(int co
  *     cdef long long a
  *     cdef long long row1 = word2_index * size, row2
  *     cdef unsigned long long modulo = 281474976710655ULL             # <<<<<<<<<<<<<<
- *     cdef REAL_t f, g, label, gl
+ *     cdef REAL_t f, g, label
  *     cdef np.uint32_t target_index
  */
   __pyx_v_modulo = 281474976710655ULL;
 
   /* "utils/training_sdg_inner.pyx":272
- *     cdef int d, i
+ *     cdef int d
  * 
  *     memset(work, 0, size * cython.sizeof(REAL_t))             # <<<<<<<<<<<<<<
  * 

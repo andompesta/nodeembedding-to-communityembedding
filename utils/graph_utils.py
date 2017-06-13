@@ -156,10 +156,9 @@ def write_walks_to_disk(G, filebase, num_paths, path_length, alpha=0, rand=rando
 
 def combine_files_iter(file_list):
     for file in file_list:
-        if os.path.isfile(file):
-            with open(file, 'r') as f:
-                for line in f:
-                    yield np.array([int(node) for node in line.split()])
+        with open(file, 'r') as f:
+            for line in f:
+                yield map(int, line.split())
 
 def count_lines(f):
     if path.isfile(f):

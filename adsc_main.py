@@ -40,8 +40,8 @@ if __name__ == "__main__":
     num_workers = 10                        # number of thread
     num_iter = 1                            # number of overall iteration
     reg_covar = 0.00001                          # regularization coefficient to ensure positive covar
-    input_file = 'BlogCatalog'                          # name of the input file
-    output_file = 'BlogCatalog'                         # name of the output file
+    input_file = 'Wikipedia'                          # name of the input file
+    output_file = 'Wikipedia'                         # name of the output file
     batch_size = 60
     window_size = 10    # windows size used to compute the context embedding
     negative = 5        # number of negative sample
@@ -123,7 +123,7 @@ if __name__ == "__main__":
     #   EMBEDDING LEARNING    #
     ###########################
     iter_node = floor(context_total_path/G.number_of_edges())
-    iter_com = 1
+    iter_com = floor(context_total_path/G.number_of_edges())
     for it in range(num_iter):
         for alpha, beta in alpha_betas:
             log.info('\n_______________________________________\n')

@@ -33,6 +33,7 @@ class Context2Vec(object):
         '''
 
         self.lr = float(lr)
+        self.min_lr = 0.0001
         self.workers = workers
         self.negative = negative
         self.window_size = int(window_size)
@@ -65,7 +66,7 @@ class Context2Vec(object):
         if total_nodes is None:
             raise AttributeError('need the number of node')
 
-        node_count = [node_count]
+        node_count = [0]
         jobs = Queue(maxsize=2*self.workers)  # buffer ahead only a limited number of jobs.. this is the reason we can't simply use ThreadPool :(
         lock = threading.Lock()  # for shared state (=number of nodes trained so far, log reports...)
 
@@ -78,6 +79,7 @@ class Context2Vec(object):
                 if job is None:  # data finished, exit
                     break
 
+                lr = max(self.min_lr, self.lr * (1 - 1.0 * node_count[0]/total_nodes))
                 job_nodes = sum(train_o2(model.node_embedding, model.context_embedding, path, self.lr, self.negative, self.window_size, model.table,
                                              py_alpha=alpha, py_size=model.layer1_size, py_work=py_work) for path in job) #execute the sgd
 
@@ -87,7 +89,7 @@ class Context2Vec(object):
                     elapsed = time.time() - start
                     if elapsed >= next_report[0]:
                         log.info("PROGRESS: at %.2f%% nodes, lr %.05f, %.0f nodes/s" %
-                                    (100.0 * node_count[0] / total_nodes, self.lr, node_count[0] / elapsed if elapsed else 0.0))
+                                    (100.0 * node_count[0] / total_nodes, lr, node_count[0] / elapsed if elapsed else 0.0))
                         next_report[0] = elapsed + 1.0  # don't flood the log, wait at least a second between progress reports
 
         workers = [threading.Thread(target=worker_train) for _ in range(self.workers)]

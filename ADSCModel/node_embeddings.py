@@ -20,6 +20,7 @@ class Node2Vec(object):
 
         self.workers = workers
         self.lr = float(lr)
+        self.min_lr = 0.0001
         self.negative = negative
         self.window_size = 1
 
@@ -47,7 +48,7 @@ class Node2Vec(object):
         edges = RepeatCorpusNTimes(edges, iter)
         total_node = edges.corpus.shape[0] * edges.corpus.shape[1] * edges.n
         log.debug('total edges: %d' % total_node)
-        start, next_report, word_count = time.time(), [5.0], [0]
+        start, next_report, node_count = time.time(), [5.0], [0]
 
 
         #int(sum(v.count * v.sample_probability for v in self.vocab.values()))
@@ -57,6 +58,8 @@ class Node2Vec(object):
 
         def worker_train():
             """Train the model, lifting lists of paths from the jobs queue."""
+            py_work = np.zeros(model.layer1_size, dtype=np.float32)
+
             while True:
                 job = jobs.get(block=True)
                 if job is None:  # data finished, exit
@@ -64,20 +67,18 @@ class Node2Vec(object):
                     # print('thread %s break' % threading.current_thread().name)
                     break
 
-
-                py_work = np.zeros(model.layer1_size, dtype=np.float32)
-
-                job_words = sum(train_o1(model.node_embedding, edge, self.lr, self.negative, model.table,
+                lr = max(self.min_lr, self.lr * (1 - 1.0 * node_count[0]/total_node))
+                job_words = sum(train_o1(model.node_embedding, edge, lr, self.negative, model.table,
                                          py_size=model.layer1_size, py_work=py_work) for edge in job if edge is not None)
                 jobs.task_done()
                 lock.acquire(timeout=30)
                 try:
-                    word_count[0] += job_words
+                    node_count[0] += job_words
 
                     elapsed = time.time() - start
                     if elapsed >= next_report[0]:
-                        log.info("PROGRESS: at %.2f%% words\tword_computed %d\talpha %.05f\t %.0f words/s" %
-                                    (100.0 * word_count[0] / total_node, word_count[0], self.lr, word_count[0] / elapsed if elapsed else 0.0))
+                        log.info("PROGRESS: at %.2f%% \tnode_computed %d\talpha %.05f\t %.0f nodes/s" %
+                                    (100.0 * node_count[0] / total_node, node_count[0], lr, node_count[0] / elapsed if elapsed else 0.0))
                         next_report[0] = elapsed + 5.0  # don't flood the log, wait at least a second between progress reports
                 finally:
                     lock.release()
@@ -103,4 +104,4 @@ class Node2Vec(object):
 
         elapsed = time.time() - start
         log.info("training on %i words took %.1fs, %.0f words/s" %
-                    (word_count[0], elapsed, word_count[0]/ elapsed if elapsed else 0.0))
+                    (node_count[0], elapsed, node_count[0]/ elapsed if elapsed else 0.0))

@@ -40,8 +40,8 @@ if __name__ == "__main__":
     num_workers = 10                        # number of thread
     num_iter = 1                            # number of overall iteration
     reg_covar = 0.00001                          # regularization coefficient to ensure positive covar
-    input_file = 'Wikipedia'                          # name of the input file
-    output_file = 'Wikipedia'                         # name of the output file
+    input_file = 'BlogCatalog'                          # name of the input file
+    output_file = 'BlogCatalog'                         # name of the output file
     batch_size = 60
     window_size = 10    # windows size used to compute the context embedding
     negative = 5        # number of negative sample
@@ -63,8 +63,8 @@ if __name__ == "__main__":
                      (1, 1)]
 
     weight_concentration_prior = 100
-    walks_filebase = os.path.join('data', output_file, output_file + ".walks")            # where read/write the sampled path
-    sampling_path = True
+    walks_filebase = os.path.join('data', output_file, output_file)            # where read/write the sampled path
+    sampling_path = False
 
 
 
@@ -73,14 +73,14 @@ if __name__ == "__main__":
     # Sampling the random walks for context
     if sampling_path:
         log.info("sampling the paths")
-        walk_files = graph_utils.write_walks_to_disk(G, walks_filebase,
+        walk_files = graph_utils.write_walks_to_disk(G, walks_filebase + ".walks",
                                                      num_paths=number_walks,
                                                      path_length=walk_length,
                                                      alpha=0,
                                                      rand=random.Random(0),
                                                      num_workers=num_workers)
     else:
-        walk_files = [walks_filebase + '.' + str(i) for i in range(number_walks) if os.path.isfile(walks_filebase + '.' + str(i))]
+        walk_files = ["{}_n2v.walks.{}".format(walks_filebase, i) for i in range(number_walks) if os.path.isfile("{}_n2v.walks.{}".format(walks_filebase, i))]
 
     vertex_counts = graph_utils.count_textfiles(walk_files, num_workers)
     model = Model(vertex_counts,

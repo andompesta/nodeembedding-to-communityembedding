@@ -40,8 +40,8 @@ if __name__ == "__main__":
     num_workers = 10                        # number of thread
     num_iter = 1                            # number of overall iteration
     reg_covar = 0.00001                          # regularization coefficient to ensure positive covar
-    input_file = 'BlogCatalog'                          # name of the input file
-    output_file = 'BlogCatalog'                         # name of the output file
+    input_file = 'Wikipedia'                          # name of the input file
+    output_file = 'Wikipedia'                         # name of the output file
     batch_size = 60
     window_size = 10    # windows size used to compute the context embedding
     negative = 5        # number of negative sample
@@ -80,7 +80,7 @@ if __name__ == "__main__":
                                                      rand=random.Random(0),
                                                      num_workers=num_workers)
     else:
-        walk_files = ["{}_n2v.walks.{}".format(walks_filebase, i) for i in range(number_walks) if os.path.isfile("{}_n2v.walks.{}".format(walks_filebase, i))]
+        walk_files = ["{}_n2v.walks.0{}".format(walks_filebase, i) for i in range(number_walks) if os.path.isfile("{}_n2v.walks.0{}".format(walks_filebase, i))]
 
     vertex_counts = graph_utils.count_textfiles(walk_files, num_workers)
     model = Model(vertex_counts,
@@ -147,6 +147,7 @@ if __name__ == "__main__":
                                total_nodes=context_total_path,
                                alpha=alpha,
                                chunksize=batch_size)
+
             log.info('time: %.2fs' % (timeit.default_timer() - start_time))
             # log.info(model.centroid)
             io_utils.save_embedding(model.node_embedding, model.vocab,

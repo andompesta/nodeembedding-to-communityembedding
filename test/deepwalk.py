@@ -39,19 +39,19 @@ if __name__ == "__main__":
     representation_size = 128        # size of the embedding
     num_workers = 10                        # number of thread
     batch_size = 100
-    input_file = 'BlogCatalog'                          # name of the input file
-    output_file = 'BlogCatalog_my_deepwalk'                         # name of the output file
+    input_file = 'Wikipedia'                          # name of the input file
+    output_file = 'Wikipedia_my_deepwalk'                         # name of the output file
 
     window_size = 10  # windows size used to compute the context embedding
     negative = 5  # number of negative sample
     lr = 0.025
-    walks_filebase = os.path.join('data', input_file, input_file + ".walks")            # where read/write the sampled path
-    sampling_path = True
+    walks_filebase = os.path.join('../data', input_file, input_file)            # where read/write the sampled path
+    sampling_path = False
 
 
 
     #CONSTRUCT THE GRAPH
-    G = graph_utils.load_matfile(os.path.join('./data', input_file, input_file + '.mat'), undirected=True)
+    G = graph_utils.load_matfile(os.path.join('../data', input_file, input_file + '.mat'), undirected=True)
     # G = graph_utils.load_adjacencylist(os.path.join('./data', input_file, input_file + '.adjlist'), undirected=True)
     # Sampling the random walks for context
     if sampling_path:
@@ -63,13 +63,14 @@ if __name__ == "__main__":
                                                      rand=random.Random(0),
                                                      num_workers=num_workers)
     else:
-        walk_files = [walks_filebase + '.' + str(i) for i in range(number_walks) if os.path.isfile(walks_filebase + '.' + str(i))]
+        walk_files = ["{}_n2v.walks.0{}".format(walks_filebase, i) for i in range(number_walks) if
+                      os.path.isfile("{}_n2v.walks.0{}".format(walks_filebase, i))]
 
     vertex_counts = graph_utils.count_textfiles(walk_files, num_workers)
     model = Model(vertex_counts,
                   size=representation_size,
                   input_file=os.path.join(input_file, input_file),
-                  path_labels="./data",
+                  path_labels="../data",
                   table_size=100000000)
 
     #Learning algorithm

@@ -14,7 +14,6 @@ from concurrent.futures import ProcessPoolExecutor
 from multiprocessing import cpu_count
 from os import path
 from collections import Counter
-import os.path
 
 log.basicConfig(format='%(asctime).19s %(levelname)s %(filename)s: %(lineno)s %(message)s', level=log.INFO)
 

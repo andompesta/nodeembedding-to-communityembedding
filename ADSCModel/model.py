@@ -91,7 +91,15 @@ class Model(object):
         self.inv_covariance_mat = np.zeros((self.k, self.layer1_size, self.layer1_size), dtype=np.float32)
         self.pi = np.zeros((self.vocab_size, self.k), dtype=np.float32)
 
-
+    def reset_communities_weights(self, k):
+        """Reset all projection weights to an initial (untrained) state, but keep the existing vocabulary."""
+        np.random.seed(self.seed)
+        self.k = k
+        self.centroid = np.zeros((self.k, self.layer1_size), dtype=np.float32)
+        self.covariance_mat = np.zeros((self.k, self.layer1_size, self.layer1_size), dtype=np.float32)
+        self.inv_covariance_mat = np.zeros((self.k, self.layer1_size, self.layer1_size), dtype=np.float32)
+        self.pi = np.zeros((self.vocab_size, self.k), dtype=np.float32)
+        log.info("reset communities data| k: {}".format(self.k))
 
 
     def make_table(self, power=0.75):

@@ -92,7 +92,7 @@ if __name__ == "__main__":
     #Learning algorithm
     node_learner = Node2Vec(workers=num_workers, negative=negative, lr=lr)
     cont_learner = Context2Vec(window_size=window_size, workers=num_workers, negative=negative, lr=lr)
-    com_learner = Community2Vec(model, reg_covar=reg_covar, lr=lr, wc_prior=weight_concentration_prior, n_init=5)
+    com_learner = Community2Vec(lr=lr)
 
 
     context_total_path = G.number_of_nodes() * number_walks * walk_length
@@ -129,9 +129,8 @@ if __name__ == "__main__":
             log.info('\n_______________________________________\n')
             log.info('\t\tITER-{}\n'.format(it))
             model = model.load_model("{}_pre-training".format(output_file))
-            model.k = k
+            model.reset_communities_weights(k)
             log.info('using alpha:{} \t beta:{} \t iter_com:{} \t iter_node: {}'.format(alpha, beta, iter_com, iter_node))
-            log.debug('Number of community: %d' % model.k)
 
             start_time = timeit.default_timer()
 
@@ -140,7 +139,7 @@ if __name__ == "__main__":
                                iter=iter_node,
                                chunksize=batch_size)
 
-            com_learner.fit(model)
+            com_learner.fit(model, reg_covar=reg_covar, wc_prior=weight_concentration_prior, n_init=5)
             com_learner.train(G.nodes(), model, beta, chunksize=batch_size, iter=iter_com)
 
             cont_learner.train(model,

@@ -10,7 +10,7 @@ import numpy as np
 from utils.embedding import chunkize_serial, RepeatCorpusNTimes, prepare_sentences
 from scipy.special import expit as sigmoid
 
-from utils.training_sdg_inner import train_o1, FAST_VERSION
+from utils.training_sdg_inner import train_o1, loss_o1, FAST_VERSION
 log.info("imported cython version: {}".format(FAST_VERSION))
 
 
@@ -25,11 +25,23 @@ class Node2Vec(object):
         self.window_size = 1
 
     def loss(self, model, edges):
-        ret_loss = 0
-        for edge in prepare_sentences(model, edges):
-            assert len(edge) == 2, "edges have to be done by 2 nodes :{}".format(edge)
-            ret_loss -= np.log(sigmoid(np.dot(model.node_embedding[edge[1].index], model.node_embedding[edge[0].index].T)))
-        return ret_loss
+        loss = 0.0
+        num_nodes = 0
+
+        for job_no, job in enumerate(chunkize_serial(prepare_sentences(model, edges), 250)):
+            batch_loss = np.zeros(1, dtype=np.float32)
+            batch_work = np.zeros(model.layer1_size, dtype=np.float32)
+
+
+            batch_node = sum([loss_o1(model.node_embedding, edge, self.negative, model.table,
+                                 py_size=model.layer1_size, py_loss=batch_loss, py_work=batch_work) for edge in job if edge is not None])
+            num_nodes += batch_node
+            loss += batch_loss[0]
+            # log.info("loss: {}\tnodes: {}".format(loss, num_nodes))
+
+        log.info(num_nodes)
+        log.info(loss)
+        return loss
 
 
 
@@ -49,7 +61,6 @@ class Node2Vec(object):
         total_node = edges.corpus.shape[0] * edges.corpus.shape[1] * edges.n
         log.debug('total edges: %d' % total_node)
         start, next_report, node_count = time.time(), [5.0], [0]
-
 
         #int(sum(v.count * v.sample_probability for v in self.vocab.values()))
         jobs = Queue(maxsize=2*self.workers)  # buffer ahead only a limited number of jobs.. this is the reason we can't simply use ThreadPool :(

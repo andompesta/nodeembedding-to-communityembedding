@@ -102,6 +102,30 @@ class Model(object):
         log.info("reset communities data| k: {}".format(self.k))
 
 
+    def reset_weight_random(self):
+        """Reset all projection weights to an initial (untrained) state, but keep the existing vocabulary."""
+        self.node_embedding = np.random.uniform(low=-1.5, high=1.5, size=(self.vocab_size, self.layer1_size)).astype(
+            np.float32)
+        self.context_embedding = np.random.uniform(low=-1.5, high=1.5, size=(self.vocab_size, self.layer1_size)).astype(np.float32)
+
+        self.centroid = np.zeros((self.k, self.layer1_size), dtype=np.float32)
+        self.covariance_mat = np.zeros((self.k, self.layer1_size, self.layer1_size), dtype=np.float32)
+        self.inv_covariance_mat = np.zeros((self.k, self.layer1_size, self.layer1_size), dtype=np.float32)
+        self.pi = np.zeros((self.vocab_size, self.k), dtype=np.float32)
+        log.info("reset communities data| k: {}".format(self.k))
+
+    def reset_weight_zero(self):
+        """Reset all projection weights to an initial (untrained) state, but keep the existing vocabulary."""
+        self.node_embedding = np.random.uniform(low=-0.5, high=0.5, size=(self.vocab_size, self.layer1_size)).astype(
+            np.float32)
+        self.context_embedding = np.zeros((self.vocab_size, self.layer1_size), dtype=np.float32)
+
+        self.centroid = np.zeros((self.k, self.layer1_size), dtype=np.float32)
+        self.covariance_mat = np.zeros((self.k, self.layer1_size, self.layer1_size), dtype=np.float32)
+        self.inv_covariance_mat = np.zeros((self.k, self.layer1_size, self.layer1_size), dtype=np.float32)
+        self.pi = np.zeros((self.vocab_size, self.k), dtype=np.float32)
+        log.info("reset communities data| k: {}".format(self.k))
+
     def make_table(self, power=0.75):
         """
         Create a table using stored vocabulary word counts for drawing random words in the negative

@@ -6,17 +6,17 @@ import threading
 from queue import Queue
 import numpy as np
 from utils.embedding import chunkize_serial, prepare_sentences
+from scipy.special import expit as sigmoid
 
 
 log.basicConfig(format='%(asctime).19s %(levelname)s %(filename)s: %(lineno)s %(message)s', level=log.DEBUG)
 
 try:
-    from utils.training_sdg_inner import train_o2, FAST_VERSION
+    from utils.training_sdg_inner import train_o2, loss_o2, FAST_VERSION
     log.info('cython version {}'.format(FAST_VERSION))
 except ImportError as e:
     log.error(e)
     raise e
-
 
 
 class Context2Vec(object):
@@ -37,6 +37,54 @@ class Context2Vec(object):
         self.workers = workers
         self.negative = negative
         self.window_size = int(window_size)
+
+    def loss(self, model, paths, total_paths, alpha=1.0):
+        start, next_report, loss = time.time(), 5.0, 0.0
+
+        num_nodes = 0
+
+        for job_no, job in enumerate(chunkize_serial(prepare_sentences(model, paths), 250)):
+            batch_loss = np.zeros(1, dtype=np.float32)
+            batch_work = np.zeros(model.layer1_size, dtype=np.float32)
+
+
+            batch_node = sum([loss_o2(model.node_embedding, model.context_embedding, path, self.negative,
+                                      self.window_size, model.table, alpha, model.layer1_size,
+                                      batch_work, py_loss=batch_loss) for path in job
+                              if path is not None])
+            num_nodes += batch_node
+            loss += batch_loss[0]
+            elapsed = time.time() - start
+            if elapsed >= next_report:
+                log.debug("PROGRESS: at %.2f%% path, %.0f paths/s" % (
+                        100.0 * num_nodes/total_paths, num_nodes/elapsed if elapsed else 0.0))
+                # log.debug("loss: {}".format(loss))
+                next_report = elapsed + 1.0  # don't flood the log, wait at least a second between progress reports
+
+
+        # def worker_loss(job, next_report):
+        #     """Train the model, lifting lists of paths from the jobs queue."""
+        #
+        #     py_work = np.zeros(model.layer1_size, dtype=np.float32)
+        #     job_nodes = sum([loss_o2(model.node_embedding, model.context_embedding, path, self.negative,
+        #                             self.window_size, model.table, alpha, model.layer1_size,
+        #                             py_work, py_loss=loss) for path in job])  # execute the sgd
+        #     num_nodes[0] += job_nodes
+        #     elapsed = time.time() - start
+        #
+        #     if elapsed >= next_report:
+        #         print("PROGRESS: at %.2f%% path, %.0f paths/s" % (
+        #         100.0 * num_nodes[0] / total_paths, num_nodes[0] / elapsed if elapsed else 0.0))
+        #         next_report = elapsed + 1.0  # don't flood the log, wait at least a second between progress reports
+        #         print(loss)
+        #     return next_report
+        #
+        # for job_no, job in enumerate(chunkize_serial(prepare_sentences(model, paths), 250)):
+        #     next_report = worker_loss(job, next_report)
+
+        log.info(num_nodes)
+        log.info(loss)
+        return loss[0]
 
 
     def train(self, model, paths, total_nodes, alpha=1.0, node_count=0, chunksize=150):
@@ -67,6 +115,8 @@ class Context2Vec(object):
             raise AttributeError('need the number of node')
 
         node_count = [0]
+        loss = np.zeros(1, dtype=np.float32)
+
         jobs = Queue(maxsize=2*self.workers)  # buffer ahead only a limited number of jobs.. this is the reason we can't simply use ThreadPool :(
         lock = threading.Lock()  # for shared state (=number of nodes trained so far, log reports...)
 
@@ -81,7 +131,7 @@ class Context2Vec(object):
 
                 lr = max(self.min_lr, self.lr * (1 - 1.0 * node_count[0]/total_nodes))
                 job_nodes = sum(train_o2(model.node_embedding, model.context_embedding, path, self.lr, self.negative, self.window_size, model.table,
-                                             py_alpha=alpha, py_size=model.layer1_size, py_work=py_work) for path in job) #execute the sgd
+                                             py_alpha=alpha, py_size=model.layer1_size, py_work=py_work, py_loss=loss) for path in job) #execute the sgd
 
                 with lock:
                     node_count[0] += job_nodes
@@ -111,3 +161,5 @@ class Context2Vec(object):
         elapsed = time.time() - start
         log.info("training on %i nodes took %.1fs, %.0f nodes/s" %
                     (node_count[0], elapsed, node_count[0] / elapsed if elapsed else 0.0))
+
+        return loss[0]

@@ -84,7 +84,7 @@ class Context2Vec(object):
 
         log.info(num_nodes)
         log.info(loss)
-        return loss[0]
+        return loss
 
 
     def train(self, model, paths, total_nodes, alpha=1.0, node_count=0, chunksize=150):

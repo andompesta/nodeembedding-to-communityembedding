@@ -96,13 +96,18 @@ if __name__ == "__main__":
     iter_com = 1
     alpha, beta = alpha_betas
 
-    log.debug("context_total_path: %d" % (context_total_path))
-    log.debug('node total edges: %d' % G.number_of_edges())
+    log.info("_______________________")
+    log.info("\t\tINITIAL LOSS\t\t")
 
-    node_learner.loss(model, edges)
-    cont_learner.loss(model, graph_utils.combine_files_iter(walk_files),
+    com_learner.fit(model, reg_covar=reg_covar, wc_prior=weight_concentration_prior, n_init=1)
+    o3 = com_learner.loss(sorted(G.nodes()), model, beta)
+
+    o1 = node_learner.loss(model, edges)
+    o2 = cont_learner.loss(model, graph_utils.combine_files_iter(walk_files),
                       total_paths=context_total_path,
                       alpha=alpha)
+    o3 = com_learner.loss(sorted(G.nodes()), model, beta)
+    log.info("initial loss: {}\to1: {}\to2: {}\to3: {}".format(o1+o2+o3, o1, o2, o3))
 
     ##########################
     #   EMBEDDING LEARNING    #
@@ -112,32 +117,15 @@ if __name__ == "__main__":
         # for alpha, beta in alpha_betas:
         log.info('\n_______________________________________\n')
         log.info('\t\tITER-{}\n'.format(it))
-        log.info('using alpha:{} \t beta:{} \t iter_com:{} \t iter_node: {}'.format(alpha, beta, iter_com, iter_node))
+        model = Model.load_model(path="data", file_name="BlogCatalog_alpha-0.1_beta-1_it-{}_ws-5_ng-5_rs-2".format(it))
 
-        start_time = timeit.default_timer()
+        o1 = node_learner.loss(model, edges)
+        o2 = cont_learner.loss(model, graph_utils.combine_files_iter(walk_files),
+                               total_paths=context_total_path,
+                               alpha=alpha)
+        o3 = com_learner.loss(sorted(G.nodes()), model, beta)
+        log.info("loss-{}: {}\to1: {}\to2: {}\to3: {}".format(it, o1 + o2 + o3, o1, o2, o3))
 
-        node_learner.train(model,
-                           edges=edges,
-                           iter=iter_node,
-                           chunksize=batch_size)
 
 
-
-        cont_learner.train(model,
-                           paths=graph_utils.combine_files_iter(walk_files),
-                           total_nodes=context_total_path,
-                           alpha=alpha,
-                           chunksize=batch_size)
-
-        com_learner.fit(model, reg_covar=reg_covar, wc_prior=weight_concentration_prior, n_init=5)
-        com_learner.train(G.nodes(), model, beta, chunksize=batch_size, iter=iter_com)
-
-        log.info('time: %.2fs' % (timeit.default_timer() - start_time))
-        model.save("{}_alpha-{}_beta-{}_it-{}_ws-{}_ng-{}_rs-{}".format(output_file,
-                                                      alpha,
-                                                      beta,
-                                                      it,
-                                                                        window_size,
-                                                                        negative,
-                                                                        representation_size))
 

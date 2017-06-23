@@ -52,7 +52,7 @@ class Community2Vec(object):
         :param beta: trade off param
         """
         ret_loss = 0
-        for node_index in chunkize_serial(map(lambda x: model.vocab(x).index, nodes), chunksize):
+        for node_index in chunkize_serial(map(lambda x: model.vocab[x].index, nodes), chunksize):
             input = model.node_embedding[node_index]
 
             batch_loss = np.zeros(len(node_index), dtype=np.float32)

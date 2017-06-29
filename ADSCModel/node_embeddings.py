@@ -25,23 +25,33 @@ class Node2Vec(object):
         self.window_size = 1
 
     def loss(self, model, edges):
-        loss = 0.0
-        num_nodes = 0
-
-        for job_no, job in enumerate(chunkize_serial(prepare_sentences(model, edges), 250)):
-            batch_loss = np.zeros(1, dtype=np.float32)
-            batch_work = np.zeros(model.layer1_size, dtype=np.float32)
-
-
-            batch_node = sum([loss_o1(model.node_embedding, edge, self.negative, model.table,
-                                 py_size=model.layer1_size, py_loss=batch_loss, py_work=batch_work) for edge in job if edge is not None])
-            num_nodes += batch_node
-            loss += batch_loss[0]
-            # log.info("loss: {}\tnodes: {}".format(loss, num_nodes))
-
-        log.info(num_nodes)
-        log.info(loss)
-        return loss
+        ret_loss = 0
+        for edge in prepare_sentences(model, edges):
+            assert len(edge) == 2, "edges have to be done by 2 nodes :{}".format(edge)
+            edge_loss = np.log(
+                sigmoid(np.dot(model.node_embedding[edge[1].index], model.node_embedding[edge[0].index].T)))
+            assert edge_loss <= 0,"malformed loss"
+            ret_loss -= edge_loss
+        return ret_loss
+    #
+    # def loss(self, model, edges):
+    #     loss = 0.0
+    #     num_nodes = 0
+    #
+    #     for job_no, job in enumerate(chunkize_serial(prepare_sentences(model, edges), 250)):
+    #         batch_loss = np.zeros(1, dtype=np.float32)
+    #         batch_work = np.zeros(model.layer1_size, dtype=np.float32)
+    #
+    #
+    #         batch_node = sum([loss_o1(model.node_embedding, edge, self.negative, model.table,
+    #                              py_size=model.layer1_size, py_loss=batch_loss, py_work=batch_work) for edge in job if edge is not None])
+    #         num_nodes += batch_node
+    #         loss += batch_loss[0]
+    #         # log.info("loss: {}\tnodes: {}".format(loss, num_nodes))
+    #
+    #     log.info(num_nodes)
+    #     log.info(loss)
+    #     return loss
 
 
 

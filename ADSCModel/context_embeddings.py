@@ -115,7 +115,6 @@ class Context2Vec(object):
             raise AttributeError('need the number of node')
 
         node_count = [0]
-        loss = np.zeros(1, dtype=np.float32)
 
         jobs = Queue(maxsize=2*self.workers)  # buffer ahead only a limited number of jobs.. this is the reason we can't simply use ThreadPool :(
         lock = threading.Lock()  # for shared state (=number of nodes trained so far, log reports...)
@@ -131,7 +130,7 @@ class Context2Vec(object):
 
                 lr = max(self.min_lr, self.lr * (1 - 1.0 * node_count[0]/total_nodes))
                 job_nodes = sum(train_o2(model.node_embedding, model.context_embedding, path, self.lr, self.negative, self.window_size, model.table,
-                                             py_alpha=alpha, py_size=model.layer1_size, py_work=py_work, py_loss=loss) for path in job) #execute the sgd
+                                             py_alpha=alpha, py_size=model.layer1_size, py_work=py_work) for path in job) #execute the sgd
 
                 with lock:
                     node_count[0] += job_nodes
@@ -161,5 +160,3 @@ class Context2Vec(object):
         elapsed = time.time() - start
         log.info("training on %i nodes took %.1fs, %.0f nodes/s" %
                     (node_count[0], elapsed, node_count[0] / elapsed if elapsed else 0.0))
-
-        return loss[0]

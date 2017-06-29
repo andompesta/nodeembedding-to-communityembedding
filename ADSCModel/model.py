@@ -83,7 +83,7 @@ class Model(object):
     def reset_weights(self):
         """Reset all projection weights to an initial (untrained) state, but keep the existing vocabulary."""
         np.random.seed(self.seed)
-        self.node_embedding = np.random.uniform(low=-0.5, high=0.5, size=(self.vocab_size, self.layer1_size)).astype(np.float32)
+        self.node_embedding = np.random.uniform(low=-0.9, high=0.9, size=(self.vocab_size, self.layer1_size)).astype(np.float32)
         self.context_embedding = np.zeros((self.vocab_size, self.layer1_size)).astype(np.float32)
 
         self.centroid = np.zeros((self.k, self.layer1_size), dtype=np.float32)
@@ -137,20 +137,23 @@ class Model(object):
         log.info("constructing a table with noise distribution from {} words of size {}".format(self.vocab_size, self.table_size))
         # table (= list of words) of noise distribution for negative sampling
         self.table = np.zeros(self.table_size, dtype=np.uint32)
-
+        sorted_keys = sorted(self.vocab.keys())
+        k_idx = 0
         # compute sum of all power (Z in paper)
         train_words_pow = float(sum([self.vocab[word].count**power for word in self.vocab]))
         # go through the whole table and fill it up with the word indexes proportional to a word's count**power
-        widx = min(self.vocab.keys())
+        node_idx = sorted_keys[k_idx]
         # normalize count^0.75 by Z
-        d1 = self.vocab[widx].count**power / train_words_pow
+        d1 = self.vocab[node_idx].count**power / train_words_pow
         for tidx in range(self.table_size):
-            self.table[tidx] = widx
+            self.table[tidx] = self.vocab[node_idx].index
             if 1.0 * tidx / self.table_size > d1:
-                widx += 1
-                d1 += self.vocab[widx].count**power / train_words_pow
-            if widx >= self.vocab_size:
-                widx = self.vocab_size - 1
+                k_idx += 1
+                if k_idx > sorted_keys[-1]:
+                    k_idx = sorted_keys[-1]
+                node_idx = sorted_keys[k_idx]
+                d1 += self.vocab[node_idx].count**power / train_words_pow
+
         log.info('Max value in the negative sampling table: {}'.format(max(self.table)))
 
 

@@ -40,8 +40,8 @@ if __name__ == "__main__":
     num_workers = 10                        # number of thread
     num_iter = 1                            # number of overall iteration
     reg_covar = 0.00001                          # regularization coefficient to ensure positive covar
-    input_file = 'Dblp'                          # name of the input file
-    output_file = 'Dblp'                         # name of the output file
+    input_file = 'Rochester'                          # name of the input file
+    output_file = 'Rochester'                         # name of the output file
     batch_size = 60
     window_size = 5    # windows size used to compute the context embedding
     negative = 5        # number of negative sample
@@ -49,6 +49,7 @@ if __name__ == "__main__":
 
 
     alpha_betas = (0.1, 1)
+    k = 19
     reductions = [1, 0.75, 0.5, 0.25]
     weight_concentration_prior = 100
     walks_filebase = os.path.join('data', output_file, output_file)            # where read/write the sampled path
@@ -75,6 +76,7 @@ if __name__ == "__main__":
                       table_size=100000000,
                       input_file=os.path.join(input_file, input_file),
                       path_labels="./data")
+        model.reset_communities_weights(k)
 
         #Learning algorithm
         node_learner = Node2Vec(workers=num_workers, negative=negative, lr=lr)

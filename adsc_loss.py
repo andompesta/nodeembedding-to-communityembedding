@@ -40,8 +40,8 @@ if __name__ == "__main__":
     num_workers = 10                        # number of thread
     num_iter = 9                            # number of overall iteration
     reg_covar = 0.00001                          # regularization coefficient to ensure positive covar
-    input_file = 'Dblp'                          # name of the input file
-    output_file = 'Dblp'                         # name of the output file
+    input_file = 'Rochester'                          # name of the input file
+    output_file = 'Rochester'                         # name of the output file
     batch_size = 100
     window_size = 5    # windows size used to compute the context embedding
     negative = 5        # number of negative sample
@@ -55,10 +55,10 @@ if __name__ == "__main__":
     """
 
     alpha_betas = (0.1, 1)
-
+    k = 19
     weight_concentration_prior = 100
     walks_filebase = os.path.join('data', output_file, output_file)            # where read/write the sampled path
-    sampling_path = False
+    sampling_path = True
 
 
 
@@ -82,7 +82,7 @@ if __name__ == "__main__":
                   table_size=100000000,
                   input_file=os.path.join(input_file, input_file),
                   path_labels="./data")
-
+    model.reset_communities_weights(k)
 
     #Learning algorithm
     node_learner = Node2Vec(workers=num_workers, negative=negative, lr=lr)
@@ -99,42 +99,42 @@ if __name__ == "__main__":
     log.info("_______________________")
     log.info("\t\tINITIAL LOSS\t\t")
 
-    # com_learner.fit(model, reg_covar=reg_covar, wc_prior=weight_concentration_prior, n_init=1)
-    # o1 = node_learner.loss(model, edges)
-    # o2 = cont_learner.loss(model, graph_utils.combine_files_iter(walk_files),
-    #                   total_paths=context_total_path,
-    #                   alpha=alpha)
-    # o3 = com_learner.loss(sorted(G.nodes()), model, beta)
-    # log.info("initial loss: {}\to1: {}\to2: {}\to3: {}".format(o1+o2+o3, o1, o2, o3))
+    com_learner.fit(model, reg_covar=reg_covar, wc_prior=weight_concentration_prior, n_init=1)
+    o1 = node_learner.loss(model, edges)
+    o2 = cont_learner.loss(model, graph_utils.combine_files_iter(walk_files),
+                      total_paths=context_total_path,
+                      alpha=alpha)
+    o3 = com_learner.loss(sorted(G.nodes()), model, beta)
+    log.info("initial loss: {}\to1: {}\to2: {}\to3: {}".format(o1+o2+o3, o1, o2, o3))
 
     ##########################
     #   EMBEDDING LEARNING    #
     ###########################
 
-    for it in range(num_iter):
-        # for alpha, beta in alpha_betas:
-        log.info('\n_______________________________________\n')
-        log.info('\t\tITER-{}\n'.format(it))
-        node_learner.train(model,
-                           edges=edges,
-                           iter=iter_node,
-                           chunksize=batch_size)
-
-        cont_learner.train(model,
-                           paths=graph_utils.combine_files_iter(walk_files),
-                           total_nodes=context_total_path,
-                           alpha=alpha,
-                           chunksize=batch_size)
-
-        com_learner.fit(model, reg_covar=reg_covar, wc_prior=weight_concentration_prior, n_init=5)
-        com_learner.train(G.nodes(), model, beta, chunksize=batch_size, iter=iter_com)
-
-        o1 = node_learner.loss(model, edges)
-        o2 = cont_learner.loss(model, graph_utils.combine_files_iter(walk_files),
-                               total_paths=context_total_path,
-                               alpha=alpha)
-        o3 = com_learner.loss(sorted(G.nodes()), model, beta)
-        log.info("loss-{}: {}\to1: {}\to2: {}\to3: {}".format(it, o1 + o2 + o3, o1, o2, o3))
+    # for it in range(num_iter):
+    #     # for alpha, beta in alpha_betas:
+    #     log.info('\n_______________________________________\n')
+    #     log.info('\t\tITER-{}\n'.format(it))
+    #     node_learner.train(model,
+    #                        edges=edges,
+    #                        iter=iter_node,
+    #                        chunksize=batch_size)
+    #
+    #     cont_learner.train(model,
+    #                        paths=graph_utils.combine_files_iter(walk_files),
+    #                        total_nodes=context_total_path,
+    #                        alpha=alpha,
+    #                        chunksize=batch_size)
+    #
+    #     com_learner.fit(model, reg_covar=reg_covar, wc_prior=weight_concentration_prior, n_init=5)
+    #     com_learner.train(G.nodes(), model, beta, chunksize=batch_size, iter=iter_com)
+    #
+    #     o1 = node_learner.loss(model, edges)
+    #     o2 = cont_learner.loss(model, graph_utils.combine_files_iter(walk_files),
+    #                            total_paths=context_total_path,
+    #                            alpha=alpha)
+    #     o3 = com_learner.loss(sorted(G.nodes()), model, beta)
+    #     log.info("loss-{}: {}\to1: {}\to2: {}\to3: {}".format(it, o1 + o2 + o3, o1, o2, o3))
 
 
 

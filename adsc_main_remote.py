@@ -54,21 +54,20 @@ if __name__ == "__main__":
     num_iter_node = 1  # number of iteration for node embedding
     """
 
-    # alpha_betas = [(1.0, 0.1), (0.01, 0.1), (0.001, 0.1),
-    #                (0.1, 1.0), (0.1, 0.01), (0.1, 0.001),
-    #                (0.1, 0.1)]
+    alpha_betas = [(1.0, 0.1), (0.01, 0.1), (0.001, 0.1),
+                   (0.1, 1.0), (0.1, 0.01), (0.1, 0.001),
+                   (0.1, 0.1)]
 
-    alpha_betas = [(0.1, 1)]
-    ks = [50, 100]
+    ks = [195]
 
-    weight_concentration_prior = 0.1
+    weight_concentration_prior = 100
     walks_filebase = os.path.join('data', output_file)            # where read/write the sampled path
-    sampling_path = False
+    sampling_path = True
 
 
 
     #CONSTRUCT THE GRAPH
-    G = graph_utils.load_matfile(os.path.join('./data', input_file, input_file + '.mat'), undirected=True)
+    G = graph_utils.load_adjacencylist(os.path.join('./data', input_file, input_file + '.adjlist'), undirected=True)
     # Sampling the random walks for context
     if sampling_path:
         log.info("sampling the paths")
@@ -123,7 +122,7 @@ if __name__ == "__main__":
     #   EMBEDDING LEARNING    #
     ###########################
     iter_node = floor(context_total_path/G.number_of_edges())
-    iter_com = floor(context_total_path/G.number_of_edges())
+    iter_com = floor((context_total_path/G.number_of_edges())/2)
     # alpha, beta = alpha_betas
 
     for it in range(num_iter):

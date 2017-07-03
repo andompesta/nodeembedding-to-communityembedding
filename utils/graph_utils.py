@@ -114,7 +114,7 @@ def _write_walks_to_disk(args):
     with open(f, 'w') as fout:
         for walk in build_deepwalk_corpus_iter(G=G, num_paths=num_paths, path_length=path_length, alpha=alpha, rand=rand):
             fout.write(u"{}\n".format(u" ".join(__vertex2str[v] for v in walk)))
-    log.debug("Generated new file {}, it took {} seconds".format(f, time() - t_0))
+    log.info("Generated new file {}, it took {} seconds".format(f, time() - t_0))
     return f
 
 def write_walks_to_disk(G, filebase, num_paths, path_length, alpha=0, rand=random.Random(0), num_workers=cpu_count()):
@@ -137,7 +137,7 @@ def write_walks_to_disk(G, filebase, num_paths, path_length, alpha=0, rand=rando
     expected_size = len(G)
     args_list = []
     files = []
-
+    log.info("file_base: {}".format(filebase))
     if num_paths <= num_workers:
         paths_per_worker = [1 for x in range(num_paths)]
     else:

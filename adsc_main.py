@@ -40,8 +40,8 @@ if __name__ == "__main__":
     num_workers = 10                        # number of thread
     num_iter = 1                            # number of overall iteration
     reg_covar = 0.00001                          # regularization coefficient to ensure positive covar
-    input_file = 'Rochester'                          # name of the input file
-    output_file = 'Rochester'                         # name of the output file
+    input_file = 'Mich'                          # name of the input file
+    output_file = 'Mich'                         # name of the output file
     batch_size = 60
     window_size = 10    # windows size used to compute the context embedding
     negative = 5        # number of negative sample
@@ -59,11 +59,11 @@ if __name__ == "__main__":
     #                (0.1, 0.1)]
 
     alpha_betas = [(0.1, 1)]
-    ks = [50, 100]
+    ks = [5, 10, 13, 50, 100]
 
-    weight_concentration_prior = 0.1
+    weight_concentration_prior = 100
     walks_filebase = os.path.join('data', output_file)            # where read/write the sampled path
-    sampling_path = False
+    sampling_path = True
 
 
 

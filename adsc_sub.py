@@ -40,8 +40,8 @@ if __name__ == "__main__":
     num_workers = 10                        # number of thread
     num_iter = 1                            # number of overall iteration
     reg_covar = 0.00001                          # regularization coefficient to ensure positive covar
-    input_file = 'Rochester'                          # name of the input file
-    output_file = 'Rochester'                         # name of the output file
+    input_file = 'Mich'                          # name of the input file
+    output_file = 'Mich'                         # name of the output file
     batch_size = 60
     window_size = 5    # windows size used to compute the context embedding
     negative = 5        # number of negative sample

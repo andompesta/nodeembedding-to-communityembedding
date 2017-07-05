@@ -59,7 +59,7 @@ if __name__ == "__main__":
     #                (0.1, 0.1)]
 
     alpha_betas = [(0.1, 1)]
-    ks = [5, 10, 13, 50, 100]
+    ks = [5]
 
     weight_concentration_prior = 100
     walks_filebase = os.path.join('data', output_file)            # where read/write the sampled path
@@ -122,8 +122,8 @@ if __name__ == "__main__":
     ###########################
     #   EMBEDDING LEARNING    #
     ###########################
-    iter_node = floor(context_total_path/G.number_of_edges())
-    iter_com = floor(context_total_path/G.number_of_edges())
+    iter_node = floor(context_total_path/(G.number_of_edges()*2))
+    iter_com = floor(context_total_path/(G.number_of_edges()*2))
     # alpha, beta = alpha_betas
 
     for it in range(num_iter):
@@ -145,7 +145,6 @@ if __name__ == "__main__":
 
                 com_learner.fit(model, reg_covar=reg_covar, wc_prior=weight_concentration_prior, n_init=10)
                 com_learner.train(G.nodes(), model, beta, chunksize=batch_size, iter=iter_com)
-
 
                 cont_learner.train(model,
                                    paths=graph_utils.combine_files_iter(walk_files),

@@ -58,8 +58,12 @@ def save_embedding(embeddings, vocab, file_name, path='data'):
     makedirs(dirname(full_path), exist_ok=True)
 
     with open(full_path, 'w') as file:
-        for node_id in sorted(vocab):
-            file.write("{}\t{}\n".format(node_id, " ".join([str(val) for val in embeddings[node_id]])))
+        if isinstance(vocab, dict):
+            for node_id, node in sorted(vocab.items(), key=lambda x: x[0]):
+                file.write("{}\t{}\n".format(node_id, " ".join([str(val) for val in embeddings[node.index]])))
+        else:
+            for node_id in sorted(vocab):
+                file.write("{}\t{}\n".format(node_id, " ".join([str(val) for val in embeddings[node_id]])))
 
 def load_embedding(file_name, path='data', ext=".txt"):
     """

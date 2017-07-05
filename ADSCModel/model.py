@@ -104,9 +104,9 @@ class Model(object):
 
     def reset_weight_random(self):
         """Reset all projection weights to an initial (untrained) state, but keep the existing vocabulary."""
-        self.node_embedding = np.random.uniform(low=-1.5, high=1.5, size=(self.vocab_size, self.layer1_size)).astype(
+        self.node_embedding = np.random.uniform(low=-4.5, high=4.5, size=(self.vocab_size, self.layer1_size)).astype(
             np.float32)
-        self.context_embedding = np.random.uniform(low=-1.5, high=1.5, size=(self.vocab_size, self.layer1_size)).astype(np.float32)
+        self.context_embedding = np.random.uniform(low=-4.5, high=4.5, size=(self.vocab_size, self.layer1_size)).astype(np.float32)
 
         self.centroid = np.zeros((self.k, self.layer1_size), dtype=np.float32)
         self.covariance_mat = np.zeros((self.k, self.layer1_size, self.layer1_size), dtype=np.float32)

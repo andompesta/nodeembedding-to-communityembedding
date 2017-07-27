@@ -82,4 +82,4 @@ class Community2Vec(object):
 
             grad_input *= (beta/model.k)
 
-            model.node_embedding -= (grad_input.clip(min=-5, max=5)) * self.lr
+            model.node_embedding -= (grad_input.clip(min=-0.25, max=0.25)) * self.lr

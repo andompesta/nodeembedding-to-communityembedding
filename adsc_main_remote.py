@@ -67,7 +67,7 @@ if __name__ == "__main__":
 
 
     #CONSTRUCT THE GRAPH
-    G = graph_utils.load_adjacencylist(os.path.join('./data', input_file, input_file + '.adjlist'), undirected=True)
+    G = graph_utils.load_matfile(os.path.join('./data', input_file, input_file + '.mat'), undirected=True)
     # Sampling the random walks for context
     if sampling_path:
         log.info("sampling the paths")

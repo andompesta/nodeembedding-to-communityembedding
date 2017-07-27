@@ -39,10 +39,10 @@ if __name__ == "__main__":
     representation_size = 128               # size of the embedding
     num_workers = 10                        # number of thread
     num_iter = 1                            # number of overall iteration
-    reg_covar = 0.00001                          # regularization coefficient to ensure positive covar
-    input_file = 'Mich'                          # name of the input file
-    output_file = 'Mich'                         # name of the output file
-    batch_size = 60
+    reg_covar = 0.00001                     # regularization coefficient to ensure positive covar
+    input_file = 'Flickr'                # name of the input file
+    output_file = 'Flickr'               # name of the output file
+    batch_size = 100
     window_size = 10    # windows size used to compute the context embedding
     negative = 5        # number of negative sample
     lr = 0.025            # learning rate
@@ -54,13 +54,10 @@ if __name__ == "__main__":
     num_iter_node = 1  # number of iteration for node embedding
     """
 
-    # alpha_betas = [(1.0, 0.1), (0.01, 0.1), (0.001, 0.1),
-    #                (0.1, 1.0), (0.1, 0.01), (0.1, 0.001),
-    #                (0.1, 0.1)]
-
     alpha_betas = [(0.1, 1)]
-    ks = [5]
+    down_sampling = 0.001
 
+    ks = [195, 50, 100]
     weight_concentration_prior = 100
     walks_filebase = os.path.join('data', output_file)            # where read/write the sampled path
     sampling_path = True
@@ -85,6 +82,7 @@ if __name__ == "__main__":
     vertex_counts = graph_utils.count_textfiles(walk_files, num_workers)
     model = Model(vertex_counts,
                   size=representation_size,
+                  down_sampling=down_sampling,
                   table_size=100000000,
                   input_file=os.path.join(input_file, input_file),
                   path_labels="./data")
@@ -122,8 +120,8 @@ if __name__ == "__main__":
     ###########################
     #   EMBEDDING LEARNING    #
     ###########################
-    iter_node = floor(context_total_path/(G.number_of_edges()*2))
-    iter_com = floor(context_total_path/(G.number_of_edges()*2))
+    iter_node = floor(context_total_path/(G.number_of_edges()))
+    iter_com = floor(context_total_path/(G.number_of_edges()))
     # alpha, beta = alpha_betas
 
     for it in range(num_iter):
@@ -143,7 +141,7 @@ if __name__ == "__main__":
                                    iter=iter_node,
                                    chunksize=batch_size)
 
-                com_learner.fit(model, reg_covar=reg_covar, wc_prior=weight_concentration_prior, n_init=10)
+                com_learner.fit(model, reg_covar=reg_covar, n_init=10, wc_prior=weight_concentration_prior)
                 com_learner.train(G.nodes(), model, beta, chunksize=batch_size, iter=iter_com)
 
                 cont_learner.train(model,
@@ -156,14 +154,15 @@ if __name__ == "__main__":
                 log.info('time: %.2fs' % (timeit.default_timer() - start_time))
                 # log.info(model.centroid)
                 io_utils.save_embedding(model.node_embedding, model.vocab,
-                                        file_name="{}_alpha-{}_beta-{}_ws-{}_neg-{}_lr-{}_wc-{}_icom-{}_ind-{}_k-{}".format(output_file,
+                                        file_name="{}_alpha-{}_beta-{}_ws-{}_neg-{}_lr-{}_wc-{}_icom-{}_ind-{}_k-{}_ds-{}".format(output_file,
                                                                                                                        alpha,
                                                                                                                        beta,
                                                                                                                        window_size,
                                                                                                                        negative,
                                                                                                                        lr,
-                                                                                                                       weight_concentration_prior,
+                                                                                                                            weight_concentration_prior,
                                                                                                                        iter_com,
                                                                                                                        iter_node,
-                                                                                                                            model.k))
+                                                                                                                            model.k,
+                                                                                                                                  down_sampling))
 

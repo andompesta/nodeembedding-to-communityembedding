@@ -40,8 +40,8 @@ if __name__ == "__main__":
     num_workers = 10                        # number of thread
     num_iter = 9                            # number of overall iteration
     reg_covar = 0.00001                          # regularization coefficient to ensure positive covar
-    input_file = 'Mich'                          # name of the input file
-    output_file = 'Mich'                         # name of the output file
+    input_file = 'Dblp'                          # name of the input file
+    output_file = 'Dblp'                         # name of the output file
     batch_size = 100
     window_size = 5    # windows size used to compute the context embedding
     negative = 5        # number of negative sample
@@ -54,9 +54,9 @@ if __name__ == "__main__":
     num_iter_node = 1  # number of iteration for node embedding
     """
 
-    alpha_betas = (0.1, 1)
-    k = 13
-    weight_concentration_prior = 100
+    alpha_betas = (0.1, 0.1)
+    k = 5
+    # weight_concentration_prior = 100
     walks_filebase = os.path.join('data', output_file, output_file)            # where read/write the sampled path
     sampling_path = True
 
@@ -101,7 +101,7 @@ if __name__ == "__main__":
 
     model.reset_weight_random()
 
-    com_learner.fit(model, reg_covar=reg_covar, wc_prior=weight_concentration_prior, n_init=1)
+    com_learner.fit(model, reg_covar=reg_covar, n_init=1)
     o1 = node_learner.loss(model, edges)
     o2 = cont_learner.loss(model, graph_utils.combine_files_iter(walk_files),
                       total_paths=context_total_path,
@@ -129,7 +129,7 @@ if __name__ == "__main__":
                            alpha=alpha,
                            chunksize=batch_size)
 
-        com_learner.fit(model, reg_covar=reg_covar, wc_prior=weight_concentration_prior, n_init=5)
+        com_learner.fit(model, reg_covar=reg_covar, n_init=5)
         com_learner.train(G.nodes(), model, beta, chunksize=batch_size, iter=iter_com)
 
         o1 = node_learner.loss(model, edges)

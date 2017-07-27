@@ -60,7 +60,7 @@ if __name__ == "__main__":
 
     ks = [195]
 
-    weight_concentration_prior = 100
+    weight_concentration_prior = 0.001
     walks_filebase = os.path.join('data', output_file)            # where read/write the sampled path
     sampling_path = True
 

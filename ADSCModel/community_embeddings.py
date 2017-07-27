@@ -68,7 +68,8 @@ class Community2Vec(object):
     def train(self, nodes, model, beta, chunksize=150, iter=1):
         for _ in range(iter):
             grad_input = np.zeros(model.node_embedding.shape).astype(np.float32)
-            for node_index in chunkize_serial(map(lambda x: model.vocab[x].index, nodes), chunksize):
+            for node_index in chunkize_serial(map(lambda node: model.vocab[node].index,
+                                                  filter(lambda node: node in model.vocab and (model.vocab[node].sample_probability >= 1.0 or model.vocab[node].sample_probability >= np.random.random_sample()), nodes)), chunksize):
                 input = model.node_embedding[node_index]
                 batch_grad_input = np.zeros(input.shape).astype(np.float32)
 

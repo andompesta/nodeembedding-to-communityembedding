@@ -40,9 +40,9 @@ if __name__ == "__main__":
     num_workers = 10                        # number of thread
     num_iter = 1                            # number of overall iteration
     reg_covar = 0.00001                     # regularization coefficient to ensure positive covar
-    input_file = 'Flickr'                # name of the input file
-    output_file = 'Flickr'               # name of the output file
-    batch_size = 100
+    input_file = 'Dblp'                # name of the input file
+    output_file = 'Dblp'               # name of the output file
+    batch_size = 50
     window_size = 10    # windows size used to compute the context embedding
     negative = 5        # number of negative sample
     lr = 0.025            # learning rate
@@ -54,13 +54,13 @@ if __name__ == "__main__":
     num_iter_node = 1  # number of iteration for node embedding
     """
 
-    alpha_betas = [(0.1, 1)]
-    down_sampling = 0.001
+    alpha_betas = [(0.1, 1), (0.1, 0.1), (0.1, 0.01), (0.1, 0.001)]
+    down_sampling = 0.0
 
-    ks = [195, 50, 100]
+    ks = [5]
     weight_concentration_prior = 100
     walks_filebase = os.path.join('data', output_file)            # where read/write the sampled path
-    sampling_path = True
+    sampling_path = False
 
 
 
@@ -132,7 +132,7 @@ if __name__ == "__main__":
                 model = model.load_model("{}_pre-training".format(output_file))
                 model.reset_communities_weights(k)
 
-                log.info('using alpha:{} \t beta:{} \t iter_com:{} \t iter_node: {}'.format(alpha, beta, iter_com, iter_node))
+                log.info('using alpha:{}\tbeta:{}\titer_com:{}\titer_node: {}'.format(alpha, beta, iter_com, iter_node))
 
                 start_time = timeit.default_timer()
 
@@ -154,15 +154,14 @@ if __name__ == "__main__":
                 log.info('time: %.2fs' % (timeit.default_timer() - start_time))
                 # log.info(model.centroid)
                 io_utils.save_embedding(model.node_embedding, model.vocab,
-                                        file_name="{}_alpha-{}_beta-{}_ws-{}_neg-{}_lr-{}_wc-{}_icom-{}_ind-{}_k-{}_ds-{}".format(output_file,
+                                        file_name="{}_alpha-{}_beta-{}_ws-{}_neg-{}_lr-{}_icom-{}_ind-{}_k-{}_ds-{}".format(output_file,
                                                                                                                        alpha,
                                                                                                                        beta,
                                                                                                                        window_size,
                                                                                                                        negative,
                                                                                                                        lr,
-                                                                                                                            weight_concentration_prior,
                                                                                                                        iter_com,
                                                                                                                        iter_node,
                                                                                                                             model.k,
-                                                                                                                                  down_sampling))
+                                                                                                                            down_sampling))
 

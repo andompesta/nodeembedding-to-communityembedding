@@ -21,12 +21,17 @@ class Community2Vec(object):
         Fit the GMM model with the current node embedding and save the result in the model
         :param model: model injected to add the mixture parameters
         '''
-        self.g_mixture = mixture.BayesianGaussianMixture(n_components=model.k,
-                                                         reg_covar=reg_covar,
-                                                         covariance_type='full',
-                                                         n_init=n_init,
-                                                         weight_concentration_prior=wc_prior,
-                                                         weight_concentration_prior_type='dirichlet_process')
+        # self.g_mixture = mixture.BayesianGaussianMixture(n_components=model.k,
+        #                                                  reg_covar=reg_covar,
+        #                                                  covariance_type='full',
+        #                                                  n_init=n_init,
+        #                                                  weight_concentration_prior=wc_prior,
+        #                                                  weight_concentration_prior_type='dirichlet_process')
+
+        self.g_mixture = mixture.GaussianMixture(n_components=model.k,
+                                                 reg_covar=reg_covar,
+                                                 covariance_type='full',
+                                                 n_init=n_init)
 
         log.info("Fitting: {} communities".format(model.k))
         self.g_mixture.fit(model.node_embedding)

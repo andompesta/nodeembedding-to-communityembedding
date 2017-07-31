@@ -177,7 +177,8 @@ cdef unsigned long long fast1_o2 (
         if f <= -MAX_EXP or f >= MAX_EXP:
             continue
         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]
-
+        g = (label - f) * (_lambda)
+        g = g * lr
         saxpy(&size, &g, &context_embedding[row2], &ONE, work, &ONE)
         saxpy(&size, &g, &node_embedding[row1], &ONE, &context_embedding[row2], &ONE)
 
@@ -515,6 +516,7 @@ def train_o2(py_node_embedding, py_context_embedding, py_path, py_lr, py_negativ
         else:
             indexes[i] = node.index
             reduced_windows[i] = np.random.randint(window)
+            # reduced_windows[i] = 0
             codelens[i] = 1
             result += 1
 

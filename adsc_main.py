@@ -40,8 +40,8 @@ if __name__ == "__main__":
     num_workers = 10                        # number of thread
     num_iter = 1                            # number of overall iteration
     reg_covar = 0.00001                     # regularization coefficient to ensure positive covar
-    input_file = 'Dblp'                # name of the input file
-    output_file = 'Dblp'               # name of the output file
+    input_file = 'BlogCatalog'                # name of the input file
+    output_file = 'BlogCatalog'               # name of the output file
     batch_size = 50
     window_size = 10    # windows size used to compute the context embedding
     negative = 5        # number of negative sample
@@ -53,11 +53,11 @@ if __name__ == "__main__":
     num_iter_com = 1  # number of iteration for community embedding
     num_iter_node = 1  # number of iteration for node embedding
     """
-
-    alpha_betas = [(0.1, 1), (0.1, 0.1), (0.1, 0.01), (0.1, 0.001)]
+    # (0.1, 1), (0.1, 0.1), (0.1, 0.01), (0.1, 0.001)
+    alpha_betas = [(1, 0.1), (0.01, 0.1), (0.001, 0.1)]
     down_sampling = 0.0
 
-    ks = [5]
+    ks = [39]
     weight_concentration_prior = 100
     walks_filebase = os.path.join('data', output_file)            # where read/write the sampled path
     sampling_path = False

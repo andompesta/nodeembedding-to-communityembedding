@@ -40,7 +40,6 @@ if __name__ == "__main__":
     num_iter_node = 1  # number of iteration for node embedding
     """
 
-    down_sampling = 0.001
     p = 0.25
     q = 0.25
     walks_filebase = os.path.join('data', output_file)            # where read/write the sampled path
@@ -66,8 +65,7 @@ if __name__ == "__main__":
     vertex_counts = graph_utils.count_textfiles(walk_files, num_workers)
     model = Model(vertex_counts,
                   size=representation_size,
-                  down_sampling=down_sampling,
-                  table_size=5000000,
+                  table_size=100000000,
                   input_file=os.path.join(input_file, input_file),
                   path_labels="./data")
 
@@ -89,7 +87,7 @@ if __name__ == "__main__":
                        chunksize=batch_size)
 
     io_utils.save_embedding(model.node_embedding, model.vocab,
-                            path="/home/ando/Project/nodeembeddingeval/data/node2vec",
+                            path="/Users/ando/Project/nodeEmbeddingEval/data/node2vec",
                             file_name="{}_node2vec_my_p-{}_q-{}".format(output_file,
                                                                         p,
                                                                         q))

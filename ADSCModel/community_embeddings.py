@@ -16,22 +16,22 @@ class Community2Vec(object):
     def __init__(self, lr):
         self.lr = lr
 
-    def fit(self, model, reg_covar=0, wc_prior=100, n_init=10):
+    def fit(self, model, reg_covar=0, wc_prior=0.001, n_init=10):
         '''
         Fit the GMM model with the current node embedding and save the result in the model
         :param model: model injected to add the mixture parameters
         '''
-        # self.g_mixture = mixture.BayesianGaussianMixture(n_components=model.k,
-        #                                                  reg_covar=reg_covar,
-        #                                                  covariance_type='full',
-        #                                                  n_init=n_init,
-        #                                                  weight_concentration_prior=wc_prior,
-        #                                                  weight_concentration_prior_type='dirichlet_process')
+        self.g_mixture = mixture.BayesianGaussianMixture(n_components=model.k,
+                                                         reg_covar=reg_covar,
+                                                         covariance_type='full',
+                                                         n_init=n_init,
+                                                         weight_concentration_prior=wc_prior,
+                                                         weight_concentration_prior_type='dirichlet_process')
 
-        self.g_mixture = mixture.GaussianMixture(n_components=model.k,
-                                                 reg_covar=reg_covar,
-                                                 covariance_type='full',
-                                                 n_init=n_init)
+        # self.g_mixture = mixture.GaussianMixture(n_components=model.k,
+        #                                          reg_covar=reg_covar,
+        #                                          covariance_type='full',
+        #                                          n_init=n_init)
 
         log.info("Fitting: {} communities".format(model.k))
         self.g_mixture.fit(model.node_embedding)

@@ -54,11 +54,11 @@ if __name__ == "__main__":
     num_iter_node = 1  # number of iteration for node embedding
     """
     # (0.1, 1), (0.1, 0.1), (0.1, 0.01), (0.1, 0.001)
-    alpha_betas = [(1, 0.1), (0.01, 0.1), (0.001, 0.1)]
+    alpha_betas = [(0.1, 1.)]
     down_sampling = 0.0
 
-    ks = [39]
-    weight_concentration_prior = 100
+    ks = [50]
+    weight_concentration_prior = 0.01
     walks_filebase = os.path.join('data', output_file)            # where read/write the sampled path
     sampling_path = False
 
@@ -112,7 +112,7 @@ if __name__ == "__main__":
     cont_learner.train(model,
                        paths=graph_utils.combine_files_iter(walk_files),
                        total_nodes=context_total_path,
-                       alpha=1.0,
+                       alpha=1,
                        chunksize=batch_size)
     #
     model.save("{}_pre-training".format(output_file))
@@ -120,9 +120,8 @@ if __name__ == "__main__":
     ###########################
     #   EMBEDDING LEARNING    #
     ###########################
-    iter_node = floor(context_total_path/(G.number_of_edges()))
+    iter_node = floor(context_total_path/G.number_of_edges())
     iter_com = floor(context_total_path/(G.number_of_edges()))
-    # alpha, beta = alpha_betas
 
     for it in range(num_iter):
         for alpha, beta in alpha_betas:
@@ -140,7 +139,6 @@ if __name__ == "__main__":
                                    edges=edges,
                                    iter=iter_node,
                                    chunksize=batch_size)
-
                 com_learner.fit(model, reg_covar=reg_covar, n_init=10, wc_prior=weight_concentration_prior)
                 com_learner.train(G.nodes(), model, beta, chunksize=batch_size, iter=iter_com)
 

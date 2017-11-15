@@ -40,9 +40,9 @@ if __name__ == "__main__":
     num_workers = 10                        # number of thread
     num_iter = 1                            # number of overall iteration
     reg_covar = 0.00001                          # regularization coefficient to ensure positive covar
-    input_file = 'Dblp'                          # name of the input file
-    output_file = 'Dblp'                         # name of the output file
-    batch_size = 60
+    input_file = 'Mich'                          # name of the input file
+    output_file = 'Mich'                         # name of the output file
+    batch_size = 50
     window_size = 10    # windows size used to compute the context embedding
     negative = 5        # number of negative sample
     lr = 0.025            # learning rate
@@ -54,10 +54,9 @@ if __name__ == "__main__":
     num_iter_node = 1  # number of iteration for node embedding
     """
 
-    # alpha_betas = [(1.0, 0.1), (0.1, 0.1), (0.01, 0.1), (0.001, 0.1),
-    #                (0.1, 1), (0.1, 0.01), (0.1, 0.001)]
-    #
-    # ks = [5]
+    alpha_betas = [(0.1, 1.)]
+
+    ks = [50]
 
     walks_filebase = os.path.join('data', output_file)            # where read/write the sampled path
     sampling_path = False
@@ -103,70 +102,60 @@ if __name__ == "__main__":
     ###########################
     #   PRE-TRAINING          #
     ###########################
-    # node_learner.train(model,
-    #                    edges=edges,
-    #                    iter=1,
-    #                    chunksize=batch_size)
+    node_learner.train(model,
+                       edges=edges,
+                       iter=1,
+                       chunksize=batch_size)
 
     cont_learner.train(model,
                        paths=graph_utils.combine_files_iter(walk_files),
                        total_nodes=context_total_path,
                        alpha=1.0,
                        chunksize=batch_size)
-    io_utils.save_embedding(model.node_embedding, model.vocab,
-                            file_name="{}_node2vec".format(
-                                output_file,
-                                ))
 
-    # model.save("{}_pre-training".format(output_file))
+    model.save("{}_pre-training".format(output_file))
 
     ###########################
     #   EMBEDDING LEARNING    #
     ###########################
-    # iter_node = floor(context_total_path/G.number_of_edges())
-    # iter_com = floor((context_total_path/G.number_of_edges()))
-    # # alpha, beta = alpha_betas
-    #
-    # for it in range(num_iter):
-    #     for alpha, beta in alpha_betas:
-    #         for k in ks:
-    #             log.info('\n_______________________________________\n')
-    #             log.info('\t\tITER-{}\n'.format(it))
-    #             model = model.load_model("{}_pre-training".format(output_file))
-    #             model.reset_communities_weights(k)
-    #
-    #             log.info('using alpha:{} \t beta:{} \t iter_com:{} \t iter_node: {}'.format(alpha, beta, iter_com, iter_node))
-    #
-    #             start_time = timeit.default_timer()
-    #
-    #             node_learner.train(model,
-    #                                edges=edges,
-    #                                iter=iter_node,
-    #                                chunksize=batch_size)
-    #
-    #             # com_learner.fit(model, reg_covar=reg_covar, wc_prior=weight_concentration_prior, n_init=10)
-    #             com_learner.fit(model, reg_covar=reg_covar, n_init=20)
-    #             com_learner.train(G.nodes(), model, beta, chunksize=batch_size, iter=iter_com)
-    #
-    #
-    #             cont_learner.train(model,
-    #                                paths=graph_utils.combine_files_iter(walk_files),
-    #                                total_nodes=context_total_path,
-    #                                alpha=alpha,
-    #                                chunksize=batch_size)
-    #
-    #
-    #             log.info('time: %.2fs' % (timeit.default_timer() - start_time))
+    iter_node = floor(context_total_path/G.number_of_edges())
+    iter_com = floor((context_total_path/G.number_of_edges()))
 
-                # io_utils.save_embedding(model.node_embedding, model.vocab,
-                #                         file_name="{}_alpha-{}_beta-{}_ws-{}_neg-{}_lr-{}_wc-{}_icom-{}_ind-{}_k-{}".format(output_file,
-                #                                                                                                        alpha,
-                #                                                                                                        beta,
-                #                                                                                                        window_size,
-                #                                                                                                        negative,
-                #                                                                                                        lr,
-                #                                                                                                        0,
-                #                                                                                                        iter_com,
-                #                                                                                                        iter_node,
-                #                                                                                                             model.k))
+    for it in range(num_iter):
+        for alpha, beta in alpha_betas:
+            for k in ks:
+                log.info('\n_______________________________________\n')
+                log.info('\t\tITER-{}\n'.format(it))
+                model = model.load_model("{}_pre-training".format(output_file))
+                model.reset_communities_weights(k)
+                log.info('using alpha:{} \t beta:{} \t iter_com:{} \t iter_node: {}'.format(alpha, beta, iter_com, iter_node))
+
+                start_time = timeit.default_timer()
+
+                node_learner.train(model,
+                                   edges=edges,
+                                   iter=iter_node,
+                                   chunksize=batch_size)
+                com_learner.fit(model, reg_covar=reg_covar, n_init=10)
+                com_learner.train(G.nodes(), model, beta, chunksize=batch_size, iter=iter_com)
+                cont_learner.train(model,
+                                   paths=graph_utils.combine_files_iter(walk_files),
+                                   total_nodes=context_total_path,
+                                   alpha=alpha,
+                                   chunksize=batch_size)
+
+
+                log.info('time: %.2fs' % (timeit.default_timer() - start_time))
+
+                io_utils.save_embedding(model.node_embedding, model.vocab,
+                                        file_name="{}_alpha-{}_beta-{}_ws-{}_neg-{}_lr-{}_wc-{}_icom-{}_ind-{}_k-{}".format(output_file,
+                                                                                                                       alpha,
+                                                                                                                       beta,
+                                                                                                                       window_size,
+                                                                                                                       negative,
+                                                                                                                       lr,
+                                                                                                                       0,
+                                                                                                                       iter_com,
+                                                                                                                       iter_node,
+                                                                                                                            model.k))
 

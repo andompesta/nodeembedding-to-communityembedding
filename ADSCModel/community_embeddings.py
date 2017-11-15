@@ -16,7 +16,7 @@ class Community2Vec(object):
     def __init__(self, lr):
         self.lr = lr
 
-    def fit(self, model, reg_covar=0, wc_prior=0.001, n_init=10):
+    def fit(self, model, reg_covar=0, wc_prior=100, n_init=10):
         '''
         Fit the GMM model with the current node embedding and save the result in the model
         :param model: model injected to add the mixture parameters

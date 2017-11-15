@@ -40,8 +40,8 @@ if __name__ == "__main__":
     num_workers = 10                        # number of thread
     num_iter = 9                            # number of overall iteration
     reg_covar = 0.00001                          # regularization coefficient to ensure positive covar
-    input_file = 'Dblp'                          # name of the input file
-    output_file = 'Dblp'                         # name of the output file
+    input_file = 'BlogCatalog'                          # name of the input file
+    output_file = 'BlogCatalog'                         # name of the output file
     batch_size = 100
     window_size = 5    # windows size used to compute the context embedding
     negative = 5        # number of negative sample
@@ -55,26 +55,20 @@ if __name__ == "__main__":
     """
 
     alpha_betas = (0.1, 0.1)
-    k = 5
+    k = 39
     # weight_concentration_prior = 100
-    walks_filebase = os.path.join('data', output_file, output_file)            # where read/write the sampled path
-    sampling_path = True
-
-
+    walks_filebase = os.path.join('data', output_file)  # where read/write the sampled path
 
     #CONSTRUCT THE GRAPH
     G = graph_utils.load_matfile(os.path.join('./data', input_file, input_file + '.mat'), undirected=True)
     # Sampling the random walks for context
-    if sampling_path:
-        log.info("sampling the paths")
-        walk_files = graph_utils.write_walks_to_disk(G, walks_filebase + ".walks",
-                                                     num_paths=number_walks,
-                                                     path_length=walk_length,
-                                                     alpha=0,
-                                                     rand=random.Random(0),
-                                                     num_workers=num_workers)
-    else:
-        walk_files = ["{}_n2v.walks.0{}".format(walks_filebase, i) for i in range(number_walks) if os.path.isfile("{}_n2v.walks.0{}".format(walks_filebase, i))]
+    log.info("sampling the paths")
+    walk_files = graph_utils.write_walks_to_disk(G, walks_filebase + ".walks",
+                                                 num_paths=number_walks,
+                                                 path_length=walk_length,
+                                                 alpha=0,
+                                                 rand=random.Random(0),
+                                                 num_workers=num_workers)
 
     vertex_counts = graph_utils.count_textfiles(walk_files, num_workers)
     model = Model(vertex_counts,
@@ -92,7 +86,7 @@ if __name__ == "__main__":
 
     context_total_path = G.number_of_nodes() * number_walks * walk_length
     edges = np.array(G.edges())
-    iter_node = floor(context_total_path / G.number_of_edges())
+    iter_node = 1
     iter_com = 1
     alpha, beta = alpha_betas
 

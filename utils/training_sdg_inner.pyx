@@ -281,7 +281,7 @@ cdef unsigned long long fast1_o1 (
     return next_random
 
 
-cdef unsigned long long loss0_o1_o2 (
+cdef unsigned long long loss_o1_o2 (
     const int negative,
     np.uint32_t *table,
     unsigned long long table_len,
@@ -319,7 +319,7 @@ cdef unsigned long long loss0_o1_o2 (
         sscal(&size, &label, work, &ONE) # work = work * label
 
 
-        f = <REAL_t>dsdot(&size, &node_embedding[row1], &ONE, work, &ONE)
+        f = <REAL_t>sdot(&size, &node_embedding[row1], &ONE, work, &ONE)
         if f <= -MAX_EXP or f >= MAX_EXP:
             continue
         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]
@@ -365,9 +365,9 @@ def loss_o1(py_node_embedding, py_edge, py_negative, py_table,
 
     # release GIL & train on the sentence
     with nogil:
-        next_random = loss0_o1_o2(negative, table, table_len, node_embedding, node_embedding,
+        next_random = loss_o1_o2(negative, table, table_len, node_embedding, node_embedding,
                                   size, indexes[1], indexes[0], ONEF,  loss, work, next_random)
-        next_random = loss0_o1_o2(negative, table, table_len, node_embedding, node_embedding,
+        next_random = loss_o1_o2(negative, table, table_len, node_embedding, node_embedding,
                                   size, indexes[0], indexes[1], ONEF,  loss, work, next_random)
 
     return result
@@ -428,7 +428,7 @@ def loss_o2(py_node_embedding, py_context_embedding, py_path, py_negative, py_wi
             for j in range(j, k):
                 if j == i or codelens[j] == 0:
                     continue
-                next_random = loss0_o1_o2(negative, table, table_len, node_embedding, context_embedding,
+                next_random = loss_o1_o2(negative, table, table_len, node_embedding, context_embedding,
                                       size, indexes[i], indexes[j], _alpha, loss, work, next_random)
     return result
 

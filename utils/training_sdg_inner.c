@@ -1619,7 +1619,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast0_o2(int co
 static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast1_o2(int const , __pyx_t_5numpy_uint32_t *, unsigned PY_LONG_LONG, __pyx_t_5utils_18training_sdg_inner_REAL_t *, __pyx_t_5utils_18training_sdg_inner_REAL_t *, int const , __pyx_t_5numpy_uint32_t const , __pyx_t_5numpy_uint32_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t *, unsigned PY_LONG_LONG); /*proto*/
 static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast0_o1(int const , __pyx_t_5numpy_uint32_t *, unsigned PY_LONG_LONG, __pyx_t_5utils_18training_sdg_inner_REAL_t *, __pyx_t_5utils_18training_sdg_inner_REAL_t *, int const , __pyx_t_5numpy_uint32_t const , __pyx_t_5numpy_uint32_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t *, unsigned PY_LONG_LONG); /*proto*/
 static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast1_o1(int const , __pyx_t_5numpy_uint32_t *, unsigned PY_LONG_LONG, __pyx_t_5utils_18training_sdg_inner_REAL_t *, __pyx_t_5utils_18training_sdg_inner_REAL_t *, int const , __pyx_t_5numpy_uint32_t const , __pyx_t_5numpy_uint32_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t *, unsigned PY_LONG_LONG); /*proto*/
-static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_loss0_o1_o2(int const , __pyx_t_5numpy_uint32_t *, unsigned PY_LONG_LONG, __pyx_t_5utils_18training_sdg_inner_REAL_t *, __pyx_t_5utils_18training_sdg_inner_REAL_t *, int const , __pyx_t_5numpy_uint32_t const , __pyx_t_5numpy_uint32_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t *, __pyx_t_5utils_18training_sdg_inner_REAL_t *, unsigned PY_LONG_LONG); /*proto*/
+static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_loss_o1_o2(int const , __pyx_t_5numpy_uint32_t *, unsigned PY_LONG_LONG, __pyx_t_5utils_18training_sdg_inner_REAL_t *, __pyx_t_5utils_18training_sdg_inner_REAL_t *, int const , __pyx_t_5numpy_uint32_t const , __pyx_t_5numpy_uint32_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t const , __pyx_t_5utils_18training_sdg_inner_REAL_t *, __pyx_t_5utils_18training_sdg_inner_REAL_t *, unsigned PY_LONG_LONG); /*proto*/
 #define __Pyx_MODULE_NAME "utils.training_sdg_inner"
 int __pyx_module_is_main_utils__training_sdg_inner = 0;
 
@@ -2974,12 +2974,12 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_fast1_o1(int co
 /* "utils/training_sdg_inner.pyx":284
  * 
  * 
- * cdef unsigned long long loss0_o1_o2 (             # <<<<<<<<<<<<<<
+ * cdef unsigned long long loss_o1_o2 (             # <<<<<<<<<<<<<<
  *     const int negative,
  *     np.uint32_t *table,
  */
 
-static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_loss0_o1_o2(int const __pyx_v_negative, __pyx_t_5numpy_uint32_t *__pyx_v_table, unsigned PY_LONG_LONG __pyx_v_table_len, __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_node_embedding, __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_negative_embedding, int const __pyx_v_size, __pyx_t_5numpy_uint32_t const __pyx_v_word_index, __pyx_t_5numpy_uint32_t const __pyx_v_word2_index, __pyx_t_5utils_18training_sdg_inner_REAL_t const __pyx_v__lambda, __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_loss, __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_work, unsigned PY_LONG_LONG __pyx_v_next_random) {
+static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_loss_o1_o2(int const __pyx_v_negative, __pyx_t_5numpy_uint32_t *__pyx_v_table, unsigned PY_LONG_LONG __pyx_v_table_len, __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_node_embedding, __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_negative_embedding, int const __pyx_v_size, __pyx_t_5numpy_uint32_t const __pyx_v_word_index, __pyx_t_5numpy_uint32_t const __pyx_v_word2_index, __pyx_t_5utils_18training_sdg_inner_REAL_t const __pyx_v__lambda, __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_loss, __pyx_t_5utils_18training_sdg_inner_REAL_t *__pyx_v_work, unsigned PY_LONG_LONG __pyx_v_next_random) {
   PY_LONG_LONG __pyx_v_row1;
   PY_LONG_LONG __pyx_v_row2;
   unsigned PY_LONG_LONG __pyx_v_modulo;
@@ -3149,15 +3149,15 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_loss0_o1_o2(int
     /* "utils/training_sdg_inner.pyx":322
  * 
  * 
- *         f = <REAL_t>dsdot(&size, &node_embedding[row1], &ONE, work, &ONE)             # <<<<<<<<<<<<<<
+ *         f = <REAL_t>sdot(&size, &node_embedding[row1], &ONE, work, &ONE)             # <<<<<<<<<<<<<<
  *         if f <= -MAX_EXP or f >= MAX_EXP:
  *             continue
  */
-    __pyx_v_f = ((__pyx_t_5utils_18training_sdg_inner_REAL_t)__pyx_v_5utils_18training_sdg_inner_dsdot((&__pyx_v_size), (&(__pyx_v_node_embedding[__pyx_v_row1])), (&__pyx_v_5utils_18training_sdg_inner_ONE), __pyx_v_work, (&__pyx_v_5utils_18training_sdg_inner_ONE)));
+    __pyx_v_f = ((__pyx_t_5utils_18training_sdg_inner_REAL_t)__pyx_v_5utils_18training_sdg_inner_sdot((&__pyx_v_size), (&(__pyx_v_node_embedding[__pyx_v_row1])), (&__pyx_v_5utils_18training_sdg_inner_ONE), __pyx_v_work, (&__pyx_v_5utils_18training_sdg_inner_ONE)));
 
     /* "utils/training_sdg_inner.pyx":323
  * 
- *         f = <REAL_t>dsdot(&size, &node_embedding[row1], &ONE, work, &ONE)
+ *         f = <REAL_t>sdot(&size, &node_embedding[row1], &ONE, work, &ONE)
  *         if f <= -MAX_EXP or f >= MAX_EXP:             # <<<<<<<<<<<<<<
  *             continue
  *         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]
@@ -3174,7 +3174,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_loss0_o1_o2(int
     if (__pyx_t_3) {
 
       /* "utils/training_sdg_inner.pyx":324
- *         f = <REAL_t>dsdot(&size, &node_embedding[row1], &ONE, work, &ONE)
+ *         f = <REAL_t>sdot(&size, &node_embedding[row1], &ONE, work, &ONE)
  *         if f <= -MAX_EXP or f >= MAX_EXP:
  *             continue             # <<<<<<<<<<<<<<
  *         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]
@@ -3184,7 +3184,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_loss0_o1_o2(int
 
       /* "utils/training_sdg_inner.pyx":323
  * 
- *         f = <REAL_t>dsdot(&size, &node_embedding[row1], &ONE, work, &ONE)
+ *         f = <REAL_t>sdot(&size, &node_embedding[row1], &ONE, work, &ONE)
  *         if f <= -MAX_EXP or f >= MAX_EXP:             # <<<<<<<<<<<<<<
  *             continue
  *         f = EXP_TABLE[<int>((f + MAX_EXP) * (EXP_TABLE_SIZE / MAX_EXP / 2))]
@@ -3233,7 +3233,7 @@ static unsigned PY_LONG_LONG __pyx_f_5utils_18training_sdg_inner_loss0_o1_o2(int
   /* "utils/training_sdg_inner.pyx":284
  * 
  * 
- * cdef unsigned long long loss0_o1_o2 (             # <<<<<<<<<<<<<<
+ * cdef unsigned long long loss_o1_o2 (             # <<<<<<<<<<<<<<
  *     const int negative,
  *     np.uint32_t *table,
  */
@@ -3650,7 +3650,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_loss_o1(CYTHON_UNUSED PyOb
  * 
  *     # release GIL & train on the sentence
  *     with nogil:             # <<<<<<<<<<<<<<
- *         next_random = loss0_o1_o2(negative, table, table_len, node_embedding, node_embedding,
+ *         next_random = loss_o1_o2(negative, table, table_len, node_embedding, node_embedding,
  *                                   size, indexes[1], indexes[0], ONEF,  loss, work, next_random)
  */
   {
@@ -3664,27 +3664,27 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_loss_o1(CYTHON_UNUSED PyOb
         /* "utils/training_sdg_inner.pyx":368
  *     # release GIL & train on the sentence
  *     with nogil:
- *         next_random = loss0_o1_o2(negative, table, table_len, node_embedding, node_embedding,             # <<<<<<<<<<<<<<
+ *         next_random = loss_o1_o2(negative, table, table_len, node_embedding, node_embedding,             # <<<<<<<<<<<<<<
  *                                   size, indexes[1], indexes[0], ONEF,  loss, work, next_random)
- *         next_random = loss0_o1_o2(negative, table, table_len, node_embedding, node_embedding,
+ *         next_random = loss_o1_o2(negative, table, table_len, node_embedding, node_embedding,
  */
-        __pyx_v_next_random = __pyx_f_5utils_18training_sdg_inner_loss0_o1_o2(__pyx_v_negative, __pyx_v_table, __pyx_v_table_len, __pyx_v_node_embedding, __pyx_v_node_embedding, __pyx_v_size, (__pyx_v_indexes[1]), (__pyx_v_indexes[0]), __pyx_v_5utils_18training_sdg_inner_ONEF, __pyx_v_loss, __pyx_v_work, __pyx_v_next_random);
+        __pyx_v_next_random = __pyx_f_5utils_18training_sdg_inner_loss_o1_o2(__pyx_v_negative, __pyx_v_table, __pyx_v_table_len, __pyx_v_node_embedding, __pyx_v_node_embedding, __pyx_v_size, (__pyx_v_indexes[1]), (__pyx_v_indexes[0]), __pyx_v_5utils_18training_sdg_inner_ONEF, __pyx_v_loss, __pyx_v_work, __pyx_v_next_random);
 
         /* "utils/training_sdg_inner.pyx":370
- *         next_random = loss0_o1_o2(negative, table, table_len, node_embedding, node_embedding,
+ *         next_random = loss_o1_o2(negative, table, table_len, node_embedding, node_embedding,
  *                                   size, indexes[1], indexes[0], ONEF,  loss, work, next_random)
- *         next_random = loss0_o1_o2(negative, table, table_len, node_embedding, node_embedding,             # <<<<<<<<<<<<<<
+ *         next_random = loss_o1_o2(negative, table, table_len, node_embedding, node_embedding,             # <<<<<<<<<<<<<<
  *                                   size, indexes[0], indexes[1], ONEF,  loss, work, next_random)
  * 
  */
-        __pyx_v_next_random = __pyx_f_5utils_18training_sdg_inner_loss0_o1_o2(__pyx_v_negative, __pyx_v_table, __pyx_v_table_len, __pyx_v_node_embedding, __pyx_v_node_embedding, __pyx_v_size, (__pyx_v_indexes[0]), (__pyx_v_indexes[1]), __pyx_v_5utils_18training_sdg_inner_ONEF, __pyx_v_loss, __pyx_v_work, __pyx_v_next_random);
+        __pyx_v_next_random = __pyx_f_5utils_18training_sdg_inner_loss_o1_o2(__pyx_v_negative, __pyx_v_table, __pyx_v_table_len, __pyx_v_node_embedding, __pyx_v_node_embedding, __pyx_v_size, (__pyx_v_indexes[0]), (__pyx_v_indexes[1]), __pyx_v_5utils_18training_sdg_inner_ONEF, __pyx_v_loss, __pyx_v_work, __pyx_v_next_random);
       }
 
       /* "utils/training_sdg_inner.pyx":367
  * 
  *     # release GIL & train on the sentence
  *     with nogil:             # <<<<<<<<<<<<<<
- *         next_random = loss0_o1_o2(negative, table, table_len, node_embedding, node_embedding,
+ *         next_random = loss_o1_o2(negative, table, table_len, node_embedding, node_embedding,
  *                                   size, indexes[1], indexes[0], ONEF,  loss, work, next_random)
  */
       /*finally:*/ {
@@ -4425,7 +4425,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_2loss_o2(CYTHON_UNUSED PyO
  *             for j in range(j, k):
  *                 if j == i or codelens[j] == 0:             # <<<<<<<<<<<<<<
  *                     continue
- *                 next_random = loss0_o1_o2(negative, table, table_len, node_embedding, context_embedding,
+ *                 next_random = loss_o1_o2(negative, table, table_len, node_embedding, context_embedding,
  */
             __pyx_t_11 = ((__pyx_v_j == __pyx_v_i) != 0);
             if (!__pyx_t_11) {
@@ -4442,7 +4442,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_2loss_o2(CYTHON_UNUSED PyO
  *             for j in range(j, k):
  *                 if j == i or codelens[j] == 0:
  *                     continue             # <<<<<<<<<<<<<<
- *                 next_random = loss0_o1_o2(negative, table, table_len, node_embedding, context_embedding,
+ *                 next_random = loss_o1_o2(negative, table, table_len, node_embedding, context_embedding,
  *                                       size, indexes[i], indexes[j], _alpha, loss, work, next_random)
  */
               goto __pyx_L14_continue;
@@ -4452,18 +4452,18 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_2loss_o2(CYTHON_UNUSED PyO
  *             for j in range(j, k):
  *                 if j == i or codelens[j] == 0:             # <<<<<<<<<<<<<<
  *                     continue
- *                 next_random = loss0_o1_o2(negative, table, table_len, node_embedding, context_embedding,
+ *                 next_random = loss_o1_o2(negative, table, table_len, node_embedding, context_embedding,
  */
             }
 
             /* "utils/training_sdg_inner.pyx":431
  *                 if j == i or codelens[j] == 0:
  *                     continue
- *                 next_random = loss0_o1_o2(negative, table, table_len, node_embedding, context_embedding,             # <<<<<<<<<<<<<<
+ *                 next_random = loss_o1_o2(negative, table, table_len, node_embedding, context_embedding,             # <<<<<<<<<<<<<<
  *                                       size, indexes[i], indexes[j], _alpha, loss, work, next_random)
  *     return result
  */
-            __pyx_v_next_random = __pyx_f_5utils_18training_sdg_inner_loss0_o1_o2(__pyx_v_negative, __pyx_v_table, __pyx_v_table_len, __pyx_v_node_embedding, __pyx_v_context_embedding, __pyx_v_size, (__pyx_v_indexes[__pyx_v_i]), (__pyx_v_indexes[__pyx_v_j]), __pyx_v__alpha, __pyx_v_loss, __pyx_v_work, __pyx_v_next_random);
+            __pyx_v_next_random = __pyx_f_5utils_18training_sdg_inner_loss_o1_o2(__pyx_v_negative, __pyx_v_table, __pyx_v_table_len, __pyx_v_node_embedding, __pyx_v_context_embedding, __pyx_v_size, (__pyx_v_indexes[__pyx_v_i]), (__pyx_v_indexes[__pyx_v_j]), __pyx_v__alpha, __pyx_v_loss, __pyx_v_work, __pyx_v_next_random);
             __pyx_L14_continue:;
           }
           __pyx_L9_continue:;
@@ -4490,7 +4490,7 @@ static PyObject *__pyx_pf_5utils_18training_sdg_inner_2loss_o2(CYTHON_UNUSED PyO
   }
 
   /* "utils/training_sdg_inner.pyx":433
- *                 next_random = loss0_o1_o2(negative, table, table_len, node_embedding, context_embedding,
+ *                 next_random = loss_o1_o2(negative, table, table_len, node_embedding, context_embedding,
  *                                       size, indexes[i], indexes[j], _alpha, loss, work, next_random)
  *     return result             # <<<<<<<<<<<<<<
  * 

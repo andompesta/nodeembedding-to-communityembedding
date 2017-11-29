@@ -28,11 +28,6 @@ class Community2Vec(object):
                                                          weight_concentration_prior=wc_prior,
                                                          weight_concentration_prior_type='dirichlet_process')
 
-        # self.g_mixture = mixture.GaussianMixture(n_components=model.k,
-        #                                          reg_covar=reg_covar,
-        #                                          covariance_type='full',
-        #                                          n_init=n_init)
-
         log.info("Fitting: {} communities".format(model.k))
         self.g_mixture.fit(model.node_embedding)
 
@@ -46,8 +41,6 @@ class Community2Vec(object):
         model.inv_covariance_mat = self.g_mixture.precisions_.astype(np.float32)
         model.pi = self.g_mixture.predict_proba(model.node_embedding).astype(np.float32)
 
-        # model.c = self.g_mixture.degrees_of_freedom_.astype(np.float32)
-        # model.B = self.g_mixture.covariance_prior_.astype(np.float32)
 
     def loss(self, nodes, model, beta, chunksize=150):
         """

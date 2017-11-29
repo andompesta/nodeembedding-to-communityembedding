@@ -40,25 +40,20 @@ if __name__ == "__main__":
     num_workers = 10                        # number of thread
     num_iter = 1                            # number of overall iteration
     reg_covar = 0.00001                     # regularization coefficient to ensure positive covar
-    input_file = 'BlogCatalog'                # name of the input file
-    output_file = 'BlogCatalog'               # name of the output file
+    input_file = 'Rochester'                # name of the input file
+    output_file = 'Rochester'               # name of the output file
     batch_size = 50
     window_size = 10    # windows size used to compute the context embedding
     negative = 5        # number of negative sample
     lr = 0.025            # learning rate
 
-    """
-    alpha = 1.0
-    beta = 0.01
-    num_iter_com = 1  # number of iteration for community embedding
-    num_iter_node = 1  # number of iteration for node embedding
-    """
-    alpha_betas = [(0.1, 0.1), (0.1, 0.01), (0.1, 0.001), (1., 0.1), (0.01, 0.1), (0.001, 0.1)]
-    # alpha_betas = [(0.1, 1.)]
+    # alpha_betas = [(0.1, 0.1), (0.1, 0.01), (0.1, 0.001), (1., 0.1), (0.01, 0.1), (0.001, 0.1), (0.1 ,1.)]
+    alpha_betas = [(0.1, 1.)]
+    # alpha_betas = [(0.1, 0.1), (1., 0.1)]
     down_sampling = 0.0
 
     ks = [50]
-    weight_concentration_prior = 0.01
+    weight_concentration_prior = 100
     walks_filebase = os.path.join('data', output_file)            # where read/write the sampled path
     sampling_path = False
 
@@ -130,6 +125,7 @@ if __name__ == "__main__":
                 log.info('\t\tITER-{}\n'.format(it))
                 model = model.load_model("{}_pre-training".format(output_file))
                 model.reset_communities_weights(k)
+                com_learner.fit(model, reg_covar=reg_covar, n_init=10, wc_prior=weight_concentration_prior)
 
                 log.info('using alpha:{}\tbeta:{}\titer_com:{}\titer_node: {}'.format(alpha, beta, iter_com, iter_node))
 
@@ -139,7 +135,7 @@ if __name__ == "__main__":
                                    edges=edges,
                                    iter=iter_node,
                                    chunksize=batch_size)
-                com_learner.fit(model, reg_covar=reg_covar, n_init=10, wc_prior=weight_concentration_prior)
+
                 com_learner.train(G.nodes(), model, beta, chunksize=batch_size, iter=iter_com)
 
                 cont_learner.train(model,
@@ -152,7 +148,7 @@ if __name__ == "__main__":
                 log.info('time: %.2fs' % (timeit.default_timer() - start_time))
                 # log.info(model.centroid)
                 io_utils.save_embedding(model.node_embedding, model.vocab,
-                                        file_name="{}_alpha-{}_beta-{}_ws-{}_neg-{}_lr-{}_icom-{}_ind-{}_k-{}_ds-{}_xi".format(output_file,
+                                        file_name="{}_alpha-{}_beta-{}_ws-{}_neg-{}_lr-{}_icom-{}_ind-{}_k-{}_ds-{}_xi_".format(output_file,
                                                                                                                        alpha,
                                                                                                                        beta,
                                                                                                                        window_size,
